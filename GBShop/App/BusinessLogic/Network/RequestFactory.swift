@@ -39,4 +39,9 @@ class RequestFactory {
         let errorParser = makeErrorParser()
         return Regist(errorParser: errorParser, sessionManager: commonSession, queue: sessionQueue)
     }
+    
+    func makeChangeUserRequestFactory() -> ChangeUserRequestFactory {
+        let errorParser = makeErrorParser()
+        return ChangeUser(errorParser: errorParser, sessionManager: commonSession, queue: sessionQueue)
+    }
 }
