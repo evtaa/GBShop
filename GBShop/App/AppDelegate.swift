@@ -16,6 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         let auth = requestFactory.makeAuthRequestFactory()
+        let userData = requestFactory.makeUserDataRequestFactory()
         auth.login(userName: "Somebody", password: "mypassword") { response in
             switch response.result {
             case .success(let login):
@@ -25,8 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
         
-        let exit = requestFactory.makeExitRequestFactory()
-        exit.logout(idUser: 123) { response in
+        auth.logout(idUser: 123) { response in
             switch response.result {
             case .success(let logout):
                 print (logout)
@@ -35,8 +35,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
         
-        let regist = requestFactory.makeRegistRequestFactory()
-        regist.registration (idUser: 123,
+       
+        userData.registration (idUser: 123,
                             username: "Somebody",
                             password: "mypassword",
                             email: "some@some.ru",
@@ -50,9 +50,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 print (error.localizedDescription)
             }
         }
-        
-        let changeUser = requestFactory.makeChangeUserRequestFactory()
-        changeUser.changeUserData (idUser: 123,
+    
+        userData.changeUserData (idUser: 123,
                             username: "Somebody",
                             password: "mypassword",
                             email: "some@some.ru",

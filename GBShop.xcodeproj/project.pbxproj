@@ -23,8 +23,8 @@
 		A81BDB142620BE8B0084B17F /* RegisterUserResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81BDB132620BE8B0084B17F /* RegisterUserResult.swift */; };
 		A81BDB212620C05F0084B17F /* ExitRequestFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81BDB202620C05F0084B17F /* ExitRequestFactory.swift */; };
 		A81BDB262620C2DB0084B17F /* Exit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81BDB252620C2DB0084B17F /* Exit.swift */; };
-		A81BDB352620D2B50084B17F /* RegistRequestFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81BDB342620D2B50084B17F /* RegistRequestFactory.swift */; };
-		A81BDB402620D41B0084B17F /* Regist.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81BDB3F2620D41B0084B17F /* Regist.swift */; };
+		A81BDB352620D2B50084B17F /* UserDataRequestFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81BDB342620D2B50084B17F /* UserDataRequestFactory.swift */; };
+		A81BDB402620D41B0084B17F /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81BDB3F2620D41B0084B17F /* UserData.swift */; };
 		A81BDB462620DD650084B17F /* ChangeUserRequestFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81BDB452620DD650084B17F /* ChangeUserRequestFactory.swift */; };
 		A81BDB4E2620DD730084B17F /* ChangeUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81BDB4D2620DD730084B17F /* ChangeUser.swift */; };
 		A8541118261A3603007D2C75 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8541117261A3603007D2C75 /* AppDelegate.swift */; };
@@ -77,8 +77,8 @@
 		A81BDB132620BE8B0084B17F /* RegisterUserResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUserResult.swift; sourceTree = "<group>"; };
 		A81BDB202620C05F0084B17F /* ExitRequestFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExitRequestFactory.swift; sourceTree = "<group>"; };
 		A81BDB252620C2DB0084B17F /* Exit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Exit.swift; sourceTree = "<group>"; };
-		A81BDB342620D2B50084B17F /* RegistRequestFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistRequestFactory.swift; sourceTree = "<group>"; };
-		A81BDB3F2620D41B0084B17F /* Regist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Regist.swift; sourceTree = "<group>"; };
+		A81BDB342620D2B50084B17F /* UserDataRequestFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataRequestFactory.swift; sourceTree = "<group>"; };
+		A81BDB3F2620D41B0084B17F /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		A81BDB452620DD650084B17F /* ChangeUserRequestFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeUserRequestFactory.swift; sourceTree = "<group>"; };
 		A81BDB4D2620DD730084B17F /* ChangeUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeUser.swift; sourceTree = "<group>"; };
 		A8541114261A3603007D2C75 /* GBShop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GBShop.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -230,8 +230,8 @@
 		A81BDB332620D1BA0084B17F /* Regist */ = {
 			isa = PBXGroup;
 			children = (
-				A81BDB342620D2B50084B17F /* RegistRequestFactory.swift */,
-				A81BDB3F2620D41B0084B17F /* Regist.swift */,
+				A81BDB342620D2B50084B17F /* UserDataRequestFactory.swift */,
+				A81BDB3F2620D41B0084B17F /* UserData.swift */,
 			);
 			path = Regist;
 			sourceTree = "<group>";
@@ -625,10 +625,10 @@
 				A8541122261A3603007D2C75 /* GBShop.xcdatamodeld in Sources */,
 				A80CED102620858F0048AAC9 /* RequestFactory.swift in Sources */,
 				A854111A261A3603007D2C75 /* SceneDelegate.swift in Sources */,
-				A81BDB352620D2B50084B17F /* RegistRequestFactory.swift in Sources */,
+				A81BDB352620D2B50084B17F /* UserDataRequestFactory.swift in Sources */,
 				A80CECF02620824E0048AAC9 /* RequestRouter.swift in Sources */,
 				A80CECFD2620840B0048AAC9 /* User.swift in Sources */,
-				A81BDB402620D41B0084B17F /* Regist.swift in Sources */,
+				A81BDB402620D41B0084B17F /* UserData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

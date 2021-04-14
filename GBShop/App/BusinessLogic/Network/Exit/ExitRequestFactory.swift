@@ -1,13 +1,13 @@
+////
+////  ExitRequestFactory.swift
+////  GBShop
+////
+////  Created by Alexandr Evtodiy on 09.04.2021.
+////
 //
-//  ExitRequestFactory.swift
-//  GBShop
+//import Foundation
+//import Alamofire
 //
-//  Created by Alexandr Evtodiy on 09.04.2021.
-//
-
-import Foundation
-import Alamofire
-
-protocol ExitRequestFactory {
-    func logout (idUser: Int, completionHandler: @escaping (AFDataResponse<LogoutResult>) -> Void)
-}
+//protocol ExitRequestFactory {
+//    func logout (idUser: Int, completionHandler: @escaping (AFDataResponse<LogoutResult>) -> Void)
+//}
