@@ -17,6 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let auth = requestFactory.makeAuthRequestFactory()
         let userData = requestFactory.makeUserDataRequestFactory()
+        let productsData = requestFactory.makeProductsDataRequestFactory()
         auth.login(userName: "Somebody", password: "mypassword") { response in
             switch response.result {
             case .success(let login):
@@ -65,6 +66,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 print (error.localizedDescription)
             }
         }
+        
+        productsData.downloadCatalogData(pageNumber: 1, idCategory: 1) { (response) in
+            switch response.result {
+            case .success(let productsData):
+                print (productsData)
+            case .failure(let error):
+                print (error.localizedDescription)
+            }
+        }
+        
+        productsData.downloadGoodById(idProduct: 123) { (response) in
+            switch response.result {
+            case .success(let goodById):
+                print (goodById)
+            case .failure(let error):
+                print (error.localizedDescription)
+            }
+        }
+        
         return true
     }
 

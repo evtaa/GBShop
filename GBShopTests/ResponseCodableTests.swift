@@ -16,15 +16,18 @@ class ResponseCodableTests: XCTestCase {
     let requestFactory = RequestFactory()
     var auth: AuthRequestFactory!
     var userData: UserDataRequestFactory!
+    var productsData: ProductsDataRequestFactory!
     
     override func setUpWithError() throws {
         auth = requestFactory.makeAuthRequestFactory()
         userData = requestFactory.makeUserDataRequestFactory()
+        productsData = requestFactory.makeProductsDataRequestFactory()
     }
 
     override func tearDownWithError() throws {
         auth = nil
         userData = nil
+        productsData = nil
     }
     
     func testLoginShouldDownloadAndParse() {
@@ -86,6 +89,34 @@ class ResponseCodableTests: XCTestCase {
             switch response.result {
             case .success(let changeUser):
                 print (changeUser)
+            case .failure(let error):
+                print (error.localizedDescription)
+                XCTFail()
+            }
+            self.expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 10.0)
+    }
+    
+    func testDownCatalogDataShouldDownloadAndParse() {
+        productsData.downloadCatalogData(pageNumber: 1, idCategory: 1) { (response) in
+            switch response.result {
+            case .success(let productsData):
+                print (productsData)
+            case .failure(let error):
+                print (error.localizedDescription)
+                XCTFail()
+            }
+            self.expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 10.0)
+    }
+    
+    func testDownGoodByIdShouldDownloadAndParse() {
+        productsData.downloadGoodById(idProduct: 123) { (response) in
+            switch response.result {
+            case .success(let goodById):
+                print (goodById)
             case .failure(let error):
                 print (error.localizedDescription)
                 XCTFail()
