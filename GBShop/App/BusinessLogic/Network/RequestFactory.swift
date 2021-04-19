@@ -39,5 +39,4 @@ class RequestFactory {
         let errorParser = makeErrorParser()
         return ProductsData(errorParser: errorParser, sessionManager: commonSession, queue: sessionQueue)
     }
-    
 }

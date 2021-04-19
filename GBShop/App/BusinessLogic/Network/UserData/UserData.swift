@@ -12,7 +12,8 @@ class UserData: AbstractRequestFactory {
     var errorParser: AbstractErrorParser
     var sessionManager: Session
     var queue: DispatchQueue
-    let baseUrl = URL(string: "https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses/")!
+    //let baseUrl = URL(string: "http://127.0.0.1:8080/")!
+    let baseUrl = URL(string: "https://mighty-harbor-34171.herokuapp.com/")!
     
     init(
         errorParser: AbstractErrorParser,
@@ -38,8 +39,9 @@ extension UserData: UserDataRequestFactory {
 extension UserData {
     struct Registration: RequestRouter {
         let baseUrl: URL
-        let method: HTTPMethod = .get
-        let path: String = "registerUser.json"
+        let method: HTTPMethod = .post
+        //let path: String = "registerUser.json"
+        let path: String = "register"
         
         let idUser: Int
         let username: String
@@ -62,8 +64,9 @@ extension UserData {
     }
     struct ChangeUserData: RequestRouter {
         let baseUrl: URL
-        let method: HTTPMethod = .get
-        let path: String = "changeUserData.json"
+        let method: HTTPMethod = .post
+        //let path: String = "changeUserData.json"
+        let path: String = "changeUserData"
         
         let idUser: Int
         let username: String

@@ -158,16 +158,9 @@
 			isa = PBXGroup;
 			children = (
 				A802E4EB2628A7610022F87C /* Product.swift */,
-			);
-			path = CatalogData;
-			sourceTree = "<group>";
-		};
-		A802E4F02628CEF00022F87C /* GoodById */ = {
-			isa = PBXGroup;
-			children = (
 				A802E4F12628CF4C0022F87C /* GoodByIdResult.swift */,
 			);
-			path = GoodById;
+			path = CatalogData;
 			sourceTree = "<group>";
 		};
 		A802E4FC2628D1AB0022F87C /* Product */ = {
@@ -202,37 +195,23 @@
 			path = Network;
 			sourceTree = "<group>";
 		};
-		A81BDB0F2620BDEF0084B17F /* Logout */ = {
-			isa = PBXGroup;
-			children = (
-				A81BDB052620BD780084B17F /* LogoutResult.swift */,
-			);
-			path = Logout;
-			sourceTree = "<group>";
-		};
-		A81BDB102620BDF90084B17F /* Login */ = {
+		A81BDB102620BDF90084B17F /* Auth */ = {
 			isa = PBXGroup;
 			children = (
 				A80CECF7262083FC0048AAC9 /* LoginResult.swift */,
 				A80CECFC2620840B0048AAC9 /* User.swift */,
+				A81BDB052620BD780084B17F /* LogoutResult.swift */,
 			);
-			path = Login;
+			path = Auth;
 			sourceTree = "<group>";
 		};
-		A81BDB112620BE420084B17F /* ChangeUserData */ = {
+		A81BDB112620BE420084B17F /* UserData */ = {
 			isa = PBXGroup;
 			children = (
 				A81BDB0A2620BDE70084B17F /* ChangeUserDataResult.swift */,
-			);
-			path = ChangeUserData;
-			sourceTree = "<group>";
-		};
-		A81BDB122620BE740084B17F /* RegisterUser */ = {
-			isa = PBXGroup;
-			children = (
 				A81BDB132620BE8B0084B17F /* RegisterUserResult.swift */,
 			);
-			path = RegisterUser;
+			path = UserData;
 			sourceTree = "<group>";
 		};
 		A81BDB1B2620BF230084B17F /* Auth */ = {
@@ -318,12 +297,9 @@
 		A89EE104261B36170081EBBB /* Entity */ = {
 			isa = PBXGroup;
 			children = (
-				A81BDB102620BDF90084B17F /* Login */,
-				A81BDB0F2620BDEF0084B17F /* Logout */,
-				A81BDB122620BE740084B17F /* RegisterUser */,
-				A81BDB112620BE420084B17F /* ChangeUserData */,
+				A81BDB102620BDF90084B17F /* Auth */,
+				A81BDB112620BE420084B17F /* UserData */,
 				A802E4D92628A3FA0022F87C /* CatalogData */,
-				A802E4F02628CEF00022F87C /* GoodById */,
 			);
 			path = Entity;
 			sourceTree = "<group>";
