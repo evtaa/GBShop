@@ -17,17 +17,20 @@ class ResponseCodableTests: XCTestCase {
     var auth: AuthRequestFactory!
     var userData: UserDataRequestFactory!
     var productsData: ProductsDataRequestFactory!
+    var reviewsData: ReviewsDataRequestFactory!
     
     override func setUpWithError() throws {
         auth = requestFactory.makeAuthRequestFactory()
         userData = requestFactory.makeUserDataRequestFactory()
         productsData = requestFactory.makeProductsDataRequestFactory()
+        reviewsData = requestFactory.makeReviewsDataRequestFactory()
     }
 
     override func tearDownWithError() throws {
         auth = nil
         userData = nil
         productsData = nil
+        reviewsData = nil
     }
     
     func testLoginShouldDownloadAndParse() {
@@ -117,6 +120,48 @@ class ResponseCodableTests: XCTestCase {
             switch response.result {
             case .success(let goodById):
                 print (goodById)
+            case .failure(let error):
+                print (error.localizedDescription)
+                XCTFail()
+            }
+            self.expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 10.0)
+    }
+    
+    func testAddReviewShouldDownloadAndParse() {
+        reviewsData.addReview(idUser: 123, text: "Текст отзыва") { (response) in
+            switch response.result {
+            case .success(let addReview):
+                print (addReview)
+            case .failure(let error):
+                print (error.localizedDescription)
+                XCTFail()
+            }
+            self.expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 10.0)
+    }
+    
+    func testRemoveReviewShouldDownloadAndParse(){
+        reviewsData.removeReview(idComment: 1234) { (response) in
+            switch response.result {
+            case .success(let removeReview):
+                print (removeReview)
+            case .failure(let error):
+                print (error.localizedDescription)
+                XCTFail()
+            }
+            self.expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 10.0)
+    }
+    
+    func testCatalogReviewsShouldDownloadAndParse(){
+        reviewsData.catalogReviews(idProduct: 12, pageNumber: 1) { (response) in
+            switch response.result {
+            case .success(let catalogReviews):
+                print (catalogReviews)
             case .failure(let error):
                 print (error.localizedDescription)
                 XCTFail()

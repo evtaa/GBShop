@@ -18,6 +18,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let auth = requestFactory.makeAuthRequestFactory()
         let userData = requestFactory.makeUserDataRequestFactory()
         let productsData = requestFactory.makeProductsDataRequestFactory()
+        let reviewsData = requestFactory.makeReviewsDataRequestFactory()
+        
         auth.login(userName: "Somebody", password: "mypassword") { response in
             switch response.result {
             case .success(let login):
@@ -80,6 +82,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             switch response.result {
             case .success(let goodById):
                 print (goodById)
+            case .failure(let error):
+                print (error.localizedDescription)
+            }
+        }
+        
+        reviewsData.addReview(idUser: 123, text: "Текст отзыва") { (response) in
+            switch response.result {
+            case .success(let addReview):
+                print (addReview)
+            case .failure(let error):
+                print (error.localizedDescription)
+            }
+        }
+        
+        reviewsData.removeReview(idComment: 1234) { (response) in
+            switch response.result {
+            case .success(let removeReview):
+                print (removeReview)
+            case .failure(let error):
+                print (error.localizedDescription)
+            }
+        }
+        
+        reviewsData.catalogReviews(idProduct: 12, pageNumber: 1) { (response) in
+            switch response.result {
+            case .success(let catalogReviews):
+                print (catalogReviews)
             case .failure(let error):
                 print (error.localizedDescription)
             }
