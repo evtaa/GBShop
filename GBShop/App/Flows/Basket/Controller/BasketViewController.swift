@@ -16,6 +16,14 @@ protocol BasketViewInput: class {
     func showError(error: Error)
     
     func throbber(show: Bool)
+    
+    func showNoProducts()
+    
+    func showPaymentFailed()
+    
+    func showPaymentPassed()
+    
+    func hideResultsView()
 }
 
 final class BasketViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
@@ -124,6 +132,7 @@ final class BasketViewController: UIViewController, UITableViewDelegate, UITable
 }
 
 extension BasketViewController: BasketViewInput {
+
     func showError(error: Error) {
         let alert = UIAlertController(title: "Error", message: "\(error.localizedDescription)", preferredStyle: .alert)
         let actionOk = UIAlertAction(title: "OK", style: .cancel, handler: nil)
@@ -133,5 +142,30 @@ extension BasketViewController: BasketViewInput {
     
     func throbber(show: Bool) {
         UIApplication.shared.isNetworkActivityIndicatorVisible = show
+    }
+    
+    func showNoProducts() {
+        self.basketView.ResultLabel.text = "No products"
+        self.basketView.ResultView.isHidden = false
+        self.contentsResults = []
+        self.basketView.tableView.reloadData()
+    }
+    
+    func showPaymentFailed() {
+        self.basketView.ResultLabel.text = "Payment failed"
+        self.basketView.ResultView.isHidden = false
+        //self.contentsResults = []
+        self.basketView.tableView.reloadData()
+    }
+    
+    func showPaymentPassed() {
+        self.basketView.ResultLabel.text = "Payment passed"
+        self.basketView.ResultView.isHidden = false
+        self.contentsResults = []
+        self.basketView.tableView.reloadData()
+    }
+    
+    func hideResultsView() {
+        self.basketView.ResultView.isHidden = true
     }
 }

@@ -39,6 +39,11 @@ final class BasketPresenter {
             case .success(let getBasket):
                 print (getBasket)
                 DispatchQueue.main.async {
+                    guard !getBasket.contents.isEmpty else {
+                        self.viewInput?.showNoProducts()
+                        return
+                    }
+                    self.viewInput?.hideResultsView()
                     self.viewInput?.contentsResults = getBasket.contents
                     self.viewInput?.basketView.newRefreshControl.endRefreshing()
                 }
@@ -57,6 +62,11 @@ final class BasketPresenter {
             case .success(let payBasket):
                 print (payBasket)
                 DispatchQueue.main.async {
+                    guard payBasket.result == 1 else {
+                        self.viewInput?.showPaymentFailed()
+                        return
+                    }
+                    self.viewInput?.showPaymentPassed()
                     self.viewInput?.contentsResults = []
                 }
             case .failure(let error):

@@ -12,6 +12,8 @@ class BasketView: UIView {
     //MARK: - Subviews
     let tableView = UITableView ()
     let newRefreshControl = UIRefreshControl()
+    let ResultView = UIView()
+    let ResultLabel = UILabel()
     
     //MARK: - Init
     
@@ -31,6 +33,7 @@ class BasketView: UIView {
         self.backgroundColor = .white
         self.configureRefreshControl()
         self.configureTableView()
+        self.addEmptyResultView()
         self.setupConstraints()
     }
     
@@ -52,6 +55,20 @@ class BasketView: UIView {
         self.addSubview(self.tableView)
     }
     
+    private func addEmptyResultView() {
+        self.ResultView.translatesAutoresizingMaskIntoConstraints = false
+        self.ResultView.backgroundColor = .white
+        self.ResultView.isHidden = true
+        
+        self.ResultLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.ResultLabel.textColor = UIColor.darkGray
+        self.ResultLabel.textAlignment = .center
+        self.ResultLabel.font = UIFont.systemFont(ofSize: 12.0)
+        
+        self.addSubview(self.ResultView)
+        self.ResultView.addSubview(self.ResultLabel)
+    }
+    
     private func setupConstraints () {
         let safeArea = self.safeAreaLayoutGuide
         
@@ -59,7 +76,16 @@ class BasketView: UIView {
             self.tableView.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: 0.0),
             self.tableView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
             self.tableView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
-            self.tableView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor)
+            self.tableView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor),
+            
+            self.ResultView.topAnchor.constraint(equalTo: safeArea.topAnchor),
+            self.ResultView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
+            self.ResultView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
+            self.ResultView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor),
+            self.ResultLabel.topAnchor.constraint(equalTo: self.ResultView.topAnchor, constant: 12.0),
+            self.ResultLabel.leadingAnchor.constraint(equalTo: self.ResultView.leadingAnchor),
+            self.ResultLabel.trailingAnchor.constraint(equalTo: self.ResultView.trailingAnchor),
+            
         ])
     }
 }
