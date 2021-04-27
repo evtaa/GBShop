@@ -19,6 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let userData = requestFactory.makeUserDataRequestFactory()
         let productsData = requestFactory.makeProductsDataRequestFactory()
         let reviewsData = requestFactory.makeReviewsDataRequestFactory()
+        let basketData = requestFactory.makeBasketDataRequestFactory()
         
         auth.login(userName: "Somebody", password: "mypassword") { response in
             switch response.result {
@@ -109,6 +110,42 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             switch response.result {
             case .success(let catalogReviews):
                 print (catalogReviews)
+            case .failure(let error):
+                print (error.localizedDescription)
+            }
+        }
+        
+        basketData.addToBasket(idProduct: 12, quantity: 21) { (response) in
+            switch response.result {
+            case .success(let addToBasket):
+                print (addToBasket)
+            case .failure(let error):
+                print (error.localizedDescription)
+            }
+        }
+        
+        basketData.deleteFromBasket(idProduct: 12) { (response) in
+            switch response.result {
+            case .success(let deleteFromBasket):
+                print (deleteFromBasket)
+            case .failure(let error):
+                print (error.localizedDescription)
+            }
+        }
+        
+        basketData.payBasket(idUser: 54) { (response) in
+            switch response.result {
+            case .success(let payBasket):
+                print (payBasket)
+            case .failure(let error):
+                print (error.localizedDescription)
+            }
+        }
+        
+        basketData.getBasket(idUser: 78) { (response) in
+            switch response.result {
+            case .success(let getBasket):
+                print (getBasket)
             case .failure(let error):
                 print (error.localizedDescription)
             }

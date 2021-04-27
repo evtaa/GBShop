@@ -18,12 +18,14 @@ class ResponseCodableTests: XCTestCase {
     var userData: UserDataRequestFactory!
     var productsData: ProductsDataRequestFactory!
     var reviewsData: ReviewsDataRequestFactory!
+    var basketData: BasketDataRequestFactory!
     
     override func setUpWithError() throws {
         auth = requestFactory.makeAuthRequestFactory()
         userData = requestFactory.makeUserDataRequestFactory()
         productsData = requestFactory.makeProductsDataRequestFactory()
         reviewsData = requestFactory.makeReviewsDataRequestFactory()
+        basketData = requestFactory.makeBasketDataRequestFactory()
     }
 
     override func tearDownWithError() throws {
@@ -170,6 +172,64 @@ class ResponseCodableTests: XCTestCase {
         }
         wait(for: [expectation], timeout: 10.0)
     }
+    
+    func testAddToBasketShouldDownloadAndParse(){
+        basketData.addToBasket(idProduct: 12, quantity: 21) { (response) in
+            switch response.result {
+            case .success(let addToBasket):
+                print (addToBasket)
+            case .failure(let error):
+                print (error.localizedDescription)
+                XCTFail()
+            }
+            self.expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 10.0)
+    }
+    
+    func testDeleteFromBasketShouldDownloadAndParse(){
+        basketData.deleteFromBasket(idProduct: 12) { (response) in
+            switch response.result {
+            case .success(let deleteFromBasket):
+                print (deleteFromBasket)
+            case .failure(let error):
+                print (error.localizedDescription)
+                XCTFail()
+            }
+            self.expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 10.0)
+    }
+    
+    func testPayBasketShouldDownloadAndParse(){
+        basketData.payBasket(idUser: 54) { (response) in
+            switch response.result {
+            case .success(let payBasket):
+                print (payBasket)
+            case .failure(let error):
+                print (error.localizedDescription)
+                XCTFail()
+            }
+            self.expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 10.0)
+    }
+    
+    func testGetBasketShouldDownloadAndParse(){
+        basketData.getBasket(idUser: 78) { (response) in
+            switch response.result {
+            case .success(let getBasket):
+                print (getBasket)
+            case .failure(let error):
+                print (error.localizedDescription)
+                XCTFail()
+            }
+            self.expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 10.0)
+    }
+    
+    
 
     func testExample() throws {
         // This is an example of a functional test case.
