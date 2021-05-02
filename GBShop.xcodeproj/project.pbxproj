@@ -34,6 +34,10 @@
 		A81EF0512635EB8700551B9A /* GetBasketResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81EF0502635EB8700551B9A /* GetBasketResult.swift */; };
 		A81EF0572635EE9900551B9A /* BasketDataRequestFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81EF0562635EE9900551B9A /* BasketDataRequestFactory.swift */; };
 		A81EF05F2635EEAE00551B9A /* Basket.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81EF05E2635EEAE00551B9A /* Basket.swift */; };
+		A81FA10B263AAC7400E5BAF0 /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81FA10A263AAC7400E5BAF0 /* AuthView.swift */; };
+		A81FA155263AD44200E5BAF0 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81FA154263AD44200E5BAF0 /* AuthViewController.swift */; };
+		A81FA15B263AD82600E5BAF0 /* AuthBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81FA15A263AD82600E5BAF0 /* AuthBuilder.swift */; };
+		A81FA166263AEABD00E5BAF0 /* AuthPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81FA165263AEABD00E5BAF0 /* AuthPresenter.swift */; };
 		A83DDAC626381C2B00466E9B /* BasketPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A83DDAC526381C2B00466E9B /* BasketPresenter.swift */; };
 		A83DDACF2638286300466E9B /* BasketBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A83DDACE2638286300466E9B /* BasketBuilder.swift */; };
 		A8541118261A3603007D2C75 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8541117261A3603007D2C75 /* AppDelegate.swift */; };
@@ -49,6 +53,14 @@
 		A89599CC26361A11009270D8 /* BasketViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A89599CB26361A11009270D8 /* BasketViewController.swift */; };
 		A89599D426361D07009270D8 /* Content.swift in Sources */ = {isa = PBXBuildFile; fileRef = A89599D326361D07009270D8 /* Content.swift */; };
 		A89599D9263620E2009270D8 /* BasketCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A89599D8263620E2009270D8 /* BasketCell.swift */; };
+		A8ABCD1E263DCFCB0022BDC0 /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8ABCD1D263DCFCB0022BDC0 /* RegistrationViewController.swift */; };
+		A8BD4413263C2DC60030B11E /* RegistrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8BD4412263C2DC60030B11E /* RegistrationView.swift */; };
+		A8EF3D49263EF9EE00366837 /* RegistrationPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8EF3D48263EF9EE00366837 /* RegistrationPresenter.swift */; };
+		A8EF3D51263EFE5200366837 /* RegistrationBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8EF3D50263EFE5200366837 /* RegistrationBuilder.swift */; };
+		A8EF3D5B263F368400366837 /* PersonalDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8EF3D5A263F368400366837 /* PersonalDataView.swift */; };
+		A8EF3D63263F37F900366837 /* PersonalDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8EF3D62263F37F900366837 /* PersonalDataViewController.swift */; };
+		A8EF3D68263F412500366837 /* PersonalDataPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8EF3D67263F412500366837 /* PersonalDataPresenter.swift */; };
+		A8EF3D6D263F45C900366837 /* PersonalDataBuilding.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8EF3D6C263F45C900366837 /* PersonalDataBuilding.swift */; };
 		A8F2C17B2630B8A900587179 /* AddReviewResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8F2C17A2630B8A900587179 /* AddReviewResult.swift */; };
 		A8F2C1832630B8C500587179 /* RemoveReviewResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8F2C1822630B8C500587179 /* RemoveReviewResult.swift */; };
 		A8F2C1882630B90800587179 /* CatalogReviewsResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8F2C1872630B90800587179 /* CatalogReviewsResult.swift */; };
@@ -107,6 +119,10 @@
 		A81EF0502635EB8700551B9A /* GetBasketResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetBasketResult.swift; sourceTree = "<group>"; };
 		A81EF0562635EE9900551B9A /* BasketDataRequestFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasketDataRequestFactory.swift; sourceTree = "<group>"; };
 		A81EF05E2635EEAE00551B9A /* Basket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Basket.swift; sourceTree = "<group>"; };
+		A81FA10A263AAC7400E5BAF0 /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
+		A81FA154263AD44200E5BAF0 /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
+		A81FA15A263AD82600E5BAF0 /* AuthBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthBuilder.swift; sourceTree = "<group>"; };
+		A81FA165263AEABD00E5BAF0 /* AuthPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthPresenter.swift; sourceTree = "<group>"; };
 		A83DDAC526381C2B00466E9B /* BasketPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasketPresenter.swift; sourceTree = "<group>"; };
 		A83DDACE2638286300466E9B /* BasketBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasketBuilder.swift; sourceTree = "<group>"; };
 		A8541114261A3603007D2C75 /* GBShop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GBShop.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -128,6 +144,14 @@
 		A89599CB26361A11009270D8 /* BasketViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasketViewController.swift; sourceTree = "<group>"; };
 		A89599D326361D07009270D8 /* Content.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Content.swift; sourceTree = "<group>"; };
 		A89599D8263620E2009270D8 /* BasketCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasketCell.swift; sourceTree = "<group>"; };
+		A8ABCD1D263DCFCB0022BDC0 /* RegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
+		A8BD4412263C2DC60030B11E /* RegistrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationView.swift; sourceTree = "<group>"; };
+		A8EF3D48263EF9EE00366837 /* RegistrationPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationPresenter.swift; sourceTree = "<group>"; };
+		A8EF3D50263EFE5200366837 /* RegistrationBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationBuilder.swift; sourceTree = "<group>"; };
+		A8EF3D5A263F368400366837 /* PersonalDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalDataView.swift; sourceTree = "<group>"; };
+		A8EF3D62263F37F900366837 /* PersonalDataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalDataViewController.swift; sourceTree = "<group>"; };
+		A8EF3D67263F412500366837 /* PersonalDataPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalDataPresenter.swift; sourceTree = "<group>"; };
+		A8EF3D6C263F45C900366837 /* PersonalDataBuilding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalDataBuilding.swift; sourceTree = "<group>"; };
 		A8F2C17A2630B8A900587179 /* AddReviewResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddReviewResult.swift; sourceTree = "<group>"; };
 		A8F2C1822630B8C500587179 /* RemoveReviewResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveReviewResult.swift; sourceTree = "<group>"; };
 		A8F2C1872630B90800587179 /* CatalogReviewsResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogReviewsResult.swift; sourceTree = "<group>"; };
@@ -291,6 +315,49 @@
 			name = Basket;
 			sourceTree = "<group>";
 		};
+		A81FA103263AA7E000E5BAF0 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				A81FA107263AAC1A00E5BAF0 /* View */,
+				A81FA108263AAC2400E5BAF0 /* Controller */,
+				A81FA109263AAC2B00E5BAF0 /* Presenter */,
+				A81FA159263AD7F800E5BAF0 /* Builder */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		A81FA107263AAC1A00E5BAF0 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				A81FA10A263AAC7400E5BAF0 /* AuthView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		A81FA108263AAC2400E5BAF0 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				A81FA154263AD44200E5BAF0 /* AuthViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		A81FA109263AAC2B00E5BAF0 /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				A81FA165263AEABD00E5BAF0 /* AuthPresenter.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		A81FA159263AD7F800E5BAF0 /* Builder */ = {
+			isa = PBXGroup;
+			children = (
+				A81FA15A263AD82600E5BAF0 /* AuthBuilder.swift */,
+			);
+			path = Builder;
+			sourceTree = "<group>";
+		};
 		A83DDAC426381C0F00466E9B /* Presenter */ = {
 			isa = PBXGroup;
 			children = (
@@ -420,6 +487,9 @@
 		A89EE106261B362C0081EBBB /* Flows */ = {
 			isa = PBXGroup;
 			children = (
+				A8EF3D55263F35F600366837 /* PersonalData */,
+				A8BD440D263C2CB30030B11E /* Registration */,
+				A81FA103263AA7E000E5BAF0 /* Auth */,
 				A89599CA263619E7009270D8 /* Basket */,
 			);
 			path = Flows;
@@ -461,6 +531,92 @@
 				A8541128261A3604007D2C75 /* Info.plist */,
 			);
 			path = Environments;
+			sourceTree = "<group>";
+		};
+		A8BD440D263C2CB30030B11E /* Registration */ = {
+			isa = PBXGroup;
+			children = (
+				A8BD440E263C2D080030B11E /* View */,
+				A8BD440F263C2D130030B11E /* Controller */,
+				A8BD4410263C2D260030B11E /* Presenter */,
+				A8BD4411263C2D2D0030B11E /* Builder */,
+			);
+			path = Registration;
+			sourceTree = "<group>";
+		};
+		A8BD440E263C2D080030B11E /* View */ = {
+			isa = PBXGroup;
+			children = (
+				A8BD4412263C2DC60030B11E /* RegistrationView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		A8BD440F263C2D130030B11E /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				A8ABCD1D263DCFCB0022BDC0 /* RegistrationViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		A8BD4410263C2D260030B11E /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				A8EF3D48263EF9EE00366837 /* RegistrationPresenter.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		A8BD4411263C2D2D0030B11E /* Builder */ = {
+			isa = PBXGroup;
+			children = (
+				A8EF3D50263EFE5200366837 /* RegistrationBuilder.swift */,
+			);
+			path = Builder;
+			sourceTree = "<group>";
+		};
+		A8EF3D55263F35F600366837 /* PersonalData */ = {
+			isa = PBXGroup;
+			children = (
+				A8EF3D56263F360D00366837 /* View */,
+				A8EF3D57263F361300366837 /* Controller */,
+				A8EF3D58263F361900366837 /* Presenter */,
+				A8EF3D59263F362200366837 /* Building */,
+			);
+			path = PersonalData;
+			sourceTree = "<group>";
+		};
+		A8EF3D56263F360D00366837 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				A8EF3D5A263F368400366837 /* PersonalDataView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		A8EF3D57263F361300366837 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				A8EF3D62263F37F900366837 /* PersonalDataViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		A8EF3D58263F361900366837 /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				A8EF3D67263F412500366837 /* PersonalDataPresenter.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		A8EF3D59263F362200366837 /* Building */ = {
+			isa = PBXGroup;
+			children = (
+				A8EF3D6C263F45C900366837 /* PersonalDataBuilding.swift */,
+			);
+			path = Building;
 			sourceTree = "<group>";
 		};
 		A8F2C1792630B85200587179 /* Review */ = {
@@ -723,7 +879,9 @@
 				A8F2C1962630BDE000587179 /* ReviewDataRequestFactory.swift in Sources */,
 				A802E4FE2628D1F20022F87C /* ProductsDataRequestFactory.swift in Sources */,
 				A80CED0B2620854E0048AAC9 /* Auth.swift in Sources */,
+				A8EF3D6D263F45C900366837 /* PersonalDataBuilding.swift in Sources */,
 				A80CECDC26207BD00048AAC9 /* ResponseCodable.swift in Sources */,
+				A81FA15B263AD82600E5BAF0 /* AuthBuilder.swift in Sources */,
 				A854111C261A3603007D2C75 /* ViewController.swift in Sources */,
 				A81BDB0B2620BDE70084B17F /* ChangeUserDataResult.swift in Sources */,
 				A83DDACF2638286300466E9B /* BasketBuilder.swift in Sources */,
@@ -733,22 +891,31 @@
 				A81EF0512635EB8700551B9A /* GetBasketResult.swift in Sources */,
 				A80CECD726207B4F0048AAC9 /* ErrorParser.swift in Sources */,
 				A81EF0472635E9D600551B9A /* DeleteFromBasket.swift in Sources */,
+				A81FA10B263AAC7400E5BAF0 /* AuthView.swift in Sources */,
 				A81EF04C2635E9ED00551B9A /* PayBasket.swift in Sources */,
 				A8541118261A3603007D2C75 /* AppDelegate.swift in Sources */,
 				A80CECEB262082190048AAC9 /* AbstractRequestFactory.swift in Sources */,
 				A802E4F22628CF4C0022F87C /* GoodByIdResult.swift in Sources */,
 				A85A10A126373D2800FC532B /* ContentCellModel.swift in Sources */,
+				A8ABCD1E263DCFCB0022BDC0 /* RegistrationViewController.swift in Sources */,
 				A89599D9263620E2009270D8 /* BasketCell.swift in Sources */,
 				A80CECCF26207B290048AAC9 /* AbstractErrorParser.swift in Sources */,
 				A81BDB142620BE8B0084B17F /* RegisterUserResult.swift in Sources */,
+				A8EF3D49263EF9EE00366837 /* RegistrationPresenter.swift in Sources */,
 				A8F2C1832630B8C500587179 /* RemoveReviewResult.swift in Sources */,
+				A8BD4413263C2DC60030B11E /* RegistrationView.swift in Sources */,
+				A8EF3D51263EFE5200366837 /* RegistrationBuilder.swift in Sources */,
 				A81EF0422635E9BB00551B9A /* AddToBasket.swift in Sources */,
 				A8541122261A3603007D2C75 /* GBShop.xcdatamodeld in Sources */,
 				A80CED102620858F0048AAC9 /* RequestFactory.swift in Sources */,
 				A854111A261A3603007D2C75 /* SceneDelegate.swift in Sources */,
 				A89599D426361D07009270D8 /* Content.swift in Sources */,
+				A8EF3D5B263F368400366837 /* PersonalDataView.swift in Sources */,
+				A8EF3D63263F37F900366837 /* PersonalDataViewController.swift in Sources */,
+				A8EF3D68263F412500366837 /* PersonalDataPresenter.swift in Sources */,
 				A81BDB352620D2B50084B17F /* UserDataRequestFactory.swift in Sources */,
 				A8F2C17B2630B8A900587179 /* AddReviewResult.swift in Sources */,
+				A81FA155263AD44200E5BAF0 /* AuthViewController.swift in Sources */,
 				A81EF05F2635EEAE00551B9A /* Basket.swift in Sources */,
 				A8F2C1882630B90800587179 /* CatalogReviewsResult.swift in Sources */,
 				A81EF0572635EE9900551B9A /* BasketDataRequestFactory.swift in Sources */,
@@ -756,6 +923,7 @@
 				A80CECF02620824E0048AAC9 /* RequestRouter.swift in Sources */,
 				A83DDAC626381C2B00466E9B /* BasketPresenter.swift in Sources */,
 				A89599CC26361A11009270D8 /* BasketViewController.swift in Sources */,
+				A81FA166263AEABD00E5BAF0 /* AuthPresenter.swift in Sources */,
 				A802E5092628D2FB0022F87C /* ProductsData.swift in Sources */,
 				A80CECFD2620840B0048AAC9 /* User.swift in Sources */,
 				A81BDB402620D41B0084B17F /* UserData.swift in Sources */,
