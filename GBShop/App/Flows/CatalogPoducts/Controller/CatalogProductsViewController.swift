@@ -1,37 +1,34 @@
 //
-//  BasketViewController.swift
+//  CatalogProductsViewController.swift
 //  GBShop
 //
-//  Created by Alexandr Evtodiy on 26.04.2021.
+//  Created by Alexandr Evtodiy on 04.05.2021.
 //
 
 import UIKit
 
-protocol BasketViewInput: class {
-    var contentsResults: [Content] { get set }
-    var basketView: BasketView {get}
+protocol CatalogProductsViewInput: class {
+    var productsResults: [Product] { get set }
+    var catalogProductsView: CatalogProductsView {get}
     func throbberStart()
     func throbberStop()
     func showNoProducts()
-    func showPaymentFailed()
-    func showPaymentPassed()
     func hideResultsView()
 }
 
-final class BasketViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, ShowAlert {
-    
+class CatalogProductsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, ShowAlert {
     //MARK: Private properties
-    private let presenter: BasketViewOutput
+    private let presenter: CatalogProductsViewOutput
     private let indicator = UIActivityIndicatorView()
     
-    internal var basketView: BasketView {
+    internal var catalogProductsView: CatalogProductsView {
 
-            return self.view as! BasketView
+            return self.view as! CatalogProductsView
     }
     
-    internal var contentsResults = [Content]() {
+    internal var productsResults = [Product]() {
         didSet {
-            self.basketView.tableView.reloadData()
+            self.catalogProductsView.tableView.reloadData()
         }
     }
     private struct Constant {
@@ -39,7 +36,7 @@ final class BasketViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     //MARK: Init
-    init(presenter: BasketViewOutput) {
+    init(presenter: CatalogProductsViewOutput) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
     }
@@ -51,13 +48,13 @@ final class BasketViewController: UIViewController, UITableViewDelegate, UITable
     //MARK: LifeCycle
     override func loadView() {
         super.loadView()
-        self.view = BasketView()
+        self.view = CatalogProductsView()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.configure()
-        self.presenter.viewDidBasket(idUser: 123)
+        self.presenter.viewDidCatalogProducts(pageNumber: 123, idCategory: 123)
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -81,70 +78,62 @@ final class BasketViewController: UIViewController, UITableViewDelegate, UITable
         indicator.center = CGPoint(x: UIScreen.main.bounds.width/2, y: UIScreen.main.bounds.height/2)
         indicator.transform = CGAffineTransform(scaleX: 1, y: 1);
         indicator.color = UIColor(red: 0.25, green: 0.72, blue: 0.85, alpha: 0.7)
-        self.basketView.addSubview(self.indicator)
+        self.catalogProductsView.addSubview(self.indicator)
     }
     
     private func configureTableView () {
-        self.basketView.tableView.backgroundColor = .black
-        self.basketView.tableView.separatorColor = .gray
-        self.basketView.tableView.register(BasketCell.self, forCellReuseIdentifier: Constant.reuseIdentifier)
-        self.basketView.tableView.delegate = self
-        self.basketView.tableView.dataSource = self
+        self.catalogProductsView.tableView.backgroundColor = .black
+        self.catalogProductsView.tableView.separatorColor = .gray
+        self.catalogProductsView.tableView.register(CatalogProductsCell.self, forCellReuseIdentifier: Constant.reuseIdentifier)
+        self.catalogProductsView.tableView.delegate = self
+        self.catalogProductsView.tableView.dataSource = self
     }
     
     private func configureNavigationBar () {
-        self.title = "Basket"
+        self.title = "Catalog of products"
         self.navigationController?.navigationBar.backgroundColor = .black
         self.navigationController?.navigationBar.barTintColor = .black
         self.navigationController?.navigationBar.tintColor = .white
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
-        let barButtonItem = UIBarButtonItem(title: "Pay", style: .plain, target: self, action: #selector(payBasket))
-        self.navigationItem.setRightBarButton(barButtonItem, animated: true)
     }
     
     private func configureRefreshControl () {
-        self.basketView.newRefreshControl.addTarget(self, action: #selector(refreshContentsBasket), for: .valueChanged)
+        self.catalogProductsView.newRefreshControl.addTarget(self, action: #selector(refreshProductsCatalog), for: .valueChanged)
     }
     
     //MARK: - Actions
-    @objc func payBasket () {
-        self.presenter.viewDidPayBasket(idUser: 123)
-    }
-    
-    @objc func refreshContentsBasket () {
-        self.presenter.viewDidBasket(idUser: 123)
+    @objc func refreshProductsCatalog () {
+        self.presenter.viewDidCatalogProducts(pageNumber: 123, idCategory: 123)
     }
     
     //MARK: TableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.contentsResults.count
+        return self.productsResults.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let dequeueCell = tableView.dequeueReusableCell(withIdentifier: Constant.reuseIdentifier, for: indexPath)
-        guard let cell = dequeueCell as? BasketCell else {
+        guard let cell = dequeueCell as? CatalogProductsCell else {
             return dequeueCell
         }
-        let content = self.contentsResults [indexPath.row]
-        let contentModel = ContentCellModelFactory.cellModel(from: content)
-        cell.configure(with: contentModel)
-        cell.tapRemovingProduct = { [weak self] content in
+        let product = self.productsResults [indexPath.row]
+        let productModel = ProductCellModelFactory.cellModel(from: product)
+        cell.configure(with: productModel)
+        cell.tapAddingProduct = { [weak self] product in
             let set = CharacterSet(charactersIn: " ")
-            let optionalIdProduct = content.idProduct.components(separatedBy: set).compactMap({Int($0)}).last
+            let optionalIdProduct = product.idProduct.components(separatedBy: set).compactMap({Int($0)}).last
             guard let idProduct = optionalIdProduct,
                   let self = self
             else {
                 return
             }
-            self.presenter.viewDidDeleteFromBasket(idProduct: idProduct)
+            self.presenter.viewDidAddToBasket(idProduct: idProduct, quantity: 1)
         }
         return cell
     }
 }
 
-extension BasketViewController: BasketViewInput {
-    
-    
+extension CatalogProductsViewController: CatalogProductsViewInput {
     func throbberStart() {
         DispatchQueue.main.async {
             self.indicator.startAnimating()
@@ -159,27 +148,14 @@ extension BasketViewController: BasketViewInput {
     }
     
     func showNoProducts() {
-        self.basketView.resultLabel.text = "No products"
-        self.basketView.resultView.isHidden = false
-        self.contentsResults = []
-        self.basketView.tableView.reloadData()
-    }
-    
-    func showPaymentFailed() {
-        self.basketView.resultLabel.text = "Payment failed"
-        self.basketView.resultView.isHidden = false
-        //self.contentsResults = []
-        self.basketView.tableView.reloadData()
-    }
-    
-    func showPaymentPassed() {
-        self.basketView.resultLabel.text = "Payment passed"
-        self.basketView.resultView.isHidden = false
-        self.contentsResults = []
-        self.basketView.tableView.reloadData()
+        self.catalogProductsView.resultLabel.text = "No products"
+        self.catalogProductsView.resultView.isHidden = false
+        self.productsResults = []
+        self.catalogProductsView.tableView.reloadData()
     }
     
     func hideResultsView() {
-        self.basketView.resultView.isHidden = true
+        self.catalogProductsView.resultView.isHidden = true
     }
 }
+

@@ -10,10 +10,10 @@ import UIKit
 
 final class BasketModuleBuilder {
     
-    static func build(basketDataRequestFactory: BasketDataRequestFactory) -> BasketViewController {
-        let presenter = BasketPresenter(basketDataRequestFactory: basketDataRequestFactory)
+    static func build(requestFactory: RequestFactory) -> BasketViewController {
+        let presenter = BasketPresenter(requestFactory: requestFactory)
         let viewController = BasketViewController(presenter: presenter)
-        presenter.viewInput = viewController
+        presenter.viewInput = viewController 
         return viewController
     }
 }

@@ -13,7 +13,7 @@ protocol PersonalDataViewOutput: class {
     func openAuth()
 }
 
-class PersonalDataPresenter {
+class PersonalDataPresenter: CatchError {
     // MARK: Properties
     weak var viewInput: (PersonalDataViewInput & UIViewController)?
     
@@ -91,28 +91,15 @@ class PersonalDataPresenter {
 
 extension PersonalDataPresenter: PersonalDataViewOutput {
     func viewDidChangePersonalData(dataUser: DataUser) {
-        do {
+        guard let controller = viewInput as? (ShowAlert & UIViewController) else {
+            return
+        }
+        
+        self.catchErrorInsertingDataUser(forViewController: controller) {
             guard (try self.checkDataUser(dataUser: dataUser)) == true else {
                 return
             }
             self.requestChangePersonalData(dataUser: dataUser)
-        } catch InsertingDataUserError.invalidUsername {
-            viewInput?.showInsertingDataUserError(error: InsertingDataUserError.invalidUsername, withMessage: InsertingDataUserError.invalidUsername.rawValue)
-        }
-        catch InsertingDataUserError.invalidPassword {
-            viewInput?.showInsertingDataUserError(error: InsertingDataUserError.invalidPassword, withMessage: InsertingDataUserError.invalidPassword.rawValue)
-        }
-        catch InsertingDataUserError.invalidEmail {
-            viewInput?.showInsertingDataUserError(error: InsertingDataUserError.invalidEmail, withMessage: InsertingDataUserError.invalidEmail.rawValue)
-        }
-        catch InsertingDataUserError.invalidCreditCard {
-            viewInput?.showInsertingDataUserError(error: InsertingDataUserError.invalidCreditCard, withMessage: InsertingDataUserError.invalidCreditCard.rawValue)
-        }
-        catch InsertingDataUserError.invalidBio {
-            viewInput?.showInsertingDataUserError(error: InsertingDataUserError.invalidBio, withMessage: InsertingDataUserError.invalidBio.rawValue)
-        }
-        catch {
-            viewInput?.showInsertingDataUserError(error: Error.self as! Error, withMessage: "Неизвестная ошибка")
         }
     }
     

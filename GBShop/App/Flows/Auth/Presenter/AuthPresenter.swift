@@ -9,14 +9,12 @@ import Foundation
 import UIKit
 
 protocol AuthViewOutput: class {
-    
     func viewDidLogin(userName: String?, password: String?)
     func viewDidLogout(idUser: Int)
-    func viewDidRegistration() 
-    
+    func viewDidRegistration()
 }
 
-final class AuthPresenter {
+final class AuthPresenter: CatchError {
     
     // MARK: Properties
     weak var viewInput: (UIViewController & AuthViewInput)?
@@ -26,14 +24,12 @@ final class AuthPresenter {
     private var authRequestFactory: AuthRequestFactory
     
     // MARK: Init
-    
     internal init(requestFactory: RequestFactory) {
         self.requestFactory = requestFactory
         self.authRequestFactory = requestFactory.makeAuthRequestFactory()
     }
     
     // MARK: Request
-    
     private func requestLogin (userName: String?, password: String?) {
         guard let userName = userName,
               let password = password else {
@@ -87,7 +83,7 @@ final class AuthPresenter {
     }
     
     // MARK: Private functions
-    private func checkUserPass (username: String?, password: String?) throws -> Bool {
+    private func checkUsernameAndPassword (username: String?, password: String?) throws -> Bool {
         guard let countUsername = username?.count,
               countUsername > 0 else {
             throw InsertingDataUserError.invalidUsername
@@ -98,23 +94,32 @@ final class AuthPresenter {
         }
         return true
     }
+    
+    private func catchErrorInsertingUsernamePassword ( doSomething: () throws -> Void) {
+        guard let viewInput = viewInput as? (UIViewController & ShowAlert & AuthViewInput) else {
+            return
+        }
+        do {
+           try doSomething()
+        } catch InsertingDataUserError.invalidUsername {
+            viewInput.showNotificationData(message: InsertingDataUserError.invalidUsername.rawValue)
+        }
+        catch InsertingDataUserError.invalidPassword {
+            viewInput.showNotificationData(message: InsertingDataUserError.invalidPassword.rawValue)
+        }
+        catch {
+            self.showError(forViewController: viewInput, withMessage: "A unacceptable error. You should contact to administrator")
+        }
+    }
 }
 
 extension AuthPresenter: AuthViewOutput {
     func viewDidLogin(userName: String?, password: String?) {
-        do {
-            guard (try self.checkUserPass(username: userName, password: password)) == true else {
+        self.catchErrorInsertingUsernamePassword {
+            guard (try self.checkUsernameAndPassword(username: userName, password: password)) == true else {
                 return
             }
             self.requestLogin(userName: userName, password: password)
-        } catch InsertingDataUserError.invalidUsername {
-            viewInput?.showNotificationData(message: "You entered a invalid username")
-        }
-        catch InsertingDataUserError.invalidPassword {
-            viewInput?.showNotificationData(message: "You entered a invalid password")
-        }
-        catch {
-            viewInput?.showInsertingDataUserError(error: Error.self as! Error, withMessage: "Неизвестная ошибка")
         }
     }
     

@@ -8,12 +8,12 @@
 import UIKit
 
 protocol PersonalDataViewInput: class {
-    func showInsertingDataUserError (error: Error, withMessage message: String)
     func showSuccessChangingDataUser ()
     func showFailedChangingDataUser ()
 }
 
-class PersonalDataViewController: UIViewController {
+class PersonalDataViewController: UIViewController, ShowAlert {
+    
     // MARK: Properties
     var gender: String {
         get {
@@ -81,25 +81,11 @@ class PersonalDataViewController: UIViewController {
 }
 
 extension PersonalDataViewController: PersonalDataViewInput {
-    
-    func showInsertingDataUserError (error: Error,withMessage message: String) {
-        let alert = UIAlertController(title: "Error", message: "\(message) ", preferredStyle: .alert)
-        let actionOk = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-        alert.addAction(actionOk)
-        self.present(alert, animated: true, completion: nil)
-    }
-    
     func  showSuccessChangingDataUser () {
-        let alert = UIAlertController(title: "Notification", message: "Personal data were changed successful", preferredStyle: .alert)
-        let actionOk = UIAlertAction(title: "OK", style: .cancel,handler: nil)
-        alert.addAction(actionOk)
-        self.present(alert, animated: true, completion: nil)
+        self.showAlert(forViewController: self, withTitleOfAlert: "Notification", andMessage: "Personal data were changed successful", withTitleOfAction: "OK", handlerOfAction: nil)
     }
     
     func  showFailedChangingDataUser () {
-        let alert = UIAlertController(title: "Notification", message: "Personal data were changed failed", preferredStyle: .alert)
-        let actionOk = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-        alert.addAction(actionOk)
-        self.present(alert, animated: true, completion: nil)
+        self.showAlert(forViewController: self, withTitleOfAlert: "Notification", andMessage: "Personal data were changed failed", withTitleOfAction: "OK", handlerOfAction: nil)
     }
 }

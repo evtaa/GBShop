@@ -1,13 +1,14 @@
 //
-//  BasketView.swift
+//  CatalogProductsView.swift
 //  GBShop
 //
-//  Created by Alexandr Evtodiy on 26.04.2021.
+//  Created by Alexandr Evtodiy on 04.05.2021.
 //
 
 import UIKit
 
-class BasketView: UIView {
+class CatalogProductsView: UIView {
+  
     //MARK: - Subviews
     let tableView = UITableView ()
     let newRefreshControl = UIRefreshControl()
@@ -29,7 +30,7 @@ class BasketView: UIView {
         self.backgroundColor = .black
         self.configureRefreshControl()
         self.configureTableView()
-        self.configureEmptyResultView()
+        self.addEmptyResultView()
         self.setupConstraints()
     }
     
@@ -53,7 +54,7 @@ class BasketView: UIView {
         self.addSubview(self.tableView)
     }
     
-    private func configureEmptyResultView() {
+    private func addEmptyResultView() {
         self.resultView.translatesAutoresizingMaskIntoConstraints = false
         self.resultView.backgroundColor = .black
         self.resultView.isHidden = true
@@ -66,7 +67,7 @@ class BasketView: UIView {
         self.addSubview(self.resultView)
         self.resultView.addSubview(self.resultLabel)
     }
-   
+    
     private func setupConstraints () {
         let safeArea = self.safeAreaLayoutGuide
         NSLayoutConstraint.activate([

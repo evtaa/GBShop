@@ -22,12 +22,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let window = UIWindow(windowScene: windowScene)
         let requestFactory = RequestFactory()
-        //let basketData = requestFactory.makeBasketDataRequestFactory()
-        //let authRequestFactory = requestFactory.makeAuthRequestFactory()
-        //let basketViewController = BasketModuleBuilder.build(basketDataRequestFactory: basketData)
-        //let authViewController = AuthModuleBuilder.build(authRequestFactory: authRequestFactory)
-        let authViewController = AuthModuleBuilder.build(requestFactory: requestFactory)
-        let navigationController = UINavigationController(rootViewController: authViewController)
+        
+        let catalogProductsViewController = CatalogProductsModuleBuilder.build(requestFactory: requestFactory)
+        let navigationController = UINavigationController(rootViewController: catalogProductsViewController)
+        
+//        let basketViewController = BasketModuleBuilder.build(requestFactory: requestFactory)
+//        let navigationController = UINavigationController(rootViewController: basketViewController)
+        
+//        let authViewController = AuthModuleBuilder.build(requestFactory: requestFactory)
+//        let navigationController = UINavigationController(rootViewController: authViewController)
         window.rootViewController = navigationController 
         window.makeKeyAndVisible()
         self.window = window

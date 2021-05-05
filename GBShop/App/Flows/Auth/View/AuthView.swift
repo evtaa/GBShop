@@ -10,7 +10,7 @@ import UIKit
 class AuthView: UIView {
 
     //MARK: - Subviews
-    let noCorrectDataLabel = UILabel()
+    let infoDataLabel = UILabel()
     let usernameTextField = UITextField()
     let passwordTextField = UITextField()
     let loginButton = UIButton()
@@ -43,14 +43,14 @@ class AuthView: UIView {
     }
     
     private func configureNoCorrectDataLabel () {
-        self.noCorrectDataLabel.translatesAutoresizingMaskIntoConstraints = false
-        self.noCorrectDataLabel.isHidden = true
-        self.noCorrectDataLabel.numberOfLines = 2
-        self.noCorrectDataLabel.textColor = .white
-        self.noCorrectDataLabel.backgroundColor = .black
-        self.noCorrectDataLabel.textAlignment = .left
-        self.noCorrectDataLabel.font = UIFont.boldSystemFont(ofSize: 14.0)
-        self.addSubview(self.noCorrectDataLabel)
+        self.infoDataLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.infoDataLabel.isHidden = true
+        self.infoDataLabel.numberOfLines = 2
+        self.infoDataLabel.textColor = .white
+        self.infoDataLabel.backgroundColor = .black
+        self.infoDataLabel.textAlignment = .left
+        self.infoDataLabel.font = UIFont.boldSystemFont(ofSize: 14.0)
+        self.addSubview(self.infoDataLabel)
     }
     
     private func configureUsernameTextField () {
@@ -104,12 +104,12 @@ class AuthView: UIView {
         
         NSLayoutConstraint.activate([
             
-            self.noCorrectDataLabel.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: 60.0),
-            self.noCorrectDataLabel.widthAnchor.constraint(equalToConstant: widthLabel),
-            self.noCorrectDataLabel.heightAnchor.constraint(equalToConstant: 60),
-            self.noCorrectDataLabel.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: UIScreen.main.bounds.width/2 - widthLabel/2),
+            self.infoDataLabel.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: 60.0),
+            self.infoDataLabel.widthAnchor.constraint(equalToConstant: widthLabel),
+            self.infoDataLabel.heightAnchor.constraint(equalToConstant: 60),
+            self.infoDataLabel.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: UIScreen.main.bounds.width/2 - widthLabel/2),
             
-            self.usernameTextField.topAnchor.constraint(equalTo: self.noCorrectDataLabel.bottomAnchor, constant: 10.0),
+            self.usernameTextField.topAnchor.constraint(equalTo: self.infoDataLabel.bottomAnchor, constant: 10.0),
             self.usernameTextField.widthAnchor.constraint(equalToConstant: widthTextField),
             self.usernameTextField.heightAnchor.constraint(equalToConstant: 20),
             self.usernameTextField.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: UIScreen.main.bounds.width/2 - widthTextField/2),
