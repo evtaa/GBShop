@@ -10,7 +10,7 @@ import UIKit
 
 protocol PersonalDataViewOutput: class {
     func viewDidChangePersonalData(dataUser: DataUser)
-    func openAuth()
+    func logout(idUser: Int)
 }
 
 class PersonalDataPresenter: CatchError {
@@ -20,11 +20,14 @@ class PersonalDataPresenter: CatchError {
     // MARK: Private properties
     private var requestFactory: RequestFactory
     private var userDataRequestFactory: UserDataRequestFactory
+    private var authRequestFactory: AuthRequestFactory
     
     // MARK: Init
     init(requestFactory: RequestFactory) {
         self.requestFactory = requestFactory
         self.userDataRequestFactory = requestFactory.makeUserDataRequestFactory()
+        self.authRequestFactory = requestFactory.makeAuthRequestFactory()
+        
     }
     
     // MARK: Request
@@ -58,9 +61,34 @@ class PersonalDataPresenter: CatchError {
         }
     }
     
+    private func requestLogout(idUser: Int) {
+        authRequestFactory.logout(idUser: idUser) { [weak self] (response) in
+            guard let self = self else { return }
+            switch response.result {
+            case .success(let logout):
+                debugPrint (logout)
+                DispatchQueue.main.async {
+                    if (logout.result == 1) {
+                        self.backToAuth()
+                    }
+                }
+            case .failure(let error):
+                debugPrint (error.localizedDescription)
+            }
+        }
+    }
+    
     // MARK: Navigation
     private func backToAuth () {
-        self.viewInput?.navigationController?.popViewController(animated: true)
+        let authViewController = AuthModuleBuilder.build(requestFactory: self.requestFactory)
+        authViewController.showLogout()
+        let navigationAuthViewController = UINavigationController(rootViewController: authViewController)
+        //navigationAuthViewController.modalPresentationStyle = .fullScreen
+        authViewController.configureNavigationBar()
+        let keyWindow = UIApplication.shared.windows.filter {$0.isKeyWindow == true}.last
+        keyWindow?.rootViewController = navigationAuthViewController
+       // self.viewInput?.tabBarController?.present(navigationAuthViewController, animated: true, completion: nil)
+    
     }
     
     // MARK: Private functions
@@ -103,8 +131,8 @@ extension PersonalDataPresenter: PersonalDataViewOutput {
         }
     }
     
-    func openAuth() {
-        self.backToAuth()
+    func logout(idUser: Int) {
+        self.requestLogout(idUser: idUser)
     }
 }
 

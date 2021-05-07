@@ -24,6 +24,7 @@ class PersonalDataView: UIView {
     var creditCardTextField = UITextField()
     var bioLabel = UILabel()
     var bioTextField = UITextField()
+    var logoutButton = UIButton()
     
     // MARK: Init
     override init(frame: CGRect) {
@@ -52,6 +53,7 @@ class PersonalDataView: UIView {
         self.configureCreditCardTextField ()
         self.configureBioLabel ()
         self.configureBioTextField ()
+        self.configureLogoutButton ()
         self.setupConstraints()
     }
     
@@ -125,6 +127,18 @@ class PersonalDataView: UIView {
         textField.font = UIFont.systemFont(ofSize: 18.0)
         self.scrollView.addSubview(textField)
     }
+    
+    private func configureLogoutButton () {
+        self.logoutButton.translatesAutoresizingMaskIntoConstraints = false
+        self.logoutButton.setTitle("Logout", for: .normal)
+        self.logoutButton.setTitleColor(.white, for: .normal)
+        self.logoutButton.setTitleShadowColor(.gray, for: .normal)
+        self.logoutButton.titleLabel?.textAlignment = .right
+        self.logoutButton.titleLabel?.font = UIFont.systemFont(ofSize: 18)
+        self.logoutButton.backgroundColor = .black
+        self.scrollView.addSubview(self.logoutButton)
+    }
+    
     
     private func setupConstraints () {
         let scrollArea = self.scrollView.contentLayoutGuide
@@ -208,7 +222,12 @@ class PersonalDataView: UIView {
             self.bioTextField.topAnchor.constraint(equalTo: bioLabel.bottomAnchor, constant: topIndentBetweenUI),
             self.bioTextField.leadingAnchor.constraint(equalTo: scrollArea.leadingAnchor, constant: leadingIndentUIOfAccountProperties),
             self.bioTextField.trailingAnchor.constraint(equalTo: scrollArea.trailingAnchor, constant: trailingIndentUIOfAccountProperties),
-            self.bioTextField.heightAnchor.constraint(equalToConstant: heightUIOfAccountProperties)
+            self.bioTextField.heightAnchor.constraint(equalToConstant: heightUIOfAccountProperties),
+            
+            self.logoutButton.topAnchor.constraint(equalTo: bioTextField.bottomAnchor, constant: 4*topIndentBetweenUI),
+            self.logoutButton.leadingAnchor.constraint(equalTo: scrollArea.leadingAnchor, constant: 3*UIScreen.main.bounds.width/4),
+            self.logoutButton.trailingAnchor.constraint(equalTo: scrollArea.trailingAnchor, constant: trailingIndentUIOfAccountProperties),
+            self.logoutButton.heightAnchor.constraint(equalToConstant: heightUIOfAccountProperties)
         ])
     }
 }

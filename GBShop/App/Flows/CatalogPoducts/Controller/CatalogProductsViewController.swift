@@ -90,7 +90,7 @@ class CatalogProductsViewController: UIViewController, UITableViewDelegate, UITa
     }
     
     private func configureNavigationBar () {
-        self.title = "Catalog of products"
+        self.title = "Search"
         self.navigationController?.navigationBar.backgroundColor = .black
         self.navigationController?.navigationBar.barTintColor = .black
         self.navigationController?.navigationBar.tintColor = .white

@@ -70,6 +70,7 @@ class AuthView: UIView {
         self.passwordTextField.textAlignment = .left
         self.passwordTextField.attributedPlaceholder = NSAttributedString(string: "password", attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray])
         self.passwordTextField.font = UIFont.systemFont(ofSize: 18.0)
+        self.passwordTextField.isSecureTextEntry = true
         self.addSubview(self.passwordTextField)
     }
     

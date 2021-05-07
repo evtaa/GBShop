@@ -43,7 +43,7 @@ final class AuthPresenter: CatchError {
                 DispatchQueue.main.async {
                     if (login.result == 1) {
                         self.viewInput?.hideNotificationData()
-                        self.openPersonalData()
+                        self.openTabBar()
                     } else {
                         self.viewInput?.showNotificationData(message: "The request was failed")
                     }
@@ -77,9 +77,14 @@ final class AuthPresenter: CatchError {
         self.viewInput?.navigationController?.pushViewController(registrationViewController, animated: true)
     }
     
-    private func openPersonalData () {
-        let personalDataViewController = PersonalDataBuilder.build(requestFactory: requestFactory)
-        self.viewInput?.navigationController?.pushViewController(personalDataViewController, animated: true)
+    private func openTabBar () {
+        let shopTabBarViewController = ShopTabBarModuleBuilder.build(requestFactory: requestFactory)
+        //shopTabBarViewController.modalPresentationStyle = .fullScreen
+        let keyWindow = UIApplication.shared.windows.filter {$0.isKeyWindow == true}.last
+        keyWindow?.rootViewController = shopTabBarViewController
+        //self.viewInput?.navigationController?.present(shopTabBarViewController, animated: true, completion: nil)
+        
+    
     }
     
     // MARK: Private functions

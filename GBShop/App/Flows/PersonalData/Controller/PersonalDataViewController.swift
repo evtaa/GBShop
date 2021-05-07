@@ -52,16 +52,25 @@ class PersonalDataViewController: UIViewController, ShowAlert {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.configure()
+        self.configureUI()
     }
     
     // MARK: Configure
-    private func configure() {
+    private func configureUI() {
+        self.configureLogoutButton()
         self.configureNavigationBar()
+        
+    }
+    
+    private func configureLogoutButton() {
+        self.personalDataView.logoutButton.addTarget(self, action: #selector(logoutTouchUpInsideButton), for: .touchUpInside)
     }
     
     private func configureNavigationBar() {
-        self.title = "Personal data"
+        self.title = "Profile"
+        self.navigationController?.navigationBar.backgroundColor = .black
+        self.navigationController?.navigationBar.barTintColor = .black
+        self.navigationController?.navigationBar.tintColor = .white
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
         let barButtonItem = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(changePersonalData))
         self.navigationItem.setRightBarButton(barButtonItem, animated: true)
@@ -77,6 +86,10 @@ class PersonalDataViewController: UIViewController, ShowAlert {
                                 creditCard: self.personalDataView.creditCardTextField.text,
                                 bio: self.personalDataView.bioTextField.text)
         self.presenter.viewDidChangePersonalData(dataUser: dataUser)
+    }
+    
+    @objc private func logoutTouchUpInsideButton () {
+        self.presenter.logout(idUser: 123)
     }
 }
 

@@ -10,7 +10,8 @@ import UIKit
 
 protocol RegistrationViewOutput: class {
     func viewDidRegistration(dataUser: DataUser)
-    func openAuth() 
+    func openAuth()
+    func openTabBar()
 }
 
 class RegistrationPresenter: CatchError {
@@ -50,7 +51,7 @@ class RegistrationPresenter: CatchError {
                 debugPrint(registration)
                 DispatchQueue.main.async {
                     self.viewInput?.showSuccessRegistration()
-                } 
+                }
             case .failure(let error):
                 debugPrint(error.localizedDescription)
                 self.viewInput?.showFailedRegistration()
@@ -61,6 +62,13 @@ class RegistrationPresenter: CatchError {
     // MARK: Navigation
     private func backToAuth () {
         self.viewInput?.navigationController?.popViewController(animated: true)
+    }
+    
+    private func goToTabBar () {
+        let shopTabBarViewController = ShopTabBarModuleBuilder.build(requestFactory: requestFactory)
+        shopTabBarViewController.modalPresentationStyle = .fullScreen
+        self.viewInput?.dismiss(animated: true, completion: nil)
+        self.viewInput?.present(shopTabBarViewController, animated: true, completion: nil)
     }
     
     // MARK: Private functions
@@ -104,6 +112,10 @@ extension RegistrationPresenter: RegistrationViewOutput {
     
     func openAuth() {
         self.backToAuth()
+    }
+    
+    func openTabBar() {
+        self.goToTabBar()
     }
 }
 

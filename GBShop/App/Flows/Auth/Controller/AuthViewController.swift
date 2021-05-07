@@ -48,6 +48,7 @@ class AuthViewController: UIViewController, ShowAlert {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.configure()
+       // self.navigationController?.presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
     //MARK: Configure
@@ -57,7 +58,7 @@ class AuthViewController: UIViewController, ShowAlert {
         self.configureActions()
     }
     
-    private func configureNavigationBar () {
+    func configureNavigationBar () {
         self.navigationController?.navigationBar.backgroundColor = .black
         self.navigationController?.navigationBar.tintColor = .white
         self.navigationController?.navigationBar.barTintColor = .black

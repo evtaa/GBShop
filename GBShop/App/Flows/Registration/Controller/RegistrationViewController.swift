@@ -102,7 +102,7 @@ extension RegistrationViewController: RegistrationViewInput {
     
     func  showSuccessRegistration () {
         self.showAlert(forViewController: self, withTitleOfAlert: "Notification", andMessage: "Registration was success", withTitleOfAction: "OK") { _ in
-            self.presenter.openAuth()
+            self.presenter.openTabBar()
         }
     }
     
