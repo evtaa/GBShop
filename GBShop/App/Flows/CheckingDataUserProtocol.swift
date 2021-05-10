@@ -8,11 +8,11 @@
 import Foundation
 import UIKit
 
-protocol CatchError {
+protocol CheckingDataUser {
     
 }
 
-extension CatchError {
+extension CheckingDataUser {
     func catchErrorInsertingDataUser (forViewController controller: (UIViewController & ShowAlert), doSomething: () throws -> Void) {
         do {
            try doSomething()
@@ -38,5 +38,29 @@ extension CatchError {
     
     func showError (forViewController controller: (ShowAlert & UIViewController), withMessage message: String) {
         controller.showAlert(forViewController: controller, withTitleOfAlert: "Error", andMessage: message, withTitleOfAction: "OK", handlerOfAction: nil)
+    }
+    
+    func checkDataUser (dataUser: DataUser) throws -> Bool {
+        guard let countUsername = dataUser.username?.count,
+              countUsername > 0 else {
+            throw InsertingDataUserError.invalidUsername
+        }
+        guard let countPassword = dataUser.password?.count,
+              countPassword > 0 else {
+            throw InsertingDataUserError.invalidPassword
+        }
+        guard let isEmail = dataUser.email?.isValidEmail,
+              isEmail == true else {
+            throw InsertingDataUserError.invalidEmail
+        }
+        guard let countCreditCard = dataUser.creditCard?.count,
+              countCreditCard > 0 else {
+            throw InsertingDataUserError.invalidCreditCard
+        }
+        guard let countBio = dataUser.bio?.count,
+              countBio > 0 else {
+            throw InsertingDataUserError.invalidBio
+        }
+        return true
     }
 }

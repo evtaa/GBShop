@@ -13,7 +13,7 @@ protocol PersonalDataViewOutput: class {
     func logout(idUser: Int)
 }
 
-class PersonalDataPresenter: CatchError {
+class PersonalDataPresenter: CheckingDataUser {
     // MARK: Properties
     weak var viewInput: (PersonalDataViewInput & UIViewController)?
     
@@ -82,38 +82,11 @@ class PersonalDataPresenter: CatchError {
     private func backToAuth () {
         let authViewController = AuthModuleBuilder.build(requestFactory: self.requestFactory)
         authViewController.showLogout()
-        let navigationAuthViewController = UINavigationController(rootViewController: authViewController)
+        let navigationAuthViewController = NavigationControllerDarkStyle(rootViewController: authViewController)
         //navigationAuthViewController.modalPresentationStyle = .fullScreen
-        authViewController.configureNavigationBar()
         let keyWindow = UIApplication.shared.windows.filter {$0.isKeyWindow == true}.last
         keyWindow?.rootViewController = navigationAuthViewController
        // self.viewInput?.tabBarController?.present(navigationAuthViewController, animated: true, completion: nil)
-    
-    }
-    
-    // MARK: Private functions
-    private func checkDataUser (dataUser: DataUser) throws -> Bool {
-        guard let countUsername = dataUser.username?.count,
-              countUsername > 0 else {
-            throw InsertingDataUserError.invalidUsername
-        }
-        guard let countPassword = dataUser.password?.count,
-              countPassword > 0 else {
-            throw InsertingDataUserError.invalidPassword
-        }
-        guard let isEmail = dataUser.email?.isValidEmail,
-              isEmail == true else {
-            throw InsertingDataUserError.invalidEmail
-        }
-        guard let countCreditCard = dataUser.creditCard?.count,
-              countCreditCard > 0 else {
-            throw InsertingDataUserError.invalidCreditCard
-        }
-        guard let countBio = dataUser.bio?.count,
-              countBio > 0 else {
-            throw InsertingDataUserError.invalidBio
-        }
-        return true
     }
 }
 

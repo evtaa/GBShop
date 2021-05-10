@@ -11,10 +11,11 @@ import UIKit
 protocol CatalogProductsViewOutput: class {
     func viewDidCatalogProducts(pageNumber: Int, idCategory: Int)
     func viewDidAddToBasket(idProduct: Int, quantity: Int)
+    func viewDidDetailProductController (product: Product)
 }
 
 
-final class CatalogProductsPresenter: CatchError {
+final class CatalogProductsPresenter: ShowAlert {
     //MARK: Properties
     weak var viewInput: (CatalogProductsViewInput & UIViewController & ShowAlert)?
 
@@ -32,11 +33,9 @@ final class CatalogProductsPresenter: CatchError {
     }
     
     //MARK: Requests
-    
     private func requestCatalogProducts(pageNumber: Int, idCategory: Int) {
         catalogDataRequestFactory.downloadCatalogData(pageNumber: pageNumber, idCategory: idCategory) { [weak self] (response) in
             guard let self = self else { return }
-                self.viewInput?.throbberStop()
             switch response.result {
             case .success(let downloadCatalogData):
                 debugPrint (downloadCatalogData)
@@ -47,7 +46,7 @@ final class CatalogProductsPresenter: CatchError {
                     }
                     self.viewInput?.hideResultsView()
                     self.viewInput?.productsResults = downloadCatalogData
-                    self.viewInput?.catalogProductsView.newRefreshControl.endRefreshing()
+                    self.viewInput?.catalogProductsView.refreshControl.endRefreshing()
                 }
             case .failure(let error):
                 guard let viewInput = self.viewInput  else {
@@ -64,7 +63,6 @@ final class CatalogProductsPresenter: CatchError {
     private func requestAddToBasket(idProduct: Int, quantity: Int) {
         basketDataRequestFactory.addToBasket(idProduct: idProduct, quantity: quantity) { [weak self] (response) in
             guard let self = self else { return }
-            self.viewInput?.throbberStop()
             switch response.result {
             case .success(let addToBasket):
                 debugPrint (addToBasket)
@@ -85,17 +83,26 @@ final class CatalogProductsPresenter: CatchError {
             }
         }
     }
+    
+    //MARK: Navigation
+    private func pushDetailProductController(product: Product) {
+        let controller = DetailProductModuleBuilder.build(requestFactory: requestFactory)
+        controller.product = product
+        self.viewInput?.navigationController?.pushViewController(controller, animated: true)
+    }
 }
 
 // MARK: - SearchViewOutput
 extension CatalogProductsPresenter: CatalogProductsViewOutput {
+    func viewDidDetailProductController(product: Product) {
+        self.pushDetailProductController(product: product)
+    }
+    
     func viewDidCatalogProducts(pageNumber: Int, idCategory: Int) {
-        self.viewInput?.throbberStart()
         self.requestCatalogProducts(pageNumber: pageNumber, idCategory: idCategory)
     }
     
     func viewDidAddToBasket(idProduct: Int, quantity: Int) {
-        self.viewInput?.throbberStart()
         self.requestAddToBasket(idProduct: idProduct, quantity: quantity)
     }
 }

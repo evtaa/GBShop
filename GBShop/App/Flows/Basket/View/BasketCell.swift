@@ -15,35 +15,29 @@ class BasketCell: UITableViewCell {
     private var content: ContentCellModel?
     
     //MARK: - SubView
-    private(set) lazy var productNameLabel: UILabel = {
-        let label = UILabel ()
+    private(set) lazy var productNameLabel: LabelDarkStyle = {
+        let label = LabelDarkStyle ()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .white
         label.numberOfLines = 0
-        label.font = UIFont.systemFont(ofSize: 16)
         return label
     } ()
     
-    private(set) lazy var quantityLabel: UILabel = {
-        let label = UILabel ()
+    private(set) lazy var quantityLabel: LabelDarkStyle = {
+        let label = LabelDarkStyle ()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .white
         label.numberOfLines = 0
-        label.font = UIFont.systemFont(ofSize: 16)
         return label
     } ()
     
-    private(set) lazy var priceLabel: UILabel = {
-        let label = UILabel ()
+    private(set) lazy var priceLabel: LabelDarkStyle = {
+        let label = LabelDarkStyle ()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .white
         label.numberOfLines = 0
-        label.font = UIFont.systemFont(ofSize: 16)
         return label
     } ()
     
-    private(set) lazy var idProductLabel: UILabel = {
-        let label = UILabel ()
+    private(set) lazy var idProductLabel: LabelDarkStyle = {
+        let label = LabelDarkStyle ()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .gray
         label.numberOfLines = 0
@@ -51,14 +45,11 @@ class BasketCell: UITableViewCell {
         return label
     } ()
     
-    private(set) lazy var removeProductButton: UIButton = {
-        let button = UIButton()
+    private(set) lazy var removeProductButton: ButtonDarkStyle = {
+        let button = ButtonDarkStyle()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .black
         button.setTitle("Remove from a basket", for: .normal)
-        button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 14.0)
-        button.titleLabel?.textAlignment = .right
         button.titleLabel?.numberOfLines = 0
         button.addTarget(self, action: #selector(removeProductTouchUpInsideButton), for: .touchUpInside)
         return button
@@ -125,23 +116,21 @@ class BasketCell: UITableViewCell {
     }
     
     private func addQuantityLabel () {
-        let marginGuide = self.contentView.layoutMarginsGuide
         self.contentView.addSubview(self.quantityLabel)
         NSLayoutConstraint.activate([
             self.quantityLabel.topAnchor.constraint(equalTo: self.productNameLabel.bottomAnchor, constant: 10),
-            self.quantityLabel.leadingAnchor.constraint(equalTo: marginGuide.leadingAnchor, constant: 5),
-            self.quantityLabel.trailingAnchor.constraint(equalTo: marginGuide.trailingAnchor, constant: -5)
+            self.quantityLabel.leadingAnchor.constraint(equalTo: productNameLabel.leadingAnchor),
+            self.quantityLabel.trailingAnchor.constraint(equalTo: productNameLabel.trailingAnchor)
         ])
       
     }
     
     private func addPriceLabel () {
-        let marginGuide = self.contentView.layoutMarginsGuide
         self.contentView.addSubview(self.priceLabel)
         NSLayoutConstraint.activate([
             self.priceLabel.topAnchor.constraint(equalTo: self.quantityLabel.bottomAnchor, constant: 10),
-            self.priceLabel.leadingAnchor.constraint(equalTo: marginGuide.leadingAnchor, constant: 5),
-            self.priceLabel.trailingAnchor.constraint(equalTo: marginGuide.trailingAnchor, constant: -5)
+            self.priceLabel.leadingAnchor.constraint(equalTo: productNameLabel.leadingAnchor),
+            self.priceLabel.trailingAnchor.constraint(equalTo: productNameLabel.trailingAnchor)
         ])
     }
     
@@ -150,20 +139,19 @@ class BasketCell: UITableViewCell {
         self.contentView.addSubview(idProductLabel)
         NSLayoutConstraint.activate([
             self.idProductLabel.topAnchor.constraint(equalTo: self.priceLabel.bottomAnchor, constant: 10),
-            self.idProductLabel.leadingAnchor.constraint(equalTo: marginGuide.leadingAnchor, constant: 5),
+            self.idProductLabel.leadingAnchor.constraint(equalTo: productNameLabel.leadingAnchor),
             self.idProductLabel.widthAnchor.constraint(equalToConstant: 2 * UIScreen.main.bounds.width/5),
             self.idProductLabel.bottomAnchor.constraint(equalTo: marginGuide.bottomAnchor, constant: -5),
         ])
     }
     
     private func addRemoveProductButton () {
-        let marginGuide = self.contentView.layoutMarginsGuide
         self.contentView.addSubview(removeProductButton)
         NSLayoutConstraint.activate([
-            self.removeProductButton.topAnchor.constraint(equalTo: self.priceLabel.bottomAnchor, constant: 10),
+            self.removeProductButton.topAnchor.constraint(equalTo: self.idProductLabel.topAnchor),
             self.removeProductButton.leadingAnchor.constraint(equalTo: idProductLabel.trailingAnchor, constant: 5),
-            self.removeProductButton.trailingAnchor.constraint(equalTo: marginGuide.trailingAnchor, constant: 0),
-            self.removeProductButton.bottomAnchor.constraint(equalTo: marginGuide.bottomAnchor, constant: -5),
+            self.removeProductButton.trailingAnchor.constraint(equalTo: productNameLabel.trailingAnchor),
+            self.removeProductButton.bottomAnchor.constraint(equalTo: idProductLabel.bottomAnchor),
         ])
     }
 }

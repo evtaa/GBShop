@@ -16,7 +16,7 @@ protocol BasketViewOutput: class {
 }
 
 
-final class BasketPresenter: CatchError {
+final class BasketPresenter: CheckingDataUser {
     //MARK: Properties
     weak var viewInput: (BasketViewInput & UIViewController & ShowAlert)?
 
@@ -45,7 +45,7 @@ final class BasketPresenter: CatchError {
                     }
                     self.viewInput?.hideResultsView()
                     self.viewInput?.contentsResults = getBasket.contents
-                    self.viewInput?.basketView.newRefreshControl.endRefreshing()
+                    self.viewInput?.basketView.refreshControl.endRefreshing()
                 }
             case .failure(let error):
                 guard let viewInput = self.viewInput  else {

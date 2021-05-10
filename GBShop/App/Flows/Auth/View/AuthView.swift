@@ -10,11 +10,12 @@ import UIKit
 class AuthView: UIView {
 
     //MARK: - Subviews
-    let infoDataLabel = UILabel()
-    let usernameTextField = UITextField()
-    let passwordTextField = UITextField()
-    let loginButton = UIButton()
-    let createAccountButton = UIButton()
+    let infoDataLabel = LabelDarkStyle()
+    let usernameTextField = TextFieldDarkStyle()
+    let passwordTextField = TextFieldDarkStyle()
+    let loginButton = ButtonDarkStyle()
+    let createAccountButton = ButtonDarkStyle()
+    let scrollView = UIScrollView ()
     
     
     
@@ -37,7 +38,6 @@ class AuthView: UIView {
         self.configureUsernameTextField()
         self.configurePasswordTextField()
         self.configureLoginButton()
-//        self.configureLogoutButton()
         self.configureCreateAccountButton()
         self.setupConstraints()
     }
@@ -46,30 +46,19 @@ class AuthView: UIView {
         self.infoDataLabel.translatesAutoresizingMaskIntoConstraints = false
         self.infoDataLabel.isHidden = true
         self.infoDataLabel.numberOfLines = 2
-        self.infoDataLabel.textColor = .white
-        self.infoDataLabel.backgroundColor = .black
-        self.infoDataLabel.textAlignment = .left
         self.infoDataLabel.font = UIFont.boldSystemFont(ofSize: 14.0)
         self.addSubview(self.infoDataLabel)
     }
     
     private func configureUsernameTextField () {
         self.usernameTextField.translatesAutoresizingMaskIntoConstraints = false
-        self.usernameTextField.textColor = .white
-        self.usernameTextField.backgroundColor = .black
-        self.usernameTextField.textAlignment = .left
-        self.usernameTextField.attributedPlaceholder = NSAttributedString(string: "username", attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray])
-        self.usernameTextField.font = UIFont.systemFont(ofSize: 18.0)
+        self.usernameTextField.placeholder = "username"
         self.addSubview(self.usernameTextField)
     }
     
     private func configurePasswordTextField () {
         self.passwordTextField.translatesAutoresizingMaskIntoConstraints = false
-        self.passwordTextField.textColor = .white
-        self.passwordTextField.backgroundColor = .black
-        self.passwordTextField.textAlignment = .left
-        self.passwordTextField.attributedPlaceholder = NSAttributedString(string: "password", attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray])
-        self.passwordTextField.font = UIFont.systemFont(ofSize: 18.0)
+        self.passwordTextField.placeholder = "password"
         self.passwordTextField.isSecureTextEntry = true
         self.addSubview(self.passwordTextField)
     }
@@ -77,22 +66,12 @@ class AuthView: UIView {
     private func configureLoginButton () {
         self.loginButton.translatesAutoresizingMaskIntoConstraints = false
         self.loginButton.setTitle("Login", for: .normal)
-        self.loginButton.setTitleColor(.white, for: .normal)
-        self.loginButton.setTitleShadowColor(.gray, for: .normal)
-        self.loginButton.titleLabel?.textAlignment = .center
-        self.loginButton.titleLabel?.font = UIFont.systemFont(ofSize: 18)
-        self.loginButton.backgroundColor = .black
         self.addSubview(self.loginButton)
     }
     
     private func configureCreateAccountButton () {
         self.createAccountButton.translatesAutoresizingMaskIntoConstraints = false
         self.createAccountButton.setTitle("Create new account", for: .normal)
-        self.createAccountButton.setTitleColor(.white, for: .normal)
-        self.createAccountButton.setTitleShadowColor(.gray, for: .normal)
-        self.createAccountButton.titleLabel?.textAlignment = .center
-        self.createAccountButton.titleLabel?.font = UIFont.systemFont(ofSize: 18)
-        self.createAccountButton.backgroundColor = .black
         self.addSubview(self.createAccountButton)
     }
     

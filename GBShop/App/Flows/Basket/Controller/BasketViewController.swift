@@ -22,7 +22,6 @@ final class BasketViewController: UIViewController, UITableViewDelegate, UITable
     
     //MARK: Private properties
     private let presenter: BasketViewOutput
-    private let indicator = UIActivityIndicatorView()
     
     internal var basketView: BasketView {
 
@@ -73,20 +72,9 @@ final class BasketViewController: UIViewController, UITableViewDelegate, UITable
         self.configureTableView()
         self.configureNavigationBar()
         self.configureRefreshControl()
-//        self.configureActivityIndicator()
-    }
-    
-    private func configureActivityIndicator () {
-        indicator.style = .large
-        indicator.center = CGPoint(x: UIScreen.main.bounds.width/2, y: UIScreen.main.bounds.height/2)
-        indicator.transform = CGAffineTransform(scaleX: 1, y: 1);
-        indicator.color = UIColor(red: 0.25, green: 0.72, blue: 0.85, alpha: 0.7)
-        self.basketView.addSubview(self.indicator)
     }
     
     private func configureTableView () {
-        self.basketView.tableView.backgroundColor = .black
-        self.basketView.tableView.separatorColor = .gray
         self.basketView.tableView.register(BasketCell.self, forCellReuseIdentifier: Constant.reuseIdentifier)
         self.basketView.tableView.delegate = self
         self.basketView.tableView.dataSource = self
@@ -94,16 +82,12 @@ final class BasketViewController: UIViewController, UITableViewDelegate, UITable
     
     private func configureNavigationBar () {
         self.title = "Basket"
-        self.navigationController?.navigationBar.backgroundColor = .black
-        self.navigationController?.navigationBar.barTintColor = .black
-        self.navigationController?.navigationBar.tintColor = .white
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
         let barButtonItem = UIBarButtonItem(title: "Pay", style: .plain, target: self, action: #selector(payBasket))
         self.navigationItem.setRightBarButton(barButtonItem, animated: true)
     }
     
     private func configureRefreshControl () {
-        self.basketView.newRefreshControl.addTarget(self, action: #selector(refreshContentsBasket), for: .valueChanged)
+        self.basketView.refreshControl.addTarget(self, action: #selector(refreshContentsBasket), for: .valueChanged)
     }
     
     //MARK: - Actions
@@ -140,6 +124,11 @@ final class BasketViewController: UIViewController, UITableViewDelegate, UITable
         }
         return cell
     }
+    
+    //MARK: TableViewDelegate
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
 }
 
 extension BasketViewController: BasketViewInput {
@@ -147,14 +136,14 @@ extension BasketViewController: BasketViewInput {
     
     func throbberStart() {
         DispatchQueue.main.async {
-            self.indicator.startAnimating()
+            self.basketView.indicator.startAnimating()
         }
     }
     
     func throbberStop() {
         DispatchQueue.main.async {
-            self.indicator.stopAnimating()
-            //self.indicator.removeFromSuperview()
+            self.basketView.indicator.stopAnimating()
+            //self.basketView.indicator.removeFromSuperview()
         }
     }
     

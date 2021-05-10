@@ -10,8 +10,6 @@ import UIKit
 protocol CatalogProductsViewInput: class {
     var productsResults: [Product] { get set }
     var catalogProductsView: CatalogProductsView {get}
-    func throbberStart()
-    func throbberStop()
     func showNoProducts()
     func hideResultsView()
 }
@@ -19,7 +17,6 @@ protocol CatalogProductsViewInput: class {
 class CatalogProductsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, ShowAlert {
     //MARK: Private properties
     private let presenter: CatalogProductsViewOutput
-    private let indicator = UIActivityIndicatorView()
     
     internal var catalogProductsView: CatalogProductsView {
 
@@ -62,7 +59,6 @@ class CatalogProductsViewController: UIViewController, UITableViewDelegate, UITa
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        throbberStop()
     }
     
     //MARK: ConfigureUI
@@ -70,20 +66,9 @@ class CatalogProductsViewController: UIViewController, UITableViewDelegate, UITa
         self.configureTableView()
         self.configureNavigationBar()
         self.configureRefreshControl()
-//        self.configureActivityIndicator()
-    }
-    
-    private func configureActivityIndicator () {
-        indicator.style = .large
-        indicator.center = CGPoint(x: UIScreen.main.bounds.width/2, y: UIScreen.main.bounds.height/2)
-        indicator.transform = CGAffineTransform(scaleX: 1, y: 1);
-        indicator.color = UIColor(red: 0.25, green: 0.72, blue: 0.85, alpha: 0.7)
-        self.catalogProductsView.addSubview(self.indicator)
     }
     
     private func configureTableView () {
-        self.catalogProductsView.tableView.backgroundColor = .black
-        self.catalogProductsView.tableView.separatorColor = .gray
         self.catalogProductsView.tableView.register(CatalogProductsCell.self, forCellReuseIdentifier: Constant.reuseIdentifier)
         self.catalogProductsView.tableView.delegate = self
         self.catalogProductsView.tableView.dataSource = self
@@ -91,14 +76,10 @@ class CatalogProductsViewController: UIViewController, UITableViewDelegate, UITa
     
     private func configureNavigationBar () {
         self.title = "Search"
-        self.navigationController?.navigationBar.backgroundColor = .black
-        self.navigationController?.navigationBar.barTintColor = .black
-        self.navigationController?.navigationBar.tintColor = .white
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
     }
     
     private func configureRefreshControl () {
-        self.catalogProductsView.newRefreshControl.addTarget(self, action: #selector(refreshProductsCatalog), for: .valueChanged)
+        self.catalogProductsView.refreshControl.addTarget(self, action: #selector(refreshProductsCatalog), for: .valueChanged)
     }
     
     //MARK: - Actions
@@ -131,21 +112,17 @@ class CatalogProductsViewController: UIViewController, UITableViewDelegate, UITa
         }
         return cell
     }
+    
+    //MARK: TableViewDelegate
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let product = self.productsResults[indexPath.row]
+        self.presenter.viewDidDetailProductController(product: product)
+    }
+    
 }
 
 extension CatalogProductsViewController: CatalogProductsViewInput {
-    func throbberStart() {
-        DispatchQueue.main.async {
-            self.indicator.startAnimating()
-        }
-    }
-    
-    func throbberStop() {
-        DispatchQueue.main.async {
-            self.indicator.stopAnimating()
-            //self.indicator.removeFromSuperview()
-        }
-    }
     
     func showNoProducts() {
         self.catalogProductsView.resultLabel.text = "No products"

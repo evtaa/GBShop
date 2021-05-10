@@ -14,7 +14,7 @@ protocol RegistrationViewOutput: class {
     func openTabBar()
 }
 
-class RegistrationPresenter: CatchError {
+class RegistrationPresenter: CheckingDataUser {
     // MARK: Properties
     weak var viewInput: (RegistrationViewInput & UIViewController)?
     
@@ -69,31 +69,6 @@ class RegistrationPresenter: CatchError {
         shopTabBarViewController.modalPresentationStyle = .fullScreen
         self.viewInput?.dismiss(animated: true, completion: nil)
         self.viewInput?.present(shopTabBarViewController, animated: true, completion: nil)
-    }
-    
-    // MARK: Private functions
-    private func checkDataUser (dataUser: DataUser) throws -> Bool {
-        guard let countUsername = dataUser.username?.count,
-              countUsername > 0 else {
-            throw InsertingDataUserError.invalidUsername
-        }
-        guard let countPassword = dataUser.password?.count,
-              countPassword > 0 else {
-            throw InsertingDataUserError.invalidPassword
-        }
-        guard let isEmail = dataUser.email?.isValidEmail,
-              isEmail == true else {
-            throw InsertingDataUserError.invalidEmail
-        }
-        guard let countCreditCard = dataUser.creditCard?.count,
-              countCreditCard > 0 else {
-            throw InsertingDataUserError.invalidCreditCard
-        }
-        guard let countBio = dataUser.bio?.count,
-              countBio > 0 else {
-            throw InsertingDataUserError.invalidBio
-        }
-        return true
     }
 }
 

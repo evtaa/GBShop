@@ -33,7 +33,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        let navigationController = UINavigationController(rootViewController: authViewController)
         
         let authViewController = AuthModuleBuilder.build(requestFactory: requestFactory)
-        let navigationController = UINavigationController(rootViewController: authViewController)
+        let navigationController = NavigationControllerDarkStyle(rootViewController: authViewController)
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
         self.window = window

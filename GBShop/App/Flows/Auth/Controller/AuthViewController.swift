@@ -15,20 +15,16 @@ protocol AuthViewInput: class {
 }
 
 class AuthViewController: UIViewController, ShowAlert {
-
     // MARK: Properties
-    
     private var presenter: AuthViewOutput
     
     // MARK: Private properties
-    
     internal var authView: AuthView {
 
             return self.view as! AuthView
     }
     
     //MARK: Init
-    
     init(presenter: AuthViewOutput) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
@@ -39,7 +35,6 @@ class AuthViewController: UIViewController, ShowAlert {
     }
 
     //MARK: LifeCycle
-    
     override func loadView() {
         super.loadView()
         self.view = AuthView ()
@@ -48,20 +43,15 @@ class AuthViewController: UIViewController, ShowAlert {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.configure()
-       // self.navigationController?.presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
     //MARK: Configure
-    
     private func configure () {
         self.configureNavigationBar()
         self.configureActions()
     }
     
     func configureNavigationBar () {
-        self.navigationController?.navigationBar.backgroundColor = .black
-        self.navigationController?.navigationBar.tintColor = .white
-        self.navigationController?.navigationBar.barTintColor = .black
         let barButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector (checkLogout))
         self.navigationItem.setRightBarButton(barButtonItem, animated: true)
     }

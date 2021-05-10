@@ -68,10 +68,6 @@ class PersonalDataViewController: UIViewController, ShowAlert {
     
     private func configureNavigationBar() {
         self.title = "Profile"
-        self.navigationController?.navigationBar.backgroundColor = .black
-        self.navigationController?.navigationBar.barTintColor = .black
-        self.navigationController?.navigationBar.tintColor = .white
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
         let barButtonItem = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(changePersonalData))
         self.navigationItem.setRightBarButton(barButtonItem, animated: true)
     }

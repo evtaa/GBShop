@@ -7,24 +7,6 @@
 
 import UIKit
 
-enum InsertingDataUserError: String, Error {
-    case invalidUsername = "You entered invalid username"
-    case invalidPassword = "You entered invalid password"
-    case invalidEmail = "You entered invalid email"
-    case invalidCreditCard = "You entered invalid number of credit card"
-    case invalidBio = "You entered invalid bio"
-}
-
-struct DataUser {
-    let idUser: Int
-    let username: String?
-    let password: String?
-    let email: String?
-    let gender: String?
-    let creditCard: String?
-    let bio: String?
-}
-
 protocol RegistrationViewInput: class {
     func showSuccessRegistration ()
     func showFailedRegistration ()
@@ -80,7 +62,6 @@ class RegistrationViewController: UIViewController, ShowAlert {
     
     private func configureNavigationBar() {
         self.title = "Registration"
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
         let barButtonItem = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(registration))
         self.navigationItem.setRightBarButton(barButtonItem, animated: true)
     }

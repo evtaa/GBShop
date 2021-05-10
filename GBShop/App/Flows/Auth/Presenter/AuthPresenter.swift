@@ -14,7 +14,7 @@ protocol AuthViewOutput: class {
     func viewDidRegistration()
 }
 
-final class AuthPresenter: CatchError {
+final class AuthPresenter: CheckingDataUser {
     
     // MARK: Properties
     weak var viewInput: (UIViewController & AuthViewInput)?
@@ -83,8 +83,6 @@ final class AuthPresenter: CatchError {
         let keyWindow = UIApplication.shared.windows.filter {$0.isKeyWindow == true}.last
         keyWindow?.rootViewController = shopTabBarViewController
         //self.viewInput?.navigationController?.present(shopTabBarViewController, animated: true, completion: nil)
-        
-    
     }
     
     // MARK: Private functions

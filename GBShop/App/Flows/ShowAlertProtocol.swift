@@ -22,4 +22,8 @@ extension ShowAlert {
         alert.addAction(actionOk)
         controller.present(alert, animated: true, completion: nil)
     }
+    
+    func showError (forViewController controller: UIViewController, withMessage message: String) {
+        self.showAlert(forViewController: controller, withTitleOfAlert: "Error", andMessage: message, withTitleOfAction: "OK", handlerOfAction: nil)
+    }
 }

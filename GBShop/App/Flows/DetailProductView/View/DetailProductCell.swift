@@ -1,18 +1,19 @@
 //
-//  CatalogProductsCell.swift
+//  DetailProductCell.swift
 //  GBShop
 //
-//  Created by Alexandr Evtodiy on 05.05.2021.
+//  Created by Alexandr Evtodiy on 09.05.2021.
 //
 
 import UIKit
 
-class CatalogProductsCell: UITableViewCell {
+class DetailProductCell: UITableViewCell {
     //MARK: Properties
-    var tapAddingProduct: ((_ content: ProductCellModel) -> Void)?
+    var tapAddingProduct: ((_ detailProduct: DetailProductCellModel) -> Void)?
+    var tapHidingShowingReviews: (() -> Void)?
     
     //MARK: Private properties
-    private var product: ProductCellModel?
+    private var detailProduct: DetailProductCellModel?
     
     //MARK: - SubView
     private(set) lazy var productNameLabel: LabelDarkStyle = {
@@ -31,6 +32,14 @@ class CatalogProductsCell: UITableViewCell {
         return label
     } ()
     
+    private(set) lazy var descriptionLabel: LabelDarkStyle = {
+        let label = LabelDarkStyle ()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 0
+        label.font = UIFont.systemFont(ofSize: 16)
+        return label
+    } ()
+
     private(set) lazy var idProductLabel: LabelDarkStyle = {
         let label = LabelDarkStyle ()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -50,6 +59,16 @@ class CatalogProductsCell: UITableViewCell {
         return button
     } ()
     
+    private(set) lazy var hideShowReviewsButton: ButtonDarkStyle = {
+        let button = ButtonDarkStyle ()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Hide reviews", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 14.0)
+        button.titleLabel?.numberOfLines = 0
+        button.addTarget(self, action: #selector(hideShowReviewsTouchUpInsideButton), for: .touchUpInside)
+        return button
+    } ()
+    
     //MARK: - Init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -61,35 +80,49 @@ class CatalogProductsCell: UITableViewCell {
     }
     
     //MARK: - Public Methods
-    func configure (with product: ProductCellModel) {
-        self.product = product
-        self.productNameLabel.text = product.productName
-        self.priceLabel.text = product.price
-        self.idProductLabel.text = product.idProduct
+    func configure (with detailProduct: DetailProductCellModel, andHideOrShowReviewsButton: Bool) {
+        switch andHideOrShowReviewsButton {
+        case true:
+            hideShowReviewsButton.setTitle("Show reviews", for: .normal)
+        case false:
+            hideShowReviewsButton.setTitle("Hide reviews", for: .normal)
+        }
+        self.detailProduct = detailProduct
+        self.productNameLabel.text = detailProduct.productName
+        self.priceLabel.text = detailProduct.price
+        self.descriptionLabel.text = detailProduct.description
+        self.idProductLabel.text = detailProduct.idProduct
     }
     
     //MARK: - Actions
     @objc private func addProductTouchUpInsideButton () {
-        guard let product = self.product
+        guard let detailProduct = self.detailProduct
         else {
             return
         }
-        tapAddingProduct? (product)
+        tapAddingProduct? (detailProduct)
+    }
+    
+    @objc private func hideShowReviewsTouchUpInsideButton () {
+        tapHidingShowingReviews? ()
     }
     
     // MARK: - ConfigureUI
     override func prepareForReuse() {
         self.productNameLabel.text = nil
         self.priceLabel.text = nil
+        self.descriptionLabel.text = nil
         self.idProductLabel.text = nil
     }
     
     private func configureUI () {
-        self.configContentView()
-        self.addProductNameLabel()
-        self.addPriceLabel()
-        self.addIdProductLabel()
-        self.addAddProductButton()
+        self.configContentView ()
+        self.addProductNameLabel ()
+        self.addPriceLabel ()
+        self.addDescriptionLabel ()
+        self.addIdProductLabel ()
+        self.addAddProductButton ()
+        self.addHideShowReviewsButton ()
     }
     
     private func configContentView () {
@@ -115,14 +148,22 @@ class CatalogProductsCell: UITableViewCell {
         ])
     }
     
+    private func addDescriptionLabel () {
+        self.contentView.addSubview(self.descriptionLabel)
+        NSLayoutConstraint.activate([
+            self.descriptionLabel.topAnchor.constraint(equalTo: self.priceLabel.bottomAnchor, constant: 10),
+            self.descriptionLabel.leadingAnchor.constraint(equalTo: productNameLabel.leadingAnchor),
+            self.descriptionLabel.trailingAnchor.constraint(equalTo: productNameLabel.trailingAnchor)
+        ])
+    }
+    
     private func addIdProductLabel () {
-        let marginGuide = self.contentView.layoutMarginsGuide
         self.contentView.addSubview(idProductLabel)
         NSLayoutConstraint.activate([
-            self.idProductLabel.topAnchor.constraint(equalTo: self.priceLabel.bottomAnchor, constant: 10),
+            self.idProductLabel.topAnchor.constraint(equalTo: self.descriptionLabel.bottomAnchor, constant: 10),
             self.idProductLabel.leadingAnchor.constraint(equalTo: productNameLabel.leadingAnchor),
             self.idProductLabel.widthAnchor.constraint(equalToConstant: 2 * UIScreen.main.bounds.width/5),
-            self.idProductLabel.bottomAnchor.constraint(equalTo: marginGuide.bottomAnchor, constant: -5),
+            //self.idProductLabel.bottomAnchor.constraint(equalTo: marginGuide.bottomAnchor, constant: -5),
         ])
     }
     
@@ -133,6 +174,17 @@ class CatalogProductsCell: UITableViewCell {
             self.addProductButton.leadingAnchor.constraint(equalTo: idProductLabel.trailingAnchor, constant: 5),
             self.addProductButton.trailingAnchor.constraint(equalTo: productNameLabel.trailingAnchor),
             self.addProductButton.bottomAnchor.constraint(equalTo: idProductLabel.bottomAnchor),
+        ])
+    }
+    
+    private func addHideShowReviewsButton () {
+        let marginGuide = self.contentView.layoutMarginsGuide
+        self.contentView.addSubview(hideShowReviewsButton)
+        NSLayoutConstraint.activate([
+            self.hideShowReviewsButton.topAnchor.constraint(equalTo: self.idProductLabel.bottomAnchor,constant: 10),
+            self.hideShowReviewsButton.leadingAnchor.constraint(equalTo: addProductButton.leadingAnchor),
+            self.hideShowReviewsButton.trailingAnchor.constraint(equalTo: addProductButton.trailingAnchor),
+            self.hideShowReviewsButton.bottomAnchor.constraint(equalTo: marginGuide.bottomAnchor),
         ])
     }
 }

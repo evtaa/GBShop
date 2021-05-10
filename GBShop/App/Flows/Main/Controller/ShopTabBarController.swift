@@ -23,7 +23,6 @@ class ShopTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
        self.presentingViewController?.dismiss(animated: true, completion: nil)
-        //self.presentedViewController?.dismiss(animated: true, completion: nil)
     }
     
     // MARK: - Configure
@@ -41,19 +40,19 @@ class ShopTabBarController: UITabBarController {
         let personalDataViewController = PersonalDataBuilder.build(requestFactory: requestFactory)
         personalDataViewController.tabBarItem = UITabBarItem(title: "Profile", image: UIImage(named: "profile"), selectedImage: UIImage(named: "profileSelect"))
         personalDataViewController.tabBarItem.tag = 0
-        let personalDataNavigationController = UINavigationController(rootViewController: personalDataViewController)
+        let personalDataNavigationController = NavigationControllerDarkStyle(rootViewController: personalDataViewController)
         controllers.append(personalDataNavigationController)
         
         let catalogProductsViewController = CatalogProductsModuleBuilder.build(requestFactory: requestFactory)
         catalogProductsViewController.tabBarItem = UITabBarItem(title: "Search", image: UIImage(named: "search"), selectedImage: UIImage(named: "searchSelect"))
         catalogProductsViewController.tabBarItem.tag = 1
-        let catalogProductsNavigationController = UINavigationController(rootViewController: catalogProductsViewController)
+        let catalogProductsNavigationController = NavigationControllerDarkStyle(rootViewController: catalogProductsViewController)
         controllers.append(catalogProductsNavigationController)
         
         let basketViewController = BasketModuleBuilder.build(requestFactory: requestFactory)
         basketViewController.tabBarItem = UITabBarItem(title: "Basket", image: UIImage(named: "basket"), selectedImage: UIImage(named: "basketSelect"))
         basketViewController.tabBarItem.tag = 2
-        let basketNavigationController = UINavigationController(rootViewController: basketViewController)
+        let basketNavigationController = NavigationControllerDarkStyle(rootViewController: basketViewController)
         controllers.append(basketNavigationController)
         
         return controllers
