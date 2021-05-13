@@ -30,5 +30,4 @@ class TextFieldDarkStyle: UITextField {
         self.attributedPlaceholder = NSAttributedString(string: "placeholder", attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray])
         self.font = UIFont.systemFont(ofSize: 18.0)
     }
-    
 }

@@ -35,8 +35,8 @@ class RegistrationView: UIView {
     }
     
     // MARK: Configure
-    
     private func configureUI () {
+        self.accessibilityIdentifier = "registrationView"
         self.backgroundColor = .black
         self.configureScrollView ()
         self.configureUsernameLabel ()
@@ -138,16 +138,10 @@ class RegistrationView: UIView {
             self.scrollView.frameLayoutGuide.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             self.scrollView.frameLayoutGuide.topAnchor.constraint(equalTo: self.topAnchor),
             self.scrollView.frameLayoutGuide.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            self.scrollView.contentLayoutGuide.topAnchor.constraint(equalTo: self.scrollView.frameLayoutGuide.topAnchor),
             self.scrollView.contentLayoutGuide.widthAnchor.constraint(equalTo: self.scrollView.frameLayoutGuide.widthAnchor),
             self.scrollView.contentLayoutGuide.bottomAnchor.constraint(equalTo: self.scrollView.frameLayoutGuide.bottomAnchor),
             
-            self.scrollView.frameLayoutGuide.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            self.scrollView.frameLayoutGuide.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            self.scrollView.frameLayoutGuide.topAnchor.constraint(equalTo: self.topAnchor),
-            self.scrollView.frameLayoutGuide.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-            self.scrollView.contentLayoutGuide.topAnchor.constraint(equalTo: self.scrollView.frameLayoutGuide.topAnchor),
-            self.scrollView.contentLayoutGuide.widthAnchor.constraint(equalTo: self.scrollView.frameLayoutGuide.widthAnchor),
-            self.scrollView.contentLayoutGuide.bottomAnchor.constraint(equalTo: self.scrollView.frameLayoutGuide.bottomAnchor, constant: 0),
                 
             self.usernameLabel.topAnchor.constraint(equalTo: scrollArea.topAnchor, constant: 30.0),
             self.usernameLabel.leadingAnchor.constraint(equalTo: scrollArea.leadingAnchor, constant: leadingIndentUIOfAccountProperties),

@@ -138,6 +138,15 @@ class DetailProductViewController: UIViewController, UITableViewDelegate, UITabl
                 }
                 self.presenter.viewDidAddToBasket(idProduct: idProduct, quantity: 1)
             }
+            cell.tapAddingReview = { [weak self] in
+                
+                guard let self = self
+                else {
+                    return
+                }
+                self.presenter.viewDidAddingReview()
+            }
+            
             cell.tapHidingShowingReviews = { [weak self] in
                 guard let self = self else {
                     return

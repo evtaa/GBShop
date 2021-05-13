@@ -13,6 +13,7 @@ protocol DetailProductViewOutput: class {
     func viewDidAddToBasket(idProduct: Int, quantity: Int)
     func viewDidApproveReview(idComment: Int)
     func viewDidRemoveReview(idComment: Int)
+    func viewDidAddingReview()
 }
 
 
@@ -137,6 +138,12 @@ final class DetailProductPresenter: ShowAlert {
             }
         }
     }
+    
+    //MARK: Navigation
+    private func pushAddingReviewController() {
+        let controller = AddingReviewModuleBuilder.build(requestFactory: requestFactory)
+        self.viewInput?.navigationController?.pushViewController(controller, animated: true)
+    }
 }
 
 // MARK: - SearchViewOutput
@@ -156,6 +163,10 @@ extension DetailProductPresenter: DetailProductViewOutput {
     
     func viewDidRemoveReview(idComment: Int) {
         self.requestRemoveReview(idComment: idComment)
+    }
+    
+    func viewDidAddingReview() {
+        self.pushAddingReviewController()
     }
     
  

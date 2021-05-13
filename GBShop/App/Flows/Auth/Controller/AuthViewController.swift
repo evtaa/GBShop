@@ -54,6 +54,8 @@ class AuthViewController: UIViewController, ShowAlert {
     func configureNavigationBar () {
         let barButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector (checkLogout))
         self.navigationItem.setRightBarButton(barButtonItem, animated: true)
+        self.navigationController?.navigationBar.accessibilityIdentifier = "authNavigationBar"
+        self.navigationItem.rightBarButtonItem?.accessibilityIdentifier = "logout"
     }
     
     private func configureActions () {

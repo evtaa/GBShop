@@ -10,6 +10,7 @@ import UIKit
 class DetailProductCell: UITableViewCell {
     //MARK: Properties
     var tapAddingProduct: ((_ detailProduct: DetailProductCellModel) -> Void)?
+    var tapAddingReview: (() -> Void)?
     var tapHidingShowingReviews: (() -> Void)?
     
     //MARK: Private properties
@@ -59,6 +60,16 @@ class DetailProductCell: UITableViewCell {
         return button
     } ()
     
+    private(set) lazy var addReviewButton: ButtonDarkStyle = {
+        let button = ButtonDarkStyle ()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Add a review", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 14.0)
+        button.titleLabel?.numberOfLines = 0
+        button.addTarget(self, action: #selector(addReviewTouchUpInsideButton), for: .touchUpInside)
+        return button
+    } ()
+    
     private(set) lazy var hideShowReviewsButton: ButtonDarkStyle = {
         let button = ButtonDarkStyle ()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -103,6 +114,10 @@ class DetailProductCell: UITableViewCell {
         tapAddingProduct? (detailProduct)
     }
     
+    @objc private func addReviewTouchUpInsideButton () {
+        tapAddingReview? ()
+    }
+    
     @objc private func hideShowReviewsTouchUpInsideButton () {
         tapHidingShowingReviews? ()
     }
@@ -122,6 +137,7 @@ class DetailProductCell: UITableViewCell {
         self.addDescriptionLabel ()
         self.addIdProductLabel ()
         self.addAddProductButton ()
+        self.addAddReviewButton ()
         self.addHideShowReviewsButton ()
     }
     
@@ -163,7 +179,6 @@ class DetailProductCell: UITableViewCell {
             self.idProductLabel.topAnchor.constraint(equalTo: self.descriptionLabel.bottomAnchor, constant: 10),
             self.idProductLabel.leadingAnchor.constraint(equalTo: productNameLabel.leadingAnchor),
             self.idProductLabel.widthAnchor.constraint(equalToConstant: 2 * UIScreen.main.bounds.width/5),
-            //self.idProductLabel.bottomAnchor.constraint(equalTo: marginGuide.bottomAnchor, constant: -5),
         ])
     }
     
@@ -177,11 +192,20 @@ class DetailProductCell: UITableViewCell {
         ])
     }
     
+    private func addAddReviewButton () {
+        self.contentView.addSubview(addReviewButton)
+        NSLayoutConstraint.activate([
+            self.addReviewButton.topAnchor.constraint(equalTo: self.idProductLabel.bottomAnchor,constant: 10),
+            self.addReviewButton.leadingAnchor.constraint(equalTo: addProductButton.leadingAnchor),
+            self.addReviewButton.trailingAnchor.constraint(equalTo: addProductButton.trailingAnchor),
+        ])
+    }
+    
     private func addHideShowReviewsButton () {
         let marginGuide = self.contentView.layoutMarginsGuide
         self.contentView.addSubview(hideShowReviewsButton)
         NSLayoutConstraint.activate([
-            self.hideShowReviewsButton.topAnchor.constraint(equalTo: self.idProductLabel.bottomAnchor,constant: 10),
+            self.hideShowReviewsButton.topAnchor.constraint(equalTo: self.addReviewButton.bottomAnchor,constant: 10),
             self.hideShowReviewsButton.leadingAnchor.constraint(equalTo: addProductButton.leadingAnchor),
             self.hideShowReviewsButton.trailingAnchor.constraint(equalTo: addProductButton.trailingAnchor),
             self.hideShowReviewsButton.bottomAnchor.constraint(equalTo: marginGuide.bottomAnchor),
