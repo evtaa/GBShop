@@ -1,0 +1,51 @@
+curl --location --request POST 'https://mighty-harbor-34171.herokuapp.com/register' \
+--header 'Content-Type: application/json' \
+--data-raw '{ 
+    "id_user": 123,
+    "username": "Somebody",
+    "password": "mypassword",
+    "email": "some@some.ru",
+    "gender": "m",
+    "credit_card": "9872389-2424-234224-234",
+    "bio": "This is good! I think I will switch to another language"
+}
+'
+
+curl --location --request POST 'https://mighty-harbor-34171.herokuapp.com/changeUserData' \
+--header 'Content-Type: application/json' \
+--data-raw '{ 
+    "id_user": 123,
+    "username": "Somebody",
+    "password": "mypassword",
+    "email": "some@some.ru",
+    "gender": "m",
+    "credit_card": "9872389-2424-234224-234",
+    "bio": "This is good! I think I will switch to another language"
+}
+'
+
+curl --location --request POST 'https://mighty-harbor-34171.herokuapp.com/login' \
+--header 'Content-Type: application/json' \
+--data-raw '{ 
+    "username": "Somebody",
+    "password": "mypassword"
+}'
+
+curl --location --request POST 'https://mighty-harbor-34171.herokuapp.com/logout' \
+--header 'Content-Type: application/json' \
+--data-raw '{ 
+   "id_user": 123
+}'
+
+curl --location --request POST 'https://mighty-harbor-34171.herokuapp.com/catalogData' \
+--header 'Content-Type: application/json' \
+--data-raw '{ 
+   "page_number": 1,
+    "id_category": 1
+}'
+
+curl --location --request POST 'https://mighty-harbor-34171.herokuapp.com/getGoodByIdData' \
+--header 'Content-Type: application/json' \
+--data-raw '{ 
+    "id_product": 123
+}'
