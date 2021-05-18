@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		1826092D80ED7CAABA557090 /* Pods_GBShop_GBShopUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A7EC0A3DA32B37E992B3D26 /* Pods_GBShop_GBShopUITests.framework */; };
+		A802E4BB2628702D0022F87C /* ResponseCodableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A802E4BA2628702D0022F87C /* ResponseCodableTests.swift */; };
+		A802E4EC2628A7610022F87C /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = A802E4EB2628A7610022F87C /* Product.swift */; };
+		A802E4F22628CF4C0022F87C /* GoodByIdResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A802E4F12628CF4C0022F87C /* GoodByIdResult.swift */; };
+		A802E4FE2628D1F20022F87C /* ProductsDataRequestFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A802E4FD2628D1F20022F87C /* ProductsDataRequestFactory.swift */; };
+		A802E5092628D2FB0022F87C /* ProductsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A802E5082628D2FB0022F87C /* ProductsData.swift */; };
 		A80CECCF26207B290048AAC9 /* AbstractErrorParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A80CECCE26207B290048AAC9 /* AbstractErrorParser.swift */; };
 		A80CECD726207B4F0048AAC9 /* ErrorParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A80CECD626207B4F0048AAC9 /* ErrorParser.swift */; };
 		A80CECDC26207BD00048AAC9 /* ResponseCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A80CECDB26207BD00048AAC9 /* ResponseCodable.swift */; };
@@ -21,12 +26,8 @@
 		A81BDB062620BD780084B17F /* LogoutResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81BDB052620BD780084B17F /* LogoutResult.swift */; };
 		A81BDB0B2620BDE70084B17F /* ChangeUserDataResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81BDB0A2620BDE70084B17F /* ChangeUserDataResult.swift */; };
 		A81BDB142620BE8B0084B17F /* RegisterUserResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81BDB132620BE8B0084B17F /* RegisterUserResult.swift */; };
-		A81BDB212620C05F0084B17F /* ExitRequestFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81BDB202620C05F0084B17F /* ExitRequestFactory.swift */; };
-		A81BDB262620C2DB0084B17F /* Exit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81BDB252620C2DB0084B17F /* Exit.swift */; };
 		A81BDB352620D2B50084B17F /* UserDataRequestFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81BDB342620D2B50084B17F /* UserDataRequestFactory.swift */; };
 		A81BDB402620D41B0084B17F /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81BDB3F2620D41B0084B17F /* UserData.swift */; };
-		A81BDB462620DD650084B17F /* ChangeUserRequestFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81BDB452620DD650084B17F /* ChangeUserRequestFactory.swift */; };
-		A81BDB4E2620DD730084B17F /* ChangeUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81BDB4D2620DD730084B17F /* ChangeUser.swift */; };
 		A8541118261A3603007D2C75 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8541117261A3603007D2C75 /* AppDelegate.swift */; };
 		A854111A261A3603007D2C75 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8541119261A3603007D2C75 /* SceneDelegate.swift */; };
 		A854111C261A3603007D2C75 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A854111B261A3603007D2C75 /* ViewController.swift */; };
@@ -62,6 +63,11 @@
 		3A7EC0A3DA32B37E992B3D26 /* Pods_GBShop_GBShopUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GBShop_GBShopUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A887F4484F6FD8D653E511F /* Pods-GBShop.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GBShop.release.xcconfig"; path = "Target Support Files/Pods-GBShop/Pods-GBShop.release.xcconfig"; sourceTree = "<group>"; };
 		866AB0D07FB62F17F84036E7 /* Pods_GBShopTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GBShopTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A802E4BA2628702D0022F87C /* ResponseCodableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseCodableTests.swift; sourceTree = "<group>"; };
+		A802E4EB2628A7610022F87C /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
+		A802E4F12628CF4C0022F87C /* GoodByIdResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodByIdResult.swift; sourceTree = "<group>"; };
+		A802E4FD2628D1F20022F87C /* ProductsDataRequestFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsDataRequestFactory.swift; sourceTree = "<group>"; };
+		A802E5082628D2FB0022F87C /* ProductsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsData.swift; sourceTree = "<group>"; };
 		A80CECCE26207B290048AAC9 /* AbstractErrorParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractErrorParser.swift; sourceTree = "<group>"; };
 		A80CECD626207B4F0048AAC9 /* ErrorParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorParser.swift; sourceTree = "<group>"; };
 		A80CECDB26207BD00048AAC9 /* ResponseCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseCodable.swift; sourceTree = "<group>"; };
@@ -75,12 +81,8 @@
 		A81BDB052620BD780084B17F /* LogoutResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutResult.swift; sourceTree = "<group>"; };
 		A81BDB0A2620BDE70084B17F /* ChangeUserDataResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeUserDataResult.swift; sourceTree = "<group>"; };
 		A81BDB132620BE8B0084B17F /* RegisterUserResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUserResult.swift; sourceTree = "<group>"; };
-		A81BDB202620C05F0084B17F /* ExitRequestFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExitRequestFactory.swift; sourceTree = "<group>"; };
-		A81BDB252620C2DB0084B17F /* Exit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Exit.swift; sourceTree = "<group>"; };
 		A81BDB342620D2B50084B17F /* UserDataRequestFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataRequestFactory.swift; sourceTree = "<group>"; };
 		A81BDB3F2620D41B0084B17F /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
-		A81BDB452620DD650084B17F /* ChangeUserRequestFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeUserRequestFactory.swift; sourceTree = "<group>"; };
-		A81BDB4D2620DD730084B17F /* ChangeUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeUser.swift; sourceTree = "<group>"; };
 		A8541114261A3603007D2C75 /* GBShop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GBShop.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A8541117261A3603007D2C75 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A8541119261A3603007D2C75 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -152,6 +154,31 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		A802E4D92628A3FA0022F87C /* CatalogData */ = {
+			isa = PBXGroup;
+			children = (
+				A802E4EB2628A7610022F87C /* Product.swift */,
+			);
+			path = CatalogData;
+			sourceTree = "<group>";
+		};
+		A802E4F02628CEF00022F87C /* GoodById */ = {
+			isa = PBXGroup;
+			children = (
+				A802E4F12628CF4C0022F87C /* GoodByIdResult.swift */,
+			);
+			path = GoodById;
+			sourceTree = "<group>";
+		};
+		A802E4FC2628D1AB0022F87C /* Product */ = {
+			isa = PBXGroup;
+			children = (
+				A802E4FD2628D1F20022F87C /* ProductsDataRequestFactory.swift */,
+				A802E5082628D2FB0022F87C /* ProductsData.swift */,
+			);
+			path = Product;
+			sourceTree = "<group>";
+		};
 		A80CECCD26207AEE0048AAC9 /* Network */ = {
 			isa = PBXGroup;
 			children = (
@@ -168,9 +195,8 @@
 			isa = PBXGroup;
 			children = (
 				A81BDB1B2620BF230084B17F /* Auth */,
-				A81BDB1F2620C0100084B17F /* Exit */,
-				A81BDB332620D1BA0084B17F /* Regist */,
-				A81BDB442620DC8E0084B17F /* ChangeUser */,
+				A81BDB332620D1BA0084B17F /* UserData */,
+				A802E4FC2628D1AB0022F87C /* Product */,
 				A80CED0F2620858F0048AAC9 /* RequestFactory.swift */,
 			);
 			path = Network;
@@ -218,31 +244,13 @@
 			path = Auth;
 			sourceTree = "<group>";
 		};
-		A81BDB1F2620C0100084B17F /* Exit */ = {
-			isa = PBXGroup;
-			children = (
-				A81BDB202620C05F0084B17F /* ExitRequestFactory.swift */,
-				A81BDB252620C2DB0084B17F /* Exit.swift */,
-			);
-			path = Exit;
-			sourceTree = "<group>";
-		};
-		A81BDB332620D1BA0084B17F /* Regist */ = {
+		A81BDB332620D1BA0084B17F /* UserData */ = {
 			isa = PBXGroup;
 			children = (
 				A81BDB342620D2B50084B17F /* UserDataRequestFactory.swift */,
 				A81BDB3F2620D41B0084B17F /* UserData.swift */,
 			);
-			path = Regist;
-			sourceTree = "<group>";
-		};
-		A81BDB442620DC8E0084B17F /* ChangeUser */ = {
-			isa = PBXGroup;
-			children = (
-				A81BDB452620DD650084B17F /* ChangeUserRequestFactory.swift */,
-				A81BDB4D2620DD730084B17F /* ChangeUser.swift */,
-			);
-			path = ChangeUser;
+			path = UserData;
 			sourceTree = "<group>";
 		};
 		A854110B261A3603007D2C75 = {
@@ -284,6 +292,7 @@
 			isa = PBXGroup;
 			children = (
 				A8541131261A3604007D2C75 /* GBShopTests.swift */,
+				A802E4BA2628702D0022F87C /* ResponseCodableTests.swift */,
 				A8541133261A3604007D2C75 /* Info.plist */,
 			);
 			path = GBShopTests;
@@ -313,6 +322,8 @@
 				A81BDB0F2620BDEF0084B17F /* Logout */,
 				A81BDB122620BE740084B17F /* RegisterUser */,
 				A81BDB112620BE420084B17F /* ChangeUserData */,
+				A802E4D92628A3FA0022F87C /* CatalogData */,
+				A802E4F02628CEF00022F87C /* GoodById */,
 			);
 			path = Entity;
 			sourceTree = "<group>";
@@ -606,20 +617,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A81BDB4E2620DD730084B17F /* ChangeUser.swift in Sources */,
+				A802E4FE2628D1F20022F87C /* ProductsDataRequestFactory.swift in Sources */,
 				A80CED0B2620854E0048AAC9 /* Auth.swift in Sources */,
 				A80CECDC26207BD00048AAC9 /* ResponseCodable.swift in Sources */,
 				A854111C261A3603007D2C75 /* ViewController.swift in Sources */,
 				A81BDB0B2620BDE70084B17F /* ChangeUserDataResult.swift in Sources */,
 				A81BDB062620BD780084B17F /* LogoutResult.swift in Sources */,
-				A81BDB262620C2DB0084B17F /* Exit.swift in Sources */,
 				A80CED03262084F50048AAC9 /* AuthRequestFactory.swift in Sources */,
-				A81BDB462620DD650084B17F /* ChangeUserRequestFactory.swift in Sources */,
-				A81BDB212620C05F0084B17F /* ExitRequestFactory.swift in Sources */,
 				A80CECF8262083FC0048AAC9 /* LoginResult.swift in Sources */,
 				A80CECD726207B4F0048AAC9 /* ErrorParser.swift in Sources */,
 				A8541118261A3603007D2C75 /* AppDelegate.swift in Sources */,
 				A80CECEB262082190048AAC9 /* AbstractRequestFactory.swift in Sources */,
+				A802E4F22628CF4C0022F87C /* GoodByIdResult.swift in Sources */,
 				A80CECCF26207B290048AAC9 /* AbstractErrorParser.swift in Sources */,
 				A81BDB142620BE8B0084B17F /* RegisterUserResult.swift in Sources */,
 				A8541122261A3603007D2C75 /* GBShop.xcdatamodeld in Sources */,
@@ -627,8 +636,10 @@
 				A854111A261A3603007D2C75 /* SceneDelegate.swift in Sources */,
 				A81BDB352620D2B50084B17F /* UserDataRequestFactory.swift in Sources */,
 				A80CECF02620824E0048AAC9 /* RequestRouter.swift in Sources */,
+				A802E5092628D2FB0022F87C /* ProductsData.swift in Sources */,
 				A80CECFD2620840B0048AAC9 /* User.swift in Sources */,
 				A81BDB402620D41B0084B17F /* UserData.swift in Sources */,
+				A802E4EC2628A7610022F87C /* Product.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -637,6 +648,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A8541132261A3604007D2C75 /* GBShopTests.swift in Sources */,
+				A802E4BB2628702D0022F87C /* ResponseCodableTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
