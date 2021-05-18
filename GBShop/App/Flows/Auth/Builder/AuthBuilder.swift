@@ -10,9 +10,9 @@ import UIKit
 
 final class AuthModuleBuilder {
     
-    static func build(requestFactory: RequestFactory) -> AuthViewController {
+    static func build(requestFactory: RequestFactory, separatorFactoryAbstract: SeparatorFactoryAbstract) -> AuthViewController {
         let presenter = AuthPresenter(requestFactory: requestFactory)
-        let viewController = AuthViewController(presenter: presenter)
+        let viewController = AuthViewController(presenter: presenter, separatorFactoryAbstract: separatorFactoryAbstract)
         presenter.viewInput = viewController
         return viewController
     }

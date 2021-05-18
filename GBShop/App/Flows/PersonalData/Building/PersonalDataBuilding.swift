@@ -9,9 +9,9 @@ import Foundation
 import UIKit
 
 class PersonalDataBuilder {
-    static func build (requestFactory: RequestFactory) -> PersonalDataViewController {
+    static func build (requestFactory: RequestFactory, separatorFactoryAbstract: SeparatorFactoryAbstract) -> PersonalDataViewController {
             let presenter = PersonalDataPresenter(requestFactory: requestFactory)
-            let viewController = PersonalDataViewController(presenter: presenter)
+        let viewController = PersonalDataViewController(presenter: presenter, separatorFactoryAbstract: separatorFactoryAbstract)
             presenter.viewInput = viewController
             return viewController
     }

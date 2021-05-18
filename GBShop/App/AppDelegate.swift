@@ -7,6 +7,8 @@
 
 import UIKit
 import CoreData
+import Firebase
+import FirebaseAnalytics
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -14,6 +16,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let requestFactory = RequestFactory()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
+        FirebaseApp.configure()
+        
+        
+//        Analytics.logEvent(AnalyticsEventSelectContent, parameters: [
+//          AnalyticsParameterItemID: "id-\(title!)",
+//          AnalyticsParameterItemName: title!,
+//          AnalyticsParameterContentType: "cont"
+//          ])
         
         let auth = requestFactory.makeAuthRequestFactory()
         let userData = requestFactory.makeUserDataRequestFactory()

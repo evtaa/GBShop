@@ -14,25 +14,24 @@ protocol CatalogProductsViewInput: class {
     func hideResultsView()
 }
 
-class CatalogProductsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, ShowAlert {
-    //MARK: Private properties
+class CatalogProductsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, ShowAlert,
+                                     UISearchControllerDelegate, UISearchResultsUpdating, UISearchBarDelegate {
+    //MARK: - Private properties
+    private var searchController = SearchControllerDarkStyle(nibName: nil, bundle: nil)
     private let presenter: CatalogProductsViewOutput
     
     internal var catalogProductsView: CatalogProductsView {
 
             return self.view as! CatalogProductsView
     }
-    
-    internal var productsResults = [Product]() {
-        didSet {
-            self.catalogProductsView.tableView.reloadData()
-        }
-    }
+    private  var isActiveSearch: Bool = false
+    internal var searchProducts = [Product]()
+    internal var productsResults = [Product]()
     private struct Constant {
         static let reuseIdentifier = "reuseId"
     }
     
-    //MARK: Init
+    //MARK: - Init
     init(presenter: CatalogProductsViewOutput) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
@@ -42,7 +41,7 @@ class CatalogProductsViewController: UIViewController, UITableViewDelegate, UITa
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: LifeCycle
+    //MARK: - LifeCycle
     override func loadView() {
         super.loadView()
         self.view = CatalogProductsView()
@@ -61,10 +60,11 @@ class CatalogProductsViewController: UIViewController, UITableViewDelegate, UITa
         super.viewWillDisappear(animated)
     }
     
-    //MARK: ConfigureUI
+    //MARK: - ConfigureUI
     private func configure () {
         self.configureTableView()
         self.configureNavigationBar()
+        self.configureSearchController()
         self.configureRefreshControl()
     }
     
@@ -72,6 +72,17 @@ class CatalogProductsViewController: UIViewController, UITableViewDelegate, UITa
         self.catalogProductsView.tableView.register(CatalogProductsCell.self, forCellReuseIdentifier: Constant.reuseIdentifier)
         self.catalogProductsView.tableView.delegate = self
         self.catalogProductsView.tableView.dataSource = self
+        
+    }
+    
+    private func configureSearchController () {
+        self.navigationItem.searchController = self.searchController;
+        self.searchController.delegate = self
+        self.searchController.searchResultsUpdater = self
+        self.searchController.searchBar.delegate = self
+        self.searchController.searchBar.sizeToFit()
+        self.searchController.searchBar.becomeFirstResponder()
+        self.searchController.configure()
     }
     
     private func configureNavigationBar () {
@@ -85,11 +96,12 @@ class CatalogProductsViewController: UIViewController, UITableViewDelegate, UITa
     //MARK: - Actions
     @objc func refreshProductsCatalog () {
         self.presenter.viewDidCatalogProducts(pageNumber: 123, idCategory: 123)
+        self.catalogProductsView.tableView.reloadData()
     }
     
-    //MARK: TableViewDataSource
+    //MARK: - TableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.productsResults.count
+        return isActiveSearch ? self.searchProducts.count : self.productsResults.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -97,7 +109,7 @@ class CatalogProductsViewController: UIViewController, UITableViewDelegate, UITa
         guard let cell = dequeueCell as? CatalogProductsCell else {
             return dequeueCell
         }
-        let product = self.productsResults [indexPath.row]
+        let product = isActiveSearch ? self.searchProducts [indexPath.row] : self.productsResults [indexPath.row]
         let productModel = ProductCellModelFactory.cellModel(from: product)
         cell.configure(with: productModel)
         cell.tapAddingProduct = { [weak self] product in
@@ -113,13 +125,38 @@ class CatalogProductsViewController: UIViewController, UITableViewDelegate, UITa
         return cell
     }
     
-    //MARK: TableViewDelegate
+    //MARK: - TableViewDelegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let product = self.productsResults[indexPath.row]
+        let product = isActiveSearch ? self.searchProducts [indexPath.row] : self.productsResults [indexPath.row]
         self.presenter.viewDidDetailProductController(product: product)
     }
     
+    //MARK: - UISearchResultsUpdating
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let text = searchController.searchBar.text,
+              text.count > 0
+        else {
+            isActiveSearch = false
+            self.catalogProductsView.tableView.reloadData()
+            return
+        }
+        let predicate: NSPredicate = NSPredicate(format:  "SELF contains %@", text.lowercased())
+        self.searchProducts = productsResults.filter({ (product) -> Bool in
+            return predicate.evaluate(with: product.productName.lowercased())
+        })
+        isActiveSearch = true
+        self.catalogProductsView.tableView.reloadData()
+    }
+    
+    //MARK: - UISearchBarDelegate
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        isActiveSearch = true
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        isActiveSearch = false
+    }
 }
 
 extension CatalogProductsViewController: CatalogProductsViewInput {

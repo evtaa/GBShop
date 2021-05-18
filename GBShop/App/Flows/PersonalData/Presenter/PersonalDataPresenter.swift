@@ -13,7 +13,7 @@ protocol PersonalDataViewOutput: class {
     func logout(idUser: Int)
 }
 
-class PersonalDataPresenter: CheckingDataUser {
+class PersonalDataPresenter: CheckingDataUser, TrackableMixIn {
     // MARK: Properties
     weak var viewInput: (PersonalDataViewInput & UIViewController)?
     
@@ -69,6 +69,7 @@ class PersonalDataPresenter: CheckingDataUser {
                 debugPrint (logout)
                 DispatchQueue.main.async {
                     if (logout.result == 1) {
+                        self.track(.logout(method: AnalyticsEvent.logoutParams.methodDefault))
                         self.backToAuth()
                     }
                 }
@@ -80,7 +81,10 @@ class PersonalDataPresenter: CheckingDataUser {
     
     // MARK: Navigation
     private func backToAuth () {
-        let authViewController = AuthModuleBuilder.build(requestFactory: self.requestFactory)
+        guard let separatorFactoryAbstract = viewInput?.separatorFactoryAbstract else {
+            return
+        }
+        let authViewController = AuthModuleBuilder.build(requestFactory: self.requestFactory, separatorFactoryAbstract: separatorFactoryAbstract)
         authViewController.showLogout()
         let navigationAuthViewController = NavigationControllerDarkStyle(rootViewController: authViewController)
         //navigationAuthViewController.modalPresentationStyle = .fullScreen

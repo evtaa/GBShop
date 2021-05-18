@@ -15,7 +15,7 @@ protocol CatalogProductsViewOutput: class {
 }
 
 
-final class CatalogProductsPresenter: ShowAlert {
+final class CatalogProductsPresenter: TrackableMixIn {
     //MARK: Properties
     weak var viewInput: (CatalogProductsViewInput & UIViewController & ShowAlert)?
 
@@ -40,12 +40,14 @@ final class CatalogProductsPresenter: ShowAlert {
             case .success(let downloadCatalogData):
                 debugPrint (downloadCatalogData)
                 DispatchQueue.main.async {
+                    self.track(.viewItemList(pageNumber: pageNumber, idCategory: idCategory))
                     guard !downloadCatalogData.isEmpty else {
                         self.viewInput?.showNoProducts()
                         return
                     }
                     self.viewInput?.hideResultsView()
                     self.viewInput?.productsResults = downloadCatalogData
+                    self.viewInput?.catalogProductsView.tableView.reloadData()
                     self.viewInput?.catalogProductsView.refreshControl.endRefreshing()
                 }
             case .failure(let error):
@@ -54,7 +56,7 @@ final class CatalogProductsPresenter: ShowAlert {
                 }
                 debugPrint (error.localizedDescription)
                 DispatchQueue.main.async {
-                    self.showError(forViewController: viewInput, withMessage: "Network error \(error.localizedDescription)")
+                    self.viewInput?.showError(forViewController: viewInput, withMessage: "Network error \(error.localizedDescription)")
                 }
             }
         }
@@ -70,6 +72,7 @@ final class CatalogProductsPresenter: ShowAlert {
                     guard addToBasket.result == 1 else {
                         return
                     }
+                    self.track(.addToCart(idProduct: idProduct, quantity: quantity))
                     //self.requestContentsFromBasket(idUser: 123)
                 }
             case .failure(let error):
@@ -78,7 +81,7 @@ final class CatalogProductsPresenter: ShowAlert {
                 }
                 debugPrint (error.localizedDescription)
                 DispatchQueue.main.async {
-                    self.showError(forViewController: viewInput, withMessage: "Network error \(error.localizedDescription)")
+                    self.viewInput?.showError(forViewController: viewInput, withMessage: "Network error \(error.localizedDescription)")
                 }
             }
         }

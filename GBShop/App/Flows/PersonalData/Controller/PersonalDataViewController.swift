@@ -10,14 +10,16 @@ import UIKit
 protocol PersonalDataViewInput: class {
     func showSuccessChangingDataUser ()
     func showFailedChangingDataUser ()
+    var separatorFactoryAbstract: SeparatorFactoryAbstract {get set}
 }
 
 class PersonalDataViewController: UIViewController, ShowAlert {
-    
     // MARK: Properties
+    var separatorFactoryAbstract: SeparatorFactoryAbstract
+    
     var gender: String {
         get {
-            switch self.personalDataView.genderSegmentControl.selectedSegmentIndex {
+            switch self.personalDataView.dataUserView.genderSegmentControl.selectedSegmentIndex {
             case 0:
                 return "Male"
             case 1:
@@ -35,7 +37,8 @@ class PersonalDataViewController: UIViewController, ShowAlert {
     private let presenter: PersonalDataViewOutput
     
     // MARK: Init
-    init(presenter: PersonalDataPresenter) {
+    init(presenter: PersonalDataPresenter, separatorFactoryAbstract: SeparatorFactoryAbstract) {
+        self.separatorFactoryAbstract = separatorFactoryAbstract
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
         
@@ -47,7 +50,7 @@ class PersonalDataViewController: UIViewController, ShowAlert {
     // MARK: Life cycle
     override func loadView() {
         super.loadView()
-        self.view = PersonalDataView()
+        self.view = PersonalDataView(separatorFactoryAbstract: separatorFactoryAbstract)
     }
     
     override func viewDidLoad() {
@@ -75,12 +78,12 @@ class PersonalDataViewController: UIViewController, ShowAlert {
     //MARK: Actions
     @objc private func changePersonalData () {
         let dataUser = DataUser(idUser: 123,
-                                username: self.personalDataView.usernameTextField.text,
-                                password: self.personalDataView.passwordTextField.text,
-                                email: self.personalDataView.emailTextField.text,
+                                username: self.personalDataView.dataUserView.usernameTextField.text,
+                                password: self.personalDataView.dataUserView.passwordTextField.text,
+                                email: self.personalDataView.dataUserView.emailTextField.text,
                                 gender: gender,
-                                creditCard: self.personalDataView.creditCardTextField.text,
-                                bio: self.personalDataView.bioTextField.text)
+                                creditCard: self.personalDataView.dataUserView.creditCardTextField.text,
+                                bio: self.personalDataView.dataUserView.bioTextField.text)
         self.presenter.viewDidChangePersonalData(dataUser: dataUser)
     }
     

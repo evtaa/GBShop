@@ -22,6 +22,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let window = UIWindow(windowScene: windowScene)
         let requestFactory = RequestFactory()
+        let separatorFactory = SeparatorFactory()
         
 //        let catalogProductsViewController = CatalogProductsModuleBuilder.build(requestFactory: requestFactory)
 //        let navigationController = UINavigationController(rootViewController: catalogProductsViewController)
@@ -32,7 +33,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        let authViewController = AuthModuleBuilder.build(requestFactory: requestFactory)
 //        let navigationController = UINavigationController(rootViewController: authViewController)
         
-        let authViewController = AuthModuleBuilder.build(requestFactory: requestFactory)
+        let authViewController = AuthModuleBuilder.build(requestFactory: requestFactory, separatorFactoryAbstract: separatorFactory)
         let navigationController = NavigationControllerDarkStyle(rootViewController: authViewController)
         window.rootViewController = navigationController
         window.makeKeyAndVisible()

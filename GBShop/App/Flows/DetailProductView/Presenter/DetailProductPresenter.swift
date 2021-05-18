@@ -17,7 +17,7 @@ protocol DetailProductViewOutput: class {
 }
 
 
-final class DetailProductPresenter: ShowAlert {
+final class DetailProductPresenter: TrackableMixIn {
     //MARK: Properties
     weak var viewInput: (DetailProductViewInput & UIViewController & ShowAlert)?
 
@@ -49,6 +49,7 @@ final class DetailProductPresenter: ShowAlert {
                         self.viewInput?.showNoDetailsProduct()
                         return
                     }
+                    self.track(.viewItem(idProduct: idProduct))
                     self.viewInput?.hideResultsView()
                     self.viewInput?.detailProductResult = downloadGoodById
                     self.viewInput?.detailProductView.refreshControl.endRefreshing()
@@ -59,7 +60,7 @@ final class DetailProductPresenter: ShowAlert {
                 }
                 debugPrint (error.localizedDescription)
                 DispatchQueue.main.async {
-                    self.showError(forViewController: viewInput, withMessage: "Network error \(error.localizedDescription)")
+                    self.viewInput?.showError(forViewController: viewInput, withMessage: "Network error \(error.localizedDescription)")
                 }
             }
         }
@@ -85,7 +86,7 @@ final class DetailProductPresenter: ShowAlert {
                 }
                 debugPrint (error.localizedDescription)
                 DispatchQueue.main.async {
-                    self.showError(forViewController: viewInput, withMessage: "Network error \(error.localizedDescription)")
+                    self.viewInput?.showError(forViewController: viewInput, withMessage: "Network error \(error.localizedDescription)")
                 }
             }
         }
@@ -101,6 +102,7 @@ final class DetailProductPresenter: ShowAlert {
                     guard addToBasket.result == 1 else {
                         return
                     }
+                    self.track(.addToCart(idProduct: idProduct, quantity: quantity))
                     //self.requestContentsFromBasket(idUser: 123)
                 }
             case .failure(let error):
@@ -109,7 +111,7 @@ final class DetailProductPresenter: ShowAlert {
                 }
                 debugPrint (error.localizedDescription)
                 DispatchQueue.main.async {
-                    self.showError(forViewController: viewInput, withMessage: "Network error \(error.localizedDescription)")
+                    self.viewInput?.showError(forViewController: viewInput, withMessage: "Network error \(error.localizedDescription)")
                 }
             }
         }
@@ -133,7 +135,7 @@ final class DetailProductPresenter: ShowAlert {
                 }
                 debugPrint (error.localizedDescription)
                 DispatchQueue.main.async {
-                    self.showError(forViewController: viewInput, withMessage: "Network error \(error.localizedDescription)")
+                    self.viewInput?.showError(forViewController: viewInput, withMessage: "Network error \(error.localizedDescription)")
                 }
             }
         }

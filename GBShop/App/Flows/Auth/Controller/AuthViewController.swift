@@ -6,17 +6,19 @@
 //
 
 import UIKit
+import FirebaseAnalytics
 
 protocol AuthViewInput: class {
     func showNotificationData(message: String)
     func hideNotificationData ()
     func showLogout ()
-    //func showError (withMessage message: String)
+    var separatorFactoryAbstract: SeparatorFactoryAbstract {get set}
 }
 
 class AuthViewController: UIViewController, ShowAlert {
     // MARK: Properties
     private var presenter: AuthViewOutput
+    var separatorFactoryAbstract: SeparatorFactoryAbstract
     
     // MARK: Private properties
     internal var authView: AuthView {
@@ -25,8 +27,9 @@ class AuthViewController: UIViewController, ShowAlert {
     }
     
     //MARK: Init
-    init(presenter: AuthViewOutput) {
+    init(presenter: AuthViewOutput, separatorFactoryAbstract: SeparatorFactoryAbstract) {
         self.presenter = presenter
+        self.separatorFactoryAbstract = separatorFactoryAbstract
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -52,15 +55,15 @@ class AuthViewController: UIViewController, ShowAlert {
     }
     
     func configureNavigationBar () {
-        let barButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector (checkLogout))
+        let barButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector (logoutButtonTouchUpInside))
         self.navigationItem.setRightBarButton(barButtonItem, animated: true)
         self.navigationController?.navigationBar.accessibilityIdentifier = "authNavigationBar"
         self.navigationItem.rightBarButtonItem?.accessibilityIdentifier = "logout"
     }
     
     private func configureActions () {
-        self.authView.loginButton.addTarget(self, action: #selector(checkLogin), for: .touchUpInside)
-        self.authView.createAccountButton.addTarget(self, action: #selector(openRegistration), for: .touchUpInside)
+        self.authView.loginButton.addTarget(self, action: #selector(loginButtonTouchUpInside), for: .touchUpInside)
+        self.authView.createAccountButton.addTarget(self, action: #selector(createAccountButtonTouchUpInside), for: .touchUpInside)
     }
     
     // MARK: Private functions
@@ -69,19 +72,18 @@ class AuthViewController: UIViewController, ShowAlert {
         self.authView.infoDataLabel.isHidden = false
     }
     // MARK: Actions
-    @objc func checkLogin () {
+    @objc func loginButtonTouchUpInside () {
         self.presenter.viewDidLogin(userName: self.authView.usernameTextField.text,
                                     password: self.authView.passwordTextField.text)
     }
     
-    @objc func checkLogout () {
+    @objc func logoutButtonTouchUpInside () {
         self.presenter.viewDidLogout(idUser: 123)
     }
     
-    @objc func openRegistration () {
+    @objc func createAccountButtonTouchUpInside () {
         self.presenter.viewDidRegistration()
     }
-    
 }
 
 extension AuthViewController: AuthViewInput {

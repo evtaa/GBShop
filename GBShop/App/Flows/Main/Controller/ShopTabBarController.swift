@@ -8,8 +8,12 @@
 import UIKit
 
 class ShopTabBarController: UITabBarController {
+    //MARK: - Properties
+    let separatorFactoryAbstract: SeparatorFactoryAbstract
+    
     // MARK: - Init
-    init(requestFactory: RequestFactory) {
+    init(requestFactory: RequestFactory, separatorFactoryAbstract: SeparatorFactoryAbstract) {
+        self.separatorFactoryAbstract = separatorFactoryAbstract
         super.init(nibName: nil, bundle: nil)
         self.viewControllers = self.createViewControllers(requestFactory: requestFactory)
         self.configureTabBar()
@@ -37,7 +41,7 @@ class ShopTabBarController: UITabBarController {
     private func createViewControllers (requestFactory: RequestFactory) -> [UIViewController] {
         var controllers = [UIViewController]()
         
-        let personalDataViewController = PersonalDataBuilder.build(requestFactory: requestFactory)
+        let personalDataViewController = PersonalDataBuilder.build(requestFactory: requestFactory, separatorFactoryAbstract: separatorFactoryAbstract)
         personalDataViewController.tabBarItem = UITabBarItem(title: "Profile", image: UIImage(named: "profile"), selectedImage: UIImage(named: "profileSelect"))
         personalDataViewController.tabBarItem.tag = 0
         let personalDataNavigationController = NavigationControllerDarkStyle(rootViewController: personalDataViewController)

@@ -10,13 +10,16 @@ import UIKit
 protocol RegistrationViewInput: class {
     func showSuccessRegistration ()
     func showFailedRegistration ()
+    var separatorFactoryAbstract: SeparatorFactoryAbstract {get set}
 }
 
 class RegistrationViewController: UIViewController, ShowAlert {
     // MARK: Properties
+    var separatorFactoryAbstract: SeparatorFactoryAbstract
+    
     var gender: String {
         get {
-            switch self.registrationView.genderSegmentControl.selectedSegmentIndex {
+            switch self.registrationView.dataUserView.genderSegmentControl.selectedSegmentIndex {
             case 0:
                 return "Male"
             case 1:
@@ -34,10 +37,10 @@ class RegistrationViewController: UIViewController, ShowAlert {
     private let presenter: RegistrationViewOutput
     
     // MARK: Init
-    init(presenter: RegistrationPresenter) {
+    init(presenter: RegistrationPresenter, separatorFactoryAbstract: SeparatorFactoryAbstract) {
         self.presenter = presenter
+        self.separatorFactoryAbstract = separatorFactoryAbstract
         super.init(nibName: nil, bundle: nil)
-        
     }
     
     required init?(coder: NSCoder) {
@@ -47,7 +50,7 @@ class RegistrationViewController: UIViewController, ShowAlert {
     // MARK: Life cycle
     override func loadView() {
         super.loadView()
-        self.view = RegistrationView()
+        self.view = RegistrationView(separatorFactoryAbstract: separatorFactoryAbstract)
     }
     
     override func viewDidLoad() {
@@ -62,19 +65,19 @@ class RegistrationViewController: UIViewController, ShowAlert {
     
     private func configureNavigationBar() {
         self.title = "Registration"
-        let barButtonItem = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(registration))
+        let barButtonItem = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(doneButtonTouchUpInside))
         self.navigationItem.setRightBarButton(barButtonItem, animated: true)
     }
     
     //MARK: Actions
-    @objc private func registration () {
+    @objc private func doneButtonTouchUpInside () {
         let dataUser = DataUser(idUser: 123,
-                                username: self.registrationView.usernameTextField.text,
-                                password: self.registrationView.passwordTextField.text,
-                                email: self.registrationView.emailTextField.text,
+                                username: self.registrationView.dataUserView.usernameTextField.text,
+                                password: self.registrationView.dataUserView.passwordTextField.text,
+                                email: self.registrationView.dataUserView.emailTextField.text,
                                 gender: gender,
-                                creditCard: self.registrationView.creditCardTextField.text,
-                                bio: self.registrationView.bioTextField.text)
+                                creditCard: self.registrationView.dataUserView.creditCardTextField.text,
+                                bio: self.registrationView.dataUserView.bioTextField.text)
         self.presenter.viewDidRegistration(dataUser: dataUser)
     }
 }

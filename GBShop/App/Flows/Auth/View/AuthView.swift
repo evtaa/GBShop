@@ -17,10 +17,7 @@ class AuthView: UIView {
     let createAccountButton = ButtonDarkStyle()
     let scrollView = UIScrollView ()
     
-    
-    
     //MARK: - Init
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.configureUI()
@@ -31,7 +28,6 @@ class AuthView: UIView {
     }
     
     //MARK: - ConfigureUI
-    
     private func configureUI () {
         self.backgroundColor = .black
         self.accessibilityIdentifier = "authView"

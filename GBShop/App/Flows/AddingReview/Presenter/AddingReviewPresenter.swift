@@ -18,7 +18,7 @@ protocol AddingReviewViewOutput: class {
 }
 
 
-final class AddingReviewPresenter: ShowAlert {
+final class AddingReviewPresenter: TrackableMixIn {
     //MARK: Properties
     weak var viewInput: (AddingReviewViewInput & UIViewController & ShowAlert)?
     
@@ -41,6 +41,7 @@ final class AddingReviewPresenter: ShowAlert {
                 debugPrint (addReview)
                 DispatchQueue.main.async {
                     guard addReview.result == 1 else {
+                        self.track(.addReview(idUser: idUser, text: text))
                         self.viewInput?.showFailedAddingReview()
                         return
                     }
@@ -52,7 +53,7 @@ final class AddingReviewPresenter: ShowAlert {
                 }
                 debugPrint (error.localizedDescription)
                 DispatchQueue.main.async {
-                    self.showError(forViewController: viewInput, withMessage: "Network error \(error.localizedDescription)")
+                    self.viewInput?.showError(forViewController: viewInput, withMessage: "Network error \(error.localizedDescription)")
                 }
             }
         }
@@ -84,7 +85,7 @@ final class AddingReviewPresenter: ShowAlert {
             self.viewInput?.showError(forViewController: viewInput, withMessage: InsertingReviewError.invalidReview.rawValue)
         }
         catch {
-            self.showError(forViewController: viewInput, withMessage: "A unacceptable error. You should contact to administrator")
+            self.viewInput?.showError(forViewController: viewInput, withMessage: "A unacceptable error. You should contact to administrator")
         }
     }
 }

@@ -19,7 +19,6 @@ protocol BasketViewInput: class {
 }
 
 final class BasketViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, ShowAlert {
-    
     //MARK: Private properties
     private let presenter: BasketViewOutput
     
@@ -30,6 +29,12 @@ final class BasketViewController: UIViewController, UITableViewDelegate, UITable
     
     internal var contentsResults = [Content]() {
         didSet {
+            var sum = 0
+             contentsResults.forEach { (item) in
+                sum += item.price
+            }
+            let view = self.basketView.tableView.tableFooterView as? BasketTableFooterView
+            view?.configure(withValue: sum)
             self.basketView.tableView.reloadData()
         }
     }
@@ -45,6 +50,17 @@ final class BasketViewController: UIViewController, UITableViewDelegate, UITable
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    //MARK: - Layout
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        updateFooterViewHeight(for: basketView.tableView.tableFooterView)
+    }
+    
+    func updateFooterViewHeight(for footer: UIView?) {
+        guard let footer = footer else { return }
+        footer.frame.size.height = footer.systemLayoutSizeFitting(CGSize(width: view.bounds.width, height: 0)).height
     }
     
     //MARK: LifeCycle

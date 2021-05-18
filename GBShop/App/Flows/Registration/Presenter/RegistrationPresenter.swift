@@ -14,7 +14,7 @@ protocol RegistrationViewOutput: class {
     func openTabBar()
 }
 
-class RegistrationPresenter: CheckingDataUser {
+class RegistrationPresenter: CheckingDataUser, TrackableMixIn {
     // MARK: Properties
     weak var viewInput: (RegistrationViewInput & UIViewController)?
     
@@ -49,6 +49,7 @@ class RegistrationPresenter: CheckingDataUser {
             switch response.result {
             case .success(let registration):
                 debugPrint(registration)
+                self.track(.signUp(method: AnalyticsEvent.signupParams.methodDefault))
                 DispatchQueue.main.async {
                     self.viewInput?.showSuccessRegistration()
                 }
@@ -65,7 +66,10 @@ class RegistrationPresenter: CheckingDataUser {
     }
     
     private func goToTabBar () {
-        let shopTabBarViewController = ShopTabBarModuleBuilder.build(requestFactory: requestFactory)
+        guard let separatorFactoryAbstract = viewInput?.separatorFactoryAbstract else {
+            return
+        }
+        let shopTabBarViewController = ShopTabBarModuleBuilder.build(requestFactory: requestFactory, separatorFactoryAbstract: separatorFactoryAbstract)
         shopTabBarViewController.modalPresentationStyle = .fullScreen
         self.viewInput?.dismiss(animated: true, completion: nil)
         self.viewInput?.present(shopTabBarViewController, animated: true, completion: nil)

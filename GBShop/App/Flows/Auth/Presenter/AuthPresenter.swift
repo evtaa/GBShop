@@ -14,7 +14,7 @@ protocol AuthViewOutput: class {
     func viewDidRegistration()
 }
 
-final class AuthPresenter: CheckingDataUser {
+final class AuthPresenter: CheckingDataUser, TrackableMixIn {
     
     // MARK: Properties
     weak var viewInput: (UIViewController & AuthViewInput)?
@@ -42,6 +42,7 @@ final class AuthPresenter: CheckingDataUser {
                 debugPrint(login)
                 DispatchQueue.main.async {
                     if (login.result == 1) {
+                        self.track(.login(method: AnalyticsEvent.loginParams.methodDefault, success: true))
                         self.viewInput?.hideNotificationData()
                         self.openTabBar()
                     } else {
@@ -49,6 +50,7 @@ final class AuthPresenter: CheckingDataUser {
                     }
                 }
             case .failure(let error):
+                self.track(.login(method: AnalyticsEvent.loginParams.methodDefault, success: false))
                 debugPrint(error.localizedDescription)
             }
         }
@@ -62,6 +64,7 @@ final class AuthPresenter: CheckingDataUser {
                 debugPrint (logout)
                 DispatchQueue.main.async {
                     if (logout.result == 1) {
+                        self.track(.logout(method: AnalyticsEvent.logoutParams.methodDefault))
                         self.viewInput?.showLogout()
                     }
                 }
@@ -73,12 +76,18 @@ final class AuthPresenter: CheckingDataUser {
     
     // MARK: Navigations
     private func openRegistration () {
-        let registrationViewController = RegistrationBuilder.build(requestFactory: requestFactory)
+        guard let separatorFactoryAbstract = viewInput?.separatorFactoryAbstract else {
+            return
+        }
+        let registrationViewController = RegistrationBuilder.build(requestFactory: requestFactory, separatorFactoryAbstract: separatorFactoryAbstract)
         self.viewInput?.navigationController?.pushViewController(registrationViewController, animated: true)
     }
     
     private func openTabBar () {
-        let shopTabBarViewController = ShopTabBarModuleBuilder.build(requestFactory: requestFactory)
+        guard let separatorFactoryAbstract = viewInput?.separatorFactoryAbstract else {
+            return
+        }
+        let shopTabBarViewController = ShopTabBarModuleBuilder.build(requestFactory: requestFactory, separatorFactoryAbstract: separatorFactoryAbstract)
         //shopTabBarViewController.modalPresentationStyle = .fullScreen
         let keyWindow = UIApplication.shared.windows.filter {$0.isKeyWindow == true}.last
         keyWindow?.rootViewController = shopTabBarViewController

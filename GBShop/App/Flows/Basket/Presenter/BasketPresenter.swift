@@ -16,7 +16,7 @@ protocol BasketViewOutput: class {
 }
 
 
-final class BasketPresenter: CheckingDataUser {
+final class BasketPresenter: CheckingDataUser, TrackableMixIn {
     //MARK: Properties
     weak var viewInput: (BasketViewInput & UIViewController & ShowAlert)?
 
@@ -68,6 +68,7 @@ final class BasketPresenter: CheckingDataUser {
                 debugPrint (payBasket)
                 DispatchQueue.main.async {
                     guard payBasket.result == 1 else {
+                        self.track(.purchase(idUser: idUser))
                         self.viewInput?.showPaymentFailed()
                         return
                     }
@@ -96,6 +97,7 @@ final class BasketPresenter: CheckingDataUser {
                     guard deleteFromBasket.result == 1 else {
                         return
                     }
+                    self.track(.removeFromCart(idProduct: idProduct))
                     self.requestContentsFromBasket(idUser: 123)
                 }
             case .failure(let error):
