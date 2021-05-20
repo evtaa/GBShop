@@ -10,8 +10,8 @@ import UIKit
 
 final class ShopTabBarModuleBuilder {
     
-    static func build(requestFactory: RequestFactory, separatorFactoryAbstract: SeparatorFactoryAbstract) -> ShopTabBarController{
-        let viewController = ShopTabBarController (requestFactory: requestFactory, separatorFactoryAbstract: separatorFactoryAbstract)
+    static func build(requestFactories: RequestFactories, separatorFactoryAbstract: SeparatorFactoryAbstract) -> ShopTabBarController{
+        let viewController = ShopTabBarController (requestFactories: requestFactories, separatorFactoryAbstract: separatorFactoryAbstract)
         return viewController
     }
 }

@@ -7,33 +7,30 @@
 
 import UIKit
 
+struct RequestFactories {
+    let authRequestFactory: AuthRequestFactory
+    let userRequestFactory: UserDataRequestFactory
+    let productsRequestFactory: ProductsDataRequestFactory
+    let reviewsRequestFactory: ReviewsDataRequestFactory
+    let basketRequestFactory: BasketDataRequestFactory
+}
+
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
-        // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-        // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
-        
-        //guard let _ = (scene as? UIWindowScene) else { return }
-        
         guard let windowScene = (scene as? UIWindowScene) else { return }
-        
         let window = UIWindow(windowScene: windowScene)
         let requestFactory = RequestFactory()
+        let requestFactories = RequestFactories(authRequestFactory: requestFactory.makeAuthRequestFactory(),
+                                                userRequestFactory: requestFactory.makeUserDataRequestFactory(),
+                                                productsRequestFactory: requestFactory.makeProductsDataRequestFactory(),
+                                                reviewsRequestFactory: requestFactory.makeReviewsDataRequestFactory(),
+                                                basketRequestFactory: requestFactory.makeBasketDataRequestFactory())
         let separatorFactory = SeparatorFactory()
-        
-//        let catalogProductsViewController = CatalogProductsModuleBuilder.build(requestFactory: requestFactory)
-//        let navigationController = UINavigationController(rootViewController: catalogProductsViewController)
-        
-//        let basketViewController = BasketModuleBuilder.build(requestFactory: requestFactory)
-//        let navigationController = UINavigationController(rootViewController: basketViewController)
-        
-//        let authViewController = AuthModuleBuilder.build(requestFactory: requestFactory)
-//        let navigationController = UINavigationController(rootViewController: authViewController)
-        
-        let authViewController = AuthModuleBuilder.build(requestFactory: requestFactory, separatorFactoryAbstract: separatorFactory)
+        let authViewController = AuthModuleBuilder.build(requestFactories: requestFactories,
+                                                         separatorFactoryAbstract: separatorFactory)
         let navigationController = NavigationControllerDarkStyle(rootViewController: authViewController)
         window.rootViewController = navigationController
         window.makeKeyAndVisible()

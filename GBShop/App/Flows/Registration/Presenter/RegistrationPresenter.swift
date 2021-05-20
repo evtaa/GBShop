@@ -19,13 +19,11 @@ class RegistrationPresenter: CheckingDataUser, TrackableMixIn {
     weak var viewInput: (RegistrationViewInput & UIViewController)?
     
     // MARK: Private properties
-    private var requestFactory: RequestFactory
-    private var userDataRequestFactory: UserDataRequestFactory
+    private var requestFactories: RequestFactories
     
     // MARK: Init
-    init(requestFactory: RequestFactory) {
-        self.requestFactory = requestFactory
-        self.userDataRequestFactory = requestFactory.makeUserDataRequestFactory()
+    init(requestFactories: RequestFactories) {
+        self.requestFactories = requestFactories
     }
     
     // MARK: Request
@@ -39,7 +37,7 @@ class RegistrationPresenter: CheckingDataUser, TrackableMixIn {
         else {
             return
         }
-        userDataRequestFactory.registration(idUser: dataUser.idUser,
+        requestFactories.userRequestFactory.registration(idUser: dataUser.idUser,
                                             username: username,
                                             password: password,
                                             email: email,
@@ -69,7 +67,8 @@ class RegistrationPresenter: CheckingDataUser, TrackableMixIn {
         guard let separatorFactoryAbstract = viewInput?.separatorFactoryAbstract else {
             return
         }
-        let shopTabBarViewController = ShopTabBarModuleBuilder.build(requestFactory: requestFactory, separatorFactoryAbstract: separatorFactoryAbstract)
+        let shopTabBarViewController = ShopTabBarModuleBuilder.build(requestFactories: requestFactories,
+                                                                     separatorFactoryAbstract: separatorFactoryAbstract)
         shopTabBarViewController.modalPresentationStyle = .fullScreen
         self.viewInput?.dismiss(animated: true, completion: nil)
         self.viewInput?.present(shopTabBarViewController, animated: true, completion: nil)

@@ -10,6 +10,9 @@ import Foundation
 import Alamofire
 
 class RequestFactory {
+    //MARK: - Properties
+    //let baseUrl = URL(string: "http://127.0.0.1:8080/")!
+    let baseUrl = URL(string: "https://mighty-harbor-34171.herokuapp.com/")!
     
     func makeErrorParser() -> AbstractErrorParser {
         return ErrorParser()
@@ -27,26 +30,26 @@ class RequestFactory {
     
     func makeAuthRequestFactory() -> AuthRequestFactory {
         let errorParser = makeErrorParser()
-        return Auth(errorParser: errorParser, sessionManager: commonSession, queue: sessionQueue)
+        return Auth(baseUrl: baseUrl, errorParser: errorParser, sessionManager: commonSession, queue: sessionQueue)
     }
     
     func makeUserDataRequestFactory() -> UserDataRequestFactory {
         let errorParser = makeErrorParser()
-        return UserData(errorParser: errorParser, sessionManager: commonSession, queue: sessionQueue)
+        return UserData(baseUrl: baseUrl, errorParser: errorParser, sessionManager: commonSession, queue: sessionQueue)
     }
     
     func makeProductsDataRequestFactory() -> ProductsDataRequestFactory {
         let errorParser = makeErrorParser()
-        return ProductsData(errorParser: errorParser, sessionManager: commonSession, queue: sessionQueue)
+        return ProductsData(baseUrl: baseUrl, errorParser: errorParser, sessionManager: commonSession, queue: sessionQueue)
     }
     
     func makeReviewsDataRequestFactory() -> ReviewsDataRequestFactory {
         let errorParser = makeErrorParser()
-        return Review(errorParser: errorParser, sessionManager: commonSession, queue: sessionQueue)
+        return Review(baseUrl: baseUrl, errorParser: errorParser, sessionManager: commonSession, queue: sessionQueue)
     }
     
     func makeBasketDataRequestFactory() -> BasketDataRequestFactory {
         let errorParser = makeErrorParser()
-        return Basket(errorParser: errorParser, sessionManager: commonSession, queue: sessionQueue)
+        return Basket(baseUrl: baseUrl, errorParser: errorParser, sessionManager: commonSession, queue: sessionQueue)
     }
 }

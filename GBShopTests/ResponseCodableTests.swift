@@ -14,29 +14,30 @@ class ResponseCodableTests: XCTestCase {
     let expectation = XCTestExpectation(description: "Download")
     
     let requestFactory = RequestFactory()
-    var auth: AuthRequestFactory!
-    var userData: UserDataRequestFactory!
-    var productsData: ProductsDataRequestFactory!
-    var reviewsData: ReviewsDataRequestFactory!
-    var basketData: BasketDataRequestFactory!
+    var authRequestFactory: AuthRequestFactory!
+    var userRequestFactory: UserDataRequestFactory!
+    var productsRequestFactory: ProductsDataRequestFactory!
+    var reviewsRequestFactory: ReviewsDataRequestFactory!
+    var basketRequestFactory: BasketDataRequestFactory!
     
     override func setUpWithError() throws {
-        auth = requestFactory.makeAuthRequestFactory()
-        userData = requestFactory.makeUserDataRequestFactory()
-        productsData = requestFactory.makeProductsDataRequestFactory()
-        reviewsData = requestFactory.makeReviewsDataRequestFactory()
-        basketData = requestFactory.makeBasketDataRequestFactory()
+        authRequestFactory = requestFactory.makeAuthRequestFactory()
+        userRequestFactory = requestFactory.makeUserDataRequestFactory()
+        productsRequestFactory = requestFactory.makeProductsDataRequestFactory()
+        reviewsRequestFactory = requestFactory.makeReviewsDataRequestFactory()
+        basketRequestFactory = requestFactory.makeBasketDataRequestFactory()
     }
 
     override func tearDownWithError() throws {
-        auth = nil
-        userData = nil
-        productsData = nil
-        reviewsData = nil
+        authRequestFactory = nil
+        userRequestFactory = nil
+        productsRequestFactory = nil
+        reviewsRequestFactory = nil
+        basketRequestFactory = nil
     }
     
     func testLoginShouldDownloadAndParse() {
-        auth.login(userName: "Somebody", password: "mypassword") { response in
+        authRequestFactory.login(userName: "Somebody", password: "mypassword") { response in
             switch response.result {
             case .success(let login):
                 print(login)
@@ -50,7 +51,7 @@ class ResponseCodableTests: XCTestCase {
     }
     
     func testLogoutShouldDownloadAndParse() {
-        auth.logout(idUser: 123) { response in
+        authRequestFactory.logout(idUser: 123) { response in
             switch response.result {
             case .success(let logout):
                 print (logout)
@@ -64,7 +65,7 @@ class ResponseCodableTests: XCTestCase {
     }
     
     func testRegistrationShouldDownloadAndParse() {
-        userData.registration (idUser: 123,
+        userRequestFactory.registration (idUser: 123,
                             username: "Somebody",
                             password: "mypassword",
                             email: "some@some.ru",
@@ -84,7 +85,7 @@ class ResponseCodableTests: XCTestCase {
     }
     
     func testChangeUserDataShouldDownloadAndParse() {
-        userData.changeUserData (idUser: 123,
+        userRequestFactory.changeUserData (idUser: 123,
                             username: "Somebody",
                             password: "mypassword",
                             email: "some@some.ru",
@@ -104,7 +105,7 @@ class ResponseCodableTests: XCTestCase {
     }
     
     func testDownCatalogDataShouldDownloadAndParse() {
-        productsData.downloadCatalogData(pageNumber: 1, idCategory: 1) { (response) in
+        productsRequestFactory.downloadCatalogData(pageNumber: 1, idCategory: 1) { (response) in
             switch response.result {
             case .success(let productsData):
                 print (productsData)
@@ -118,7 +119,7 @@ class ResponseCodableTests: XCTestCase {
     }
     
     func testDownGoodByIdShouldDownloadAndParse() {
-        productsData.downloadGoodById(idProduct: 123) { (response) in
+        productsRequestFactory.downloadGoodById(idProduct: 123) { (response) in
             switch response.result {
             case .success(let goodById):
                 print (goodById)
@@ -132,7 +133,7 @@ class ResponseCodableTests: XCTestCase {
     }
     
     func testAddReviewShouldDownloadAndParse() {
-        reviewsData.addReview(idUser: 123, text: "Текст отзыва") { (response) in
+        reviewsRequestFactory.addReview(idUser: 123, text: "Текст отзыва") { (response) in
             switch response.result {
             case .success(let addReview):
                 print (addReview)
@@ -146,7 +147,7 @@ class ResponseCodableTests: XCTestCase {
     }
     
     func testRemoveReviewShouldDownloadAndParse(){
-        reviewsData.removeReview(idComment: 1234) { (response) in
+        reviewsRequestFactory.removeReview(idComment: 1234) { (response) in
             switch response.result {
             case .success(let removeReview):
                 print (removeReview)
@@ -160,7 +161,7 @@ class ResponseCodableTests: XCTestCase {
     }
     
     func testCatalogReviewsShouldDownloadAndParse(){
-        reviewsData.catalogReviews(idProduct: 12, pageNumber: 1) { (response) in
+        reviewsRequestFactory.catalogReviews(idProduct: 12, pageNumber: 1) { (response) in
             switch response.result {
             case .success(let catalogReviews):
                 print (catalogReviews)
@@ -174,7 +175,7 @@ class ResponseCodableTests: XCTestCase {
     }
     
     func testAddToBasketShouldDownloadAndParse(){
-        basketData.addToBasket(idProduct: 12, quantity: 21) { (response) in
+        basketRequestFactory.addToBasket(idProduct: 12, quantity: 21) { (response) in
             switch response.result {
             case .success(let addToBasket):
                 print (addToBasket)
@@ -188,7 +189,7 @@ class ResponseCodableTests: XCTestCase {
     }
     
     func testDeleteFromBasketShouldDownloadAndParse(){
-        basketData.deleteFromBasket(idProduct: 12) { (response) in
+        basketRequestFactory.deleteFromBasket(idProduct: 12) { (response) in
             switch response.result {
             case .success(let deleteFromBasket):
                 print (deleteFromBasket)
@@ -202,7 +203,7 @@ class ResponseCodableTests: XCTestCase {
     }
     
     func testPayBasketShouldDownloadAndParse(){
-        basketData.payBasket(idUser: 54) { (response) in
+        basketRequestFactory.payBasket(idUser: 54) { (response) in
             switch response.result {
             case .success(let payBasket):
                 print (payBasket)
@@ -216,7 +217,7 @@ class ResponseCodableTests: XCTestCase {
     }
     
     func testGetBasketShouldDownloadAndParse(){
-        basketData.getBasket(idUser: 78) { (response) in
+        basketRequestFactory.getBasket(idUser: 78) { (response) in
             switch response.result {
             case .success(let getBasket):
                 print (getBasket)

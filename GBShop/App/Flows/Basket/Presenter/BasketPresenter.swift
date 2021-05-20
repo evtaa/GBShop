@@ -21,18 +21,16 @@ final class BasketPresenter: CheckingDataUser, TrackableMixIn {
     weak var viewInput: (BasketViewInput & UIViewController & ShowAlert)?
 
     //MARK: Properties private
-    private var requestFactory: RequestFactory
-    private var basketDataRequestFactory: BasketDataRequestFactory
-    
+    private var requestFactories: RequestFactories
+       
     //MARK: Init
-    init(requestFactory: RequestFactory) {
-        self.requestFactory = requestFactory
-        self.basketDataRequestFactory = requestFactory.makeBasketDataRequestFactory()
+    init(requestFactories: RequestFactories) {
+        self.requestFactories = requestFactories
     }
     
     //MARK: Requests
     private func requestContentsFromBasket(idUser: Int) {
-        basketDataRequestFactory.getBasket(idUser: idUser) { [weak self] (response) in
+        requestFactories.basketRequestFactory.getBasket(idUser: idUser) { [weak self] (response) in
             guard let self = self else { return }
                 self.viewInput?.throbberStop()
             switch response.result {
@@ -60,7 +58,7 @@ final class BasketPresenter: CheckingDataUser, TrackableMixIn {
     }
     
     private func requestPayBasket(idUser: Int) {
-        basketDataRequestFactory.payBasket(idUser: idUser) { [weak self] (response) in
+        requestFactories.basketRequestFactory.payBasket(idUser: idUser) { [weak self] (response) in
             guard let self = self else { return }
             self.viewInput?.throbberStop()
             switch response.result {
@@ -87,7 +85,7 @@ final class BasketPresenter: CheckingDataUser, TrackableMixIn {
         }
     }
     private func requestDeleteFromBasket(idProduct: Int) {
-        basketDataRequestFactory.deleteFromBasket(idProduct: idProduct) { [weak self] (response) in
+        requestFactories.basketRequestFactory.deleteFromBasket(idProduct: idProduct) { [weak self] (response) in
             guard let self = self else { return }
             self.viewInput?.throbberStop()
             switch response.result {

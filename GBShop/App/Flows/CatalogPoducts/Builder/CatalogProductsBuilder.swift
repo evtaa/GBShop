@@ -10,8 +10,8 @@ import UIKit
 
 final class CatalogProductsModuleBuilder {
     
-    static func build(requestFactory: RequestFactory) -> CatalogProductsViewController {
-        let presenter = CatalogProductsPresenter(requestFactory: requestFactory)
+    static func build(requestFactories: RequestFactories) -> CatalogProductsViewController {
+        let presenter = CatalogProductsPresenter(requestFactories: requestFactories)
         let viewController = CatalogProductsViewController(presenter: presenter)
         presenter.viewInput = viewController
         return viewController

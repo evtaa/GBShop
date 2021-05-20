@@ -17,6 +17,7 @@ protocol AuthViewInput: class {
 
 class AuthViewController: UIViewController, ShowAlert {
     // MARK: Properties
+    private var hideKeyboardGesture: UITapGestureRecognizer?
     private var presenter: AuthViewOutput
     var separatorFactoryAbstract: SeparatorFactoryAbstract
     
@@ -47,11 +48,16 @@ class AuthViewController: UIViewController, ShowAlert {
         super.viewDidLoad()
         self.configure()
     }
+    override func viewWillDisappear(_ animated: Bool) {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
     
     //MARK: Configure
     private func configure () {
         self.configureNavigationBar()
         self.configureActions()
+        self.configureKeyboard ()
     }
     
     func configureNavigationBar () {
@@ -66,7 +72,32 @@ class AuthViewController: UIViewController, ShowAlert {
         self.authView.createAccountButton.addTarget(self, action: #selector(createAccountButtonTouchUpInside), for: .touchUpInside)
     }
     
+    private func configureKeyboard () {
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWasShown), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillBeHidden(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
     // MARK: Private functions
+    @objc func keyboardWasShown(notification: Notification) {
+        guard let userInfo = notification.userInfo as NSDictionary?,
+              let kbSize = (userInfo.value(forKey: UIResponder.keyboardFrameEndUserInfoKey) as? NSValue)?.cgRectValue.size else {
+            return}
+        debugPrint(kbSize.height)
+        let contentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: kbSize.height, right: 0.0)
+        self.authView.scrollView.contentInset = contentInsets
+        self.authView.scrollView.scrollIndicatorInsets = contentInsets
+    }
+    
+    @objc func keyboardWillBeHidden(notification: Notification) {
+        guard let userInfo = notification.userInfo as NSDictionary?,
+              let kbSize = (userInfo.value(forKey: UIResponder.keyboardFrameEndUserInfoKey) as? NSValue)?.cgRectValue.size else {
+            return}
+        let contentInsets = UIEdgeInsets.zero
+        self.authView.scrollView.contentInset = contentInsets
+        self.authView.scrollView.scrollIndicatorInsets = contentInsets
+        self.authView.scrollView.scrollRectToVisible(CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - kbSize.height ), animated: true)
+    }
+
     private func showInfoData(message: String) {
         self.authView.infoDataLabel.text = message
         self.authView.infoDataLabel.isHidden = false

@@ -23,18 +23,16 @@ final class AddingReviewPresenter: TrackableMixIn {
     weak var viewInput: (AddingReviewViewInput & UIViewController & ShowAlert)?
     
     //MARK: Properties private
-    private var requestFactory: RequestFactory
-    private var reviewsDataRequestFactory: ReviewsDataRequestFactory
+    private var requestFactories: RequestFactories
     
     //MARK: Init
-    init(requestFactory: RequestFactory) {
-        self.requestFactory = requestFactory
-        self.reviewsDataRequestFactory = requestFactory.makeReviewsDataRequestFactory()
+    init(requestFactories: RequestFactories) {
+        self.requestFactories = requestFactories
     }
     
     //MARK: Requests
     private func requestAddReview(idUser: Int, text: String) {
-        reviewsDataRequestFactory.addReview(idUser: idUser, text: text) { [weak self] (response) in
+        requestFactories.reviewsRequestFactory.addReview(idUser: idUser, text: text) { [weak self] (response) in
             guard let self = self else { return }
             switch response.result {
             case .success(let addReview):

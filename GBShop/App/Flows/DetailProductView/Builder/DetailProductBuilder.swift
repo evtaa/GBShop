@@ -10,8 +10,8 @@ import UIKit
 
 final class DetailProductModuleBuilder {
     
-    static func build(requestFactory: RequestFactory) -> DetailProductViewController {
-        let presenter = DetailProductPresenter(requestFactory: requestFactory)
+    static func build(requestFactories: RequestFactories) -> DetailProductViewController {
+        let presenter = DetailProductPresenter(requestFactories: requestFactories)
         let viewController = DetailProductViewController(presenter: presenter)
         presenter.viewInput = viewController
         return viewController

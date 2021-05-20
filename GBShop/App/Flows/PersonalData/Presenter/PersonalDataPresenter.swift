@@ -18,16 +18,11 @@ class PersonalDataPresenter: CheckingDataUser, TrackableMixIn {
     weak var viewInput: (PersonalDataViewInput & UIViewController)?
     
     // MARK: Private properties
-    private var requestFactory: RequestFactory
-    private var userDataRequestFactory: UserDataRequestFactory
-    private var authRequestFactory: AuthRequestFactory
+    private var requestFactories: RequestFactories
     
     // MARK: Init
-    init(requestFactory: RequestFactory) {
-        self.requestFactory = requestFactory
-        self.userDataRequestFactory = requestFactory.makeUserDataRequestFactory()
-        self.authRequestFactory = requestFactory.makeAuthRequestFactory()
-        
+    init(requestFactories: RequestFactories) {
+        self.requestFactories = requestFactories
     }
     
     // MARK: Request
@@ -41,7 +36,7 @@ class PersonalDataPresenter: CheckingDataUser, TrackableMixIn {
               else {
             return
         }
-        userDataRequestFactory.changeUserData(idUser: dataUser.idUser,
+        requestFactories.userRequestFactory.changeUserData(idUser: dataUser.idUser,
                                             username: username,
                                             password: password,
                                             email: email,
@@ -62,7 +57,7 @@ class PersonalDataPresenter: CheckingDataUser, TrackableMixIn {
     }
     
     private func requestLogout(idUser: Int) {
-        authRequestFactory.logout(idUser: idUser) { [weak self] (response) in
+        requestFactories.authRequestFactory.logout(idUser: idUser) { [weak self] (response) in
             guard let self = self else { return }
             switch response.result {
             case .success(let logout):
@@ -84,7 +79,8 @@ class PersonalDataPresenter: CheckingDataUser, TrackableMixIn {
         guard let separatorFactoryAbstract = viewInput?.separatorFactoryAbstract else {
             return
         }
-        let authViewController = AuthModuleBuilder.build(requestFactory: self.requestFactory, separatorFactoryAbstract: separatorFactoryAbstract)
+        let authViewController = AuthModuleBuilder.build(requestFactories: requestFactories,
+                                                         separatorFactoryAbstract: separatorFactoryAbstract)
         authViewController.showLogout()
         let navigationAuthViewController = NavigationControllerDarkStyle(rootViewController: authViewController)
         //navigationAuthViewController.modalPresentationStyle = .fullScreen

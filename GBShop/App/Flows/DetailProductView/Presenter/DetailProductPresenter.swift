@@ -22,24 +22,16 @@ final class DetailProductPresenter: TrackableMixIn {
     weak var viewInput: (DetailProductViewInput & UIViewController & ShowAlert)?
 
     //MARK: Properties private
-    private var requestFactory: RequestFactory
-    private var basketDataRequestFactory: BasketDataRequestFactory
-    private var catalogDataRequestFactory: ProductsDataRequestFactory
-    private var reviewsDataRequestFactory: ReviewsDataRequestFactory
-    
-    
+    private var requestFactories: RequestFactories
     
     //MARK: Init
-    init(requestFactory: RequestFactory) {
-        self.requestFactory = requestFactory
-        self.basketDataRequestFactory = requestFactory.makeBasketDataRequestFactory()
-        self.catalogDataRequestFactory = requestFactory.makeProductsDataRequestFactory()
-        self.reviewsDataRequestFactory = requestFactory.makeReviewsDataRequestFactory()
+    init(requestFactories: RequestFactories) {
+        self.requestFactories = requestFactories
     }
     
     //MARK: Requests
     private func requestGoodById(idProduct: Int) {
-        catalogDataRequestFactory.downloadGoodById (idProduct: idProduct) { [weak self] (response) in
+        requestFactories.productsRequestFactory.downloadGoodById (idProduct: idProduct) { [weak self] (response) in
             guard let self = self else { return }
             switch response.result {
             case .success(let downloadGoodById):
@@ -67,7 +59,7 @@ final class DetailProductPresenter: TrackableMixIn {
     }
     
     private func requestCatalogReviews(idProduct: Int, pageNumber: Int) {
-        reviewsDataRequestFactory.catalogReviews(idProduct: idProduct, pageNumber: pageNumber) { [weak self] (response) in
+        requestFactories.reviewsRequestFactory.catalogReviews(idProduct: idProduct, pageNumber: pageNumber) { [weak self] (response) in
             guard let self = self else { return }
             switch response.result {
             case .success(let catalogReviews):
@@ -93,7 +85,7 @@ final class DetailProductPresenter: TrackableMixIn {
     }
     
     private func requestAddToBasket(idProduct: Int, quantity: Int) {
-        basketDataRequestFactory.addToBasket(idProduct: idProduct, quantity: quantity) { [weak self] (response) in
+        requestFactories.basketRequestFactory.addToBasket(idProduct: idProduct, quantity: quantity) { [weak self] (response) in
             guard let self = self else { return }
             switch response.result {
             case .success(let addToBasket):
@@ -118,7 +110,7 @@ final class DetailProductPresenter: TrackableMixIn {
     }
     
     private func requestRemoveReview(idComment: Int) {
-        reviewsDataRequestFactory.removeReview(idComment: idComment) { [weak self] (response) in
+        requestFactories.reviewsRequestFactory.removeReview(idComment: idComment) { [weak self] (response) in
             guard let self = self else { return }
             switch response.result {
             case .success(let removeReview):
@@ -143,7 +135,7 @@ final class DetailProductPresenter: TrackableMixIn {
     
     //MARK: Navigation
     private func pushAddingReviewController() {
-        let controller = AddingReviewModuleBuilder.build(requestFactory: requestFactory)
+        let controller = AddingReviewModuleBuilder.build(requestFactories: requestFactories)
         self.viewInput?.navigationController?.pushViewController(controller, animated: true)
     }
 }

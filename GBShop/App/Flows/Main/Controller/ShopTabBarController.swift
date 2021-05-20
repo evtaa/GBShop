@@ -8,14 +8,12 @@
 import UIKit
 
 class ShopTabBarController: UITabBarController {
-    //MARK: - Properties
-    let separatorFactoryAbstract: SeparatorFactoryAbstract
-    
     // MARK: - Init
-    init(requestFactory: RequestFactory, separatorFactoryAbstract: SeparatorFactoryAbstract) {
-        self.separatorFactoryAbstract = separatorFactoryAbstract
+    init(requestFactories: RequestFactories,
+         separatorFactoryAbstract: SeparatorFactoryAbstract) {
         super.init(nibName: nil, bundle: nil)
-        self.viewControllers = self.createViewControllers(requestFactory: requestFactory)
+        self.viewControllers = self.createViewControllers(requestFactories: requestFactories,
+                                                          separatorFactoryAbstract: separatorFactoryAbstract)
         self.configureTabBar()
     }
     
@@ -38,22 +36,23 @@ class ShopTabBarController: UITabBarController {
     }
     
     // MARK: - Private functions
-    private func createViewControllers (requestFactory: RequestFactory) -> [UIViewController] {
+    private func createViewControllers (requestFactories: RequestFactories,
+                                        separatorFactoryAbstract: SeparatorFactoryAbstract) -> [UIViewController] {
         var controllers = [UIViewController]()
         
-        let personalDataViewController = PersonalDataBuilder.build(requestFactory: requestFactory, separatorFactoryAbstract: separatorFactoryAbstract)
+        let personalDataViewController = PersonalDataBuilder.build(requestFactories: requestFactories, separatorFactoryAbstract: separatorFactoryAbstract)
         personalDataViewController.tabBarItem = UITabBarItem(title: "Profile", image: UIImage(named: "profile"), selectedImage: UIImage(named: "profileSelect"))
         personalDataViewController.tabBarItem.tag = 0
         let personalDataNavigationController = NavigationControllerDarkStyle(rootViewController: personalDataViewController)
         controllers.append(personalDataNavigationController)
         
-        let catalogProductsViewController = CatalogProductsModuleBuilder.build(requestFactory: requestFactory)
+        let catalogProductsViewController = CatalogProductsModuleBuilder.build(requestFactories: requestFactories)
         catalogProductsViewController.tabBarItem = UITabBarItem(title: "Search", image: UIImage(named: "search"), selectedImage: UIImage(named: "searchSelect"))
         catalogProductsViewController.tabBarItem.tag = 1
         let catalogProductsNavigationController = NavigationControllerDarkStyle(rootViewController: catalogProductsViewController)
         controllers.append(catalogProductsNavigationController)
         
-        let basketViewController = BasketModuleBuilder.build(requestFactory: requestFactory)
+        let basketViewController = BasketModuleBuilder.build(requestFactories: requestFactories)
         basketViewController.tabBarItem = UITabBarItem(title: "Basket", image: UIImage(named: "basket"), selectedImage: UIImage(named: "basketSelect"))
         basketViewController.tabBarItem.tag = 2
         let basketNavigationController = NavigationControllerDarkStyle(rootViewController: basketViewController)

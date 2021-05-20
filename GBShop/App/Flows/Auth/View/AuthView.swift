@@ -15,7 +15,7 @@ class AuthView: UIView {
     let passwordTextField = TextFieldDarkStyle()
     let loginButton = ButtonDarkStyle()
     let createAccountButton = ButtonDarkStyle()
-    let scrollView = UIScrollView ()
+    let scrollView = ScrollViewDarkStyle ()
     
     //MARK: - Init
     override init(frame: CGRect) {
@@ -101,9 +101,7 @@ class AuthView: UIView {
             self.scrollView.contentLayoutGuide.widthAnchor.constraint(equalTo: self.scrollView.frameLayoutGuide.widthAnchor),
             self.scrollView.contentLayoutGuide.bottomAnchor.constraint(equalTo: self.scrollView.frameLayoutGuide.bottomAnchor),
             
-    
-            
-            self.infoDataLabel.topAnchor.constraint(equalTo: scrollArea.topAnchor, constant: 60.0),
+            self.infoDataLabel.topAnchor.constraint(equalTo: scrollArea.topAnchor, constant: CGFloat(0.3) * CGFloat(UIScreen.main.bounds.height/2) ),
             self.infoDataLabel.widthAnchor.constraint(equalToConstant: widthLabel),
             self.infoDataLabel.heightAnchor.constraint(equalToConstant: 60),
             self.infoDataLabel.leadingAnchor.constraint(equalTo: scrollArea.leadingAnchor, constant: UIScreen.main.bounds.width/2 - widthLabel/2),

@@ -10,8 +10,8 @@ import UIKit
 
 final class AddingReviewModuleBuilder {
     
-    static func build(requestFactory: RequestFactory) -> AddingReviewViewController {
-        let presenter = AddingReviewPresenter(requestFactory: requestFactory)
+    static func build(requestFactories: RequestFactories) -> AddingReviewViewController {
+        let presenter = AddingReviewPresenter(requestFactories: requestFactories)
         let viewController = AddingReviewViewController(presenter: presenter)
         presenter.viewInput = viewController
         return viewController

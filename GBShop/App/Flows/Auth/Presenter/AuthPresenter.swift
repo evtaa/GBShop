@@ -20,13 +20,11 @@ final class AuthPresenter: CheckingDataUser, TrackableMixIn {
     weak var viewInput: (UIViewController & AuthViewInput)?
     
     // MARK: Private properties
-    private var requestFactory: RequestFactory
-    private var authRequestFactory: AuthRequestFactory
+    private var requestFactories: RequestFactories
     
     // MARK: Init
-    internal init(requestFactory: RequestFactory) {
-        self.requestFactory = requestFactory
-        self.authRequestFactory = requestFactory.makeAuthRequestFactory()
+    internal init(requestFactories: RequestFactories) {
+        self.requestFactories = requestFactories
     }
     
     // MARK: Request
@@ -35,7 +33,7 @@ final class AuthPresenter: CheckingDataUser, TrackableMixIn {
               let password = password else {
             return
         }
-        authRequestFactory.login(userName: userName, password: password) { [weak self] response in
+        requestFactories.authRequestFactory.login(userName: userName, password: password) { [weak self] response in
             guard let self = self else { return }
             switch response.result {
             case .success(let login):
@@ -57,7 +55,7 @@ final class AuthPresenter: CheckingDataUser, TrackableMixIn {
     }
     
     private func requestLogout(idUser: Int) {
-        authRequestFactory.logout(idUser: idUser) { [weak self] (response) in
+        requestFactories.authRequestFactory.logout(idUser: idUser) { [weak self] (response) in
             guard let self = self else { return }
             switch response.result {
             case .success(let logout):
@@ -79,7 +77,7 @@ final class AuthPresenter: CheckingDataUser, TrackableMixIn {
         guard let separatorFactoryAbstract = viewInput?.separatorFactoryAbstract else {
             return
         }
-        let registrationViewController = RegistrationBuilder.build(requestFactory: requestFactory, separatorFactoryAbstract: separatorFactoryAbstract)
+        let registrationViewController = RegistrationBuilder.build(requestFactories: requestFactories, separatorFactoryAbstract: separatorFactoryAbstract)
         self.viewInput?.navigationController?.pushViewController(registrationViewController, animated: true)
     }
     
@@ -87,7 +85,8 @@ final class AuthPresenter: CheckingDataUser, TrackableMixIn {
         guard let separatorFactoryAbstract = viewInput?.separatorFactoryAbstract else {
             return
         }
-        let shopTabBarViewController = ShopTabBarModuleBuilder.build(requestFactory: requestFactory, separatorFactoryAbstract: separatorFactoryAbstract)
+        let shopTabBarViewController = ShopTabBarModuleBuilder.build(requestFactories: requestFactories,
+                                                                     separatorFactoryAbstract: separatorFactoryAbstract)
         //shopTabBarViewController.modalPresentationStyle = .fullScreen
         let keyWindow = UIApplication.shared.windows.filter {$0.isKeyWindow == true}.last
         keyWindow?.rootViewController = shopTabBarViewController

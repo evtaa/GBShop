@@ -20,21 +20,16 @@ final class CatalogProductsPresenter: TrackableMixIn {
     weak var viewInput: (CatalogProductsViewInput & UIViewController & ShowAlert)?
 
     //MARK: Properties private
-    private var requestFactory: RequestFactory
-    private var basketDataRequestFactory: BasketDataRequestFactory
-    private var catalogDataRequestFactory: ProductsDataRequestFactory
-    
-    
+    private var requestFactories: RequestFactories
+
     //MARK: Init
-    init(requestFactory: RequestFactory) {
-        self.requestFactory = requestFactory
-        self.basketDataRequestFactory = requestFactory.makeBasketDataRequestFactory()
-        self.catalogDataRequestFactory = requestFactory.makeProductsDataRequestFactory()
+    init(requestFactories: RequestFactories) {
+        self.requestFactories = requestFactories
     }
     
     //MARK: Requests
     private func requestCatalogProducts(pageNumber: Int, idCategory: Int) {
-        catalogDataRequestFactory.downloadCatalogData(pageNumber: pageNumber, idCategory: idCategory) { [weak self] (response) in
+        requestFactories.productsRequestFactory.downloadCatalogData(pageNumber: pageNumber, idCategory: idCategory) { [weak self] (response) in
             guard let self = self else { return }
             switch response.result {
             case .success(let downloadCatalogData):
@@ -63,7 +58,7 @@ final class CatalogProductsPresenter: TrackableMixIn {
     }
     
     private func requestAddToBasket(idProduct: Int, quantity: Int) {
-        basketDataRequestFactory.addToBasket(idProduct: idProduct, quantity: quantity) { [weak self] (response) in
+        requestFactories.basketRequestFactory.addToBasket(idProduct: idProduct, quantity: quantity) { [weak self] (response) in
             guard let self = self else { return }
             switch response.result {
             case .success(let addToBasket):
@@ -89,7 +84,7 @@ final class CatalogProductsPresenter: TrackableMixIn {
     
     //MARK: Navigation
     private func pushDetailProductController(product: Product) {
-        let controller = DetailProductModuleBuilder.build(requestFactory: requestFactory)
+        let controller = DetailProductModuleBuilder.build(requestFactories: requestFactories)
         controller.product = product
         self.viewInput?.navigationController?.pushViewController(controller, animated: true)
     }

@@ -13,14 +13,10 @@ class AuthUITests: XCTestCase {
     var authNavigationBar: XCUIElement!
     
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-        // In UI tests it is usually best to stop immediately when a failure occurs.
         continueAfterFailure = false
         app = XCUIApplication()
         app.launch()
         authView = app.otherElements["authView"]
-        
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
     }
 
     override func tearDownWithError() throws {
@@ -30,7 +26,7 @@ class AuthUITests: XCTestCase {
     func testLoginSuccess() throws {
         self.enterAuthData(username: "test", password: "test")
         let catalogProductsView = app.otherElements["catalogProductsView"]
-        XCTAssertTrue(catalogProductsView.waitForExistence(timeout: 2))
+        XCTAssertTrue(catalogProductsView.waitForExistence(timeout: 10))
     }
     
     func testLoginFailedUsername() throws {
@@ -52,7 +48,7 @@ class AuthUITests: XCTestCase {
         XCTAssertTrue(logoutButton.exists)
         logoutButton.tap()
         let resultLabel = authView.staticTexts["resultData"]
-        XCTAssertTrue(resultLabel.waitForExistence(timeout: 2))
+        XCTAssertTrue(resultLabel.waitForExistence(timeout: 10))
         XCTAssertEqual(resultLabel.label, "You are logged out")
     }
     
@@ -61,11 +57,11 @@ class AuthUITests: XCTestCase {
         XCTAssertTrue(createAccountButton.exists)
         createAccountButton.tap()
         let registrationView = app.otherElements["registrationView"]
-        XCTAssertTrue(registrationView.waitForExistence(timeout: 2))
+        XCTAssertTrue(registrationView.waitForExistence(timeout: 10))
     }
 
     private func enterAuthData(username: String, password: String) {
-        XCTAssertTrue(authView.waitForExistence(timeout: 1))
+        XCTAssertTrue(authView.waitForExistence(timeout: 5))
         
         let usernameTextField  = authView/*@START_MENU_TOKEN@*/.textFields["username"]/*[[".scrollViews.textFields[\"username\"]",".textFields[\"username\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/
         XCTAssertTrue(usernameTextField.exists)

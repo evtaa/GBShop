@@ -8,8 +8,9 @@
 import Foundation
 
 class RegistrationBuilder {
-    static func build (requestFactory: RequestFactory,separatorFactoryAbstract: SeparatorFactoryAbstract) -> RegistrationViewController {
-        let presenter = RegistrationPresenter(requestFactory: requestFactory)
+    static func build (requestFactories: RequestFactories,
+                       separatorFactoryAbstract: SeparatorFactoryAbstract) -> RegistrationViewController {
+        let presenter = RegistrationPresenter(requestFactories: requestFactories)
         let viewController = RegistrationViewController(presenter: presenter, separatorFactoryAbstract: separatorFactoryAbstract)
         presenter.viewInput = viewController
         return viewController

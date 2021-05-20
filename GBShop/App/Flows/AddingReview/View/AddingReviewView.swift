@@ -14,14 +14,12 @@ class AddingReviewView: UIView {
     }
     
     //MARK: Subviews
-    let scrollView = ScrollViewDarkStyle()
     var reviewTextView = TextViewDarkStyle()
-    var addReviewButton = ButtonDarkStyle()
     
     // MARK: Init
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.configureUI ()
+        configureUI ()
     }
     
     required init?(coder: NSCoder) {
@@ -30,42 +28,31 @@ class AddingReviewView: UIView {
     
     // MARK: Configure
     private func configureUI () {
-        self.backgroundColor = .black
-        self.configureScrollView ()
-        self.configureReviewTextView ()
-        self.setupConstraints()
+        backgroundColor = .black
+        configureReviewTextView ()
+        setupConstraints()
     }
     
     // MARK: Private functions
-    private func configureScrollView () {
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        self.addSubview(scrollView)
-    }
-    
     private func configureReviewTextView () {
         reviewTextView.translatesAutoresizingMaskIntoConstraints = false
         reviewTextView.text = Constant.placeholderForReview
         reviewTextView.font = UIFont.systemFont(ofSize: 16)
         reviewTextView.textColor = UIColor.darkGray
-        self.scrollView.addSubview(reviewTextView)
+        addSubview(reviewTextView)
     }
-
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        self.endEditing(true)
+    }
+    
     private func setupConstraints () {
-        let scrollArea = self.scrollView.contentLayoutGuide
-
         NSLayoutConstraint.activate([
-            self.scrollView.frameLayoutGuide.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            self.scrollView.frameLayoutGuide.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            self.scrollView.frameLayoutGuide.topAnchor.constraint(equalTo: self.topAnchor),
-            self.scrollView.frameLayoutGuide.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-            self.scrollView.contentLayoutGuide.topAnchor.constraint(equalTo: self.scrollView.frameLayoutGuide.topAnchor),
-            self.scrollView.contentLayoutGuide.widthAnchor.constraint(equalTo: self.scrollView.frameLayoutGuide.widthAnchor),
-            self.scrollView.contentLayoutGuide.bottomAnchor.constraint(equalTo: self.scrollView.frameLayoutGuide.bottomAnchor, constant: 0),
-            
-            self.reviewTextView.topAnchor.constraint(equalTo: scrollArea.topAnchor, constant: 10),
-            self.reviewTextView.leadingAnchor.constraint(equalTo: scrollArea.leadingAnchor, constant: 10),
-            self.reviewTextView.trailingAnchor.constraint(equalTo: scrollArea.trailingAnchor,constant: -10),
-            self.reviewTextView.bottomAnchor.constraint (equalTo: scrollArea.bottomAnchor, constant: -200),
+            reviewTextView.topAnchor.constraint(equalTo: topAnchor, constant: 80),
+            reviewTextView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
+            reviewTextView.trailingAnchor.constraint(equalTo: trailingAnchor,constant: -10),
+            reviewTextView.bottomAnchor.constraint (equalTo: bottomAnchor, constant: -100),
         ])
     }
 }

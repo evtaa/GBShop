@@ -41,6 +41,12 @@ class AddingReviewViewController: UIViewController, UITextViewDelegate, ShowAler
     override func viewDidLoad() {
         super.viewDidLoad()
         self.configure()
+        self.configureKeyboard ()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     // MARK: Configure
@@ -57,6 +63,30 @@ class AddingReviewViewController: UIViewController, UITextViewDelegate, ShowAler
     
     private func configureTextView() {
         self.addingReviewView.reviewTextView.delegate = self
+    }
+    
+    private func configureKeyboard () {
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWasShown), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillBeHidden  (notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    // MARK: Private functions
+    @objc func keyboardWasShown(notification: Notification) {
+        guard let userInfo = notification.userInfo as NSDictionary?,
+              let kbSize = (userInfo.value(forKey: UIResponder.keyboardFrameEndUserInfoKey) as? NSValue)?.cgRectValue.size else {
+            return}
+        debugPrint(kbSize.height)
+        let contentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: kbSize.height - 80, right: 0.0)
+        self.addingReviewView.reviewTextView.contentInset = contentInsets
+        self.addingReviewView.reviewTextView.scrollIndicatorInsets = contentInsets
+        self.addingReviewView.reviewTextView.scrollRangeToVisible(self.addingReviewView.reviewTextView.selectedRange)
+    }
+    
+    @objc func keyboardWillBeHidden(notification: Notification) {
+        let contentInsets = UIEdgeInsets.zero
+        self.addingReviewView.reviewTextView.contentInset = contentInsets
+        self.addingReviewView.reviewTextView.scrollIndicatorInsets = contentInsets
+        self.addingReviewView.reviewTextView.scrollRangeToVisible(self.addingReviewView.reviewTextView.selectedRange)
     }
     
     //MARK: Actions
