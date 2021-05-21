@@ -23,6 +23,6 @@ pod 'Firebase/Crashlytics'
 # Recommended: Add the Firebase pod for Google Analytics
 pod 'Firebase/Analytics'
 
-pod  'SnapKit' ,  '~> 5.0.0'
+#pod  'SnapKit' ,  '~> 5.0.0'
 
 end

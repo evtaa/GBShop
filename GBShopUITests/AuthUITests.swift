@@ -15,6 +15,7 @@ class AuthUITests: XCTestCase {
     override func setUpWithError() throws {
         continueAfterFailure = false
         app = XCUIApplication()
+        setupSnapshot(app)
         app.launch()
         authView = app.otherElements["authView"]
     }
@@ -58,6 +59,34 @@ class AuthUITests: XCTestCase {
         createAccountButton.tap()
         let registrationView = app.otherElements["registrationView"]
         XCTAssertTrue(registrationView.waitForExistence(timeout: 10))
+    }
+    
+    func testSnapshot() throws {
+        let password = "test"
+        let username = "test"
+        
+        XCTAssertTrue(authView.waitForExistence(timeout: 5))
+        snapshot("LoginScreen")
+
+        let usernameTextField  = authView/*@START_MENU_TOKEN@*/.textFields["username"]/*[[".scrollViews.textFields[\"username\"]",".textFields[\"username\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/
+        XCTAssertTrue(usernameTextField.exists)
+       
+        let passwordTextField = authView/*@START_MENU_TOKEN@*/.secureTextFields["password"]/*[[".scrollViews.secureTextFields[\"password\"]",".secureTextFields[\"password\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/
+        XCTAssertTrue(passwordTextField.exists)
+
+        usernameTextField.tap()
+        usernameTextField.typeText(username)
+       
+        passwordTextField.tap()
+        passwordTextField.typeText(password)
+        
+        let loginButton = authView.buttons["login"]
+        XCTAssertTrue(loginButton.isHittable)
+        loginButton.tap()
+        
+        let catalogProductsView = app.otherElements["catalogProductsView"]
+        XCTAssertTrue(catalogProductsView.waitForExistence(timeout: 10))
+        snapshot("ProductsScreen")
     }
 
     private func enterAuthData(username: String, password: String) {
