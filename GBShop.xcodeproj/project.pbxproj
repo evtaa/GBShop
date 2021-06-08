@@ -36,6 +36,11 @@
 		A8541127261A3604007D2C75 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A8541125261A3604007D2C75 /* LaunchScreen.storyboard */; };
 		A8541132261A3604007D2C75 /* GBShopTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8541131261A3604007D2C75 /* GBShopTests.swift */; };
 		A854113D261A3605007D2C75 /* GBShopUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A854113C261A3605007D2C75 /* GBShopUITests.swift */; };
+		A8F2C17B2630B8A900587179 /* AddReviewResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8F2C17A2630B8A900587179 /* AddReviewResult.swift */; };
+		A8F2C1832630B8C500587179 /* RemoveReviewResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8F2C1822630B8C500587179 /* RemoveReviewResult.swift */; };
+		A8F2C1882630B90800587179 /* CatalogReviewsResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8F2C1872630B90800587179 /* CatalogReviewsResult.swift */; };
+		A8F2C1962630BDE000587179 /* ReviewDataRequestFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8F2C1952630BDE000587179 /* ReviewDataRequestFactory.swift */; };
+		A8F2C19E2630BF5B00587179 /* Review.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8F2C19D2630BF5B00587179 /* Review.swift */; };
 		B849E461F75B11D0134E5C53 /* Pods_GBShop.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABC1AC57FF6B81420F4D5ED5 /* Pods_GBShop.framework */; };
 		FB779A82E17F1E0D37F69415 /* Pods_GBShopTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 866AB0D07FB62F17F84036E7 /* Pods_GBShopTests.framework */; };
 /* End PBXBuildFile section */
@@ -97,6 +102,11 @@
 		A8541138261A3605007D2C75 /* GBShopUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GBShopUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A854113C261A3605007D2C75 /* GBShopUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GBShopUITests.swift; sourceTree = "<group>"; };
 		A854113E261A3605007D2C75 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A8F2C17A2630B8A900587179 /* AddReviewResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddReviewResult.swift; sourceTree = "<group>"; };
+		A8F2C1822630B8C500587179 /* RemoveReviewResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveReviewResult.swift; sourceTree = "<group>"; };
+		A8F2C1872630B90800587179 /* CatalogReviewsResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogReviewsResult.swift; sourceTree = "<group>"; };
+		A8F2C1952630BDE000587179 /* ReviewDataRequestFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewDataRequestFactory.swift; sourceTree = "<group>"; };
+		A8F2C19D2630BF5B00587179 /* Review.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Review.swift; sourceTree = "<group>"; };
 		ABC1AC57FF6B81420F4D5ED5 /* Pods_GBShop.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GBShop.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2FD403278BEFB2E80B48BB6 /* Pods-GBShop.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GBShop.debug.xcconfig"; path = "Target Support Files/Pods-GBShop/Pods-GBShop.debug.xcconfig"; sourceTree = "<group>"; };
 		CA5EF1DFD357D2A2A84FFBFE /* Pods-GBShopTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GBShopTests.debug.xcconfig"; path = "Target Support Files/Pods-GBShopTests/Pods-GBShopTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -187,6 +197,7 @@
 		A80CED012620845A0048AAC9 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				A8F2C1942630BDB600587179 /* Review */,
 				A81BDB1B2620BF230084B17F /* Auth */,
 				A81BDB332620D1BA0084B17F /* UserData */,
 				A802E4FC2628D1AB0022F87C /* Product */,
@@ -297,6 +308,7 @@
 		A89EE104261B36170081EBBB /* Entity */ = {
 			isa = PBXGroup;
 			children = (
+				A8F2C1792630B85200587179 /* Review */,
 				A81BDB102620BDF90084B17F /* Auth */,
 				A81BDB112620BE420084B17F /* UserData */,
 				A802E4D92628A3FA0022F87C /* CatalogData */,
@@ -354,6 +366,25 @@
 				A8541128261A3604007D2C75 /* Info.plist */,
 			);
 			path = Environments;
+			sourceTree = "<group>";
+		};
+		A8F2C1792630B85200587179 /* Review */ = {
+			isa = PBXGroup;
+			children = (
+				A8F2C17A2630B8A900587179 /* AddReviewResult.swift */,
+				A8F2C1822630B8C500587179 /* RemoveReviewResult.swift */,
+				A8F2C1872630B90800587179 /* CatalogReviewsResult.swift */,
+			);
+			path = Review;
+			sourceTree = "<group>";
+		};
+		A8F2C1942630BDB600587179 /* Review */ = {
+			isa = PBXGroup;
+			children = (
+				A8F2C1952630BDE000587179 /* ReviewDataRequestFactory.swift */,
+				A8F2C19D2630BF5B00587179 /* Review.swift */,
+			);
+			path = Review;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -593,6 +624,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A8F2C1962630BDE000587179 /* ReviewDataRequestFactory.swift in Sources */,
 				A802E4FE2628D1F20022F87C /* ProductsDataRequestFactory.swift in Sources */,
 				A80CED0B2620854E0048AAC9 /* Auth.swift in Sources */,
 				A80CECDC26207BD00048AAC9 /* ResponseCodable.swift in Sources */,
@@ -607,10 +639,14 @@
 				A802E4F22628CF4C0022F87C /* GoodByIdResult.swift in Sources */,
 				A80CECCF26207B290048AAC9 /* AbstractErrorParser.swift in Sources */,
 				A81BDB142620BE8B0084B17F /* RegisterUserResult.swift in Sources */,
+				A8F2C1832630B8C500587179 /* RemoveReviewResult.swift in Sources */,
 				A8541122261A3603007D2C75 /* GBShop.xcdatamodeld in Sources */,
 				A80CED102620858F0048AAC9 /* RequestFactory.swift in Sources */,
 				A854111A261A3603007D2C75 /* SceneDelegate.swift in Sources */,
 				A81BDB352620D2B50084B17F /* UserDataRequestFactory.swift in Sources */,
+				A8F2C17B2630B8A900587179 /* AddReviewResult.swift in Sources */,
+				A8F2C1882630B90800587179 /* CatalogReviewsResult.swift in Sources */,
+				A8F2C19E2630BF5B00587179 /* Review.swift in Sources */,
 				A80CECF02620824E0048AAC9 /* RequestRouter.swift in Sources */,
 				A802E5092628D2FB0022F87C /* ProductsData.swift in Sources */,
 				A80CECFD2620840B0048AAC9 /* User.swift in Sources */,
