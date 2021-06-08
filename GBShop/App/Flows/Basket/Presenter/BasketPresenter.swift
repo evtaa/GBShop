@@ -37,7 +37,7 @@ final class BasketPresenter {
             self.viewInput?.throbber(show: false)
             switch response.result {
             case .success(let getBasket):
-                print (getBasket)
+                debugPrint (getBasket)
                 DispatchQueue.main.async {
                     guard !getBasket.contents.isEmpty else {
                         self.viewInput?.showNoProducts()
@@ -48,8 +48,10 @@ final class BasketPresenter {
                     self.viewInput?.basketView.newRefreshControl.endRefreshing()
                 }
             case .failure(let error):
-                print (error.localizedDescription)
-                self.viewInput?.showError(error: error)
+                debugPrint (error.localizedDescription)
+                DispatchQueue.main.async {
+                    self.viewInput?.showError(error: error)
+                }
             }
         }
     }
@@ -60,7 +62,7 @@ final class BasketPresenter {
             self.viewInput?.throbber(show: false)
             switch response.result {
             case .success(let payBasket):
-                print (payBasket)
+                debugPrint (payBasket)
                 DispatchQueue.main.async {
                     guard payBasket.result == 1 else {
                         self.viewInput?.showPaymentFailed()
@@ -70,8 +72,10 @@ final class BasketPresenter {
                     self.viewInput?.contentsResults = []
                 }
             case .failure(let error):
-                print (error.localizedDescription)
-                self.viewInput?.showError(error: error)
+                debugPrint (error.localizedDescription)
+                DispatchQueue.main.async {
+                    self.viewInput?.showError(error: error)
+                }
             }
         }
     }
