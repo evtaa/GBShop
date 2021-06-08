@@ -19,11 +19,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         //guard let _ = (scene as? UIWindowScene) else { return }
         
         guard let windowScene = (scene as? UIWindowScene) else { return }
-          
-            let window = UIWindow(windowScene: windowScene)
-            window.rootViewController = ViewController() // Your initial view controller.
-            window.makeKeyAndVisible()
-            self.window = window
+        
+        let window = UIWindow(windowScene: windowScene)
+        let requestFactory = RequestFactory()
+        let basketData = requestFactory.makeBasketDataRequestFactory()
+        let basketViewController = BasketModuleBuilder.build(basketDataRequestFactory: basketData)
+        let navigationController = UINavigationController(rootViewController: basketViewController)
+        window.rootViewController = navigationController 
+        window.makeKeyAndVisible()
+        self.window = window
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
