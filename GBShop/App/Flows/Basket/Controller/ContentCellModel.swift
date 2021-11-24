@@ -15,9 +15,9 @@ struct ContentCellModel {
 
 final class ContentCellModelFactory {
     static func cellModel (from model: Content) -> ContentCellModel {
-        return ContentCellModel(productName: "Name:\n" + model.productName,
+        return ContentCellModel(productName: "Name: " + model.productName,
                                 idProduct: "ID: " + String(model.idProduct),
-                                price: "Price:\n" + String(model.price),
-                                quantity: "Quantity:\n" + String(model.quantity))
+                                price: "Price: " + String(model.price),
+                                quantity: "Quantity: " + String(model.quantity))
     }
 }
