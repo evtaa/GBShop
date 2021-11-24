@@ -7,31 +7,12 @@
 
 import UIKit
 
-enum InsertingDataUserError: String, Error {
-    case invalidUsername = "You entered invalid username"
-    case invalidPassword = "You entered invalid password"
-    case invalidEmail = "You entered invalid email"
-    case invalidCreditCard = "You entered invalid number of credit card"
-    case invalidBio = "You entered invalid bio"
-}
-
-struct DataUser {
-    let idUser: Int
-    let username: String?
-    let password: String?
-    let email: String?
-    let gender: String?
-    let creditCard: String?
-    let bio: String?
-}
-
 protocol RegistrationViewInput: class {
-    func showInsertingDataUserError (error: Error,withMessage message: String)
     func showSuccessRegistration ()
     func showFailedRegistration ()
 }
 
-class RegistrationViewController: UIViewController {
+class RegistrationViewController: UIViewController, ShowAlert {
     // MARK: Properties
     var gender: String {
         get {
@@ -77,12 +58,10 @@ class RegistrationViewController: UIViewController {
     // MARK: Configure
     private func configure() {
         self.configureNavigationBar()
-        
     }
     
     private func configureNavigationBar() {
         self.title = "Registration"
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
         let barButtonItem = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(registration))
         self.navigationItem.setRightBarButton(barButtonItem, animated: true)
     }
@@ -102,26 +81,13 @@ class RegistrationViewController: UIViewController {
 
 extension RegistrationViewController: RegistrationViewInput {
     
-    func showInsertingDataUserError (error: Error,withMessage message: String) {
-        let alert = UIAlertController(title: "Error", message: "\(message) ", preferredStyle: .alert)
-        let actionOk = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-        alert.addAction(actionOk)
-        self.present(alert, animated: true, completion: nil)
-    }
-    
     func  showSuccessRegistration () {
-        let alert = UIAlertController(title: "Notification", message: "Registration was success", preferredStyle: .alert)
-        let actionOk = UIAlertAction(title: "OK", style: .cancel) { _ in 
-            self.presenter.openAuth()
+        self.showAlert(forViewController: self, withTitleOfAlert: "Notification", andMessage: "Registration was success", withTitleOfAction: "OK") { _ in
+            self.presenter.openTabBar()
         }
-        alert.addAction(actionOk)
-        self.present(alert, animated: true, completion: nil)
     }
     
     func  showFailedRegistration () {
-        let alert = UIAlertController(title: "Notification", message: "Registration was failed", preferredStyle: .alert)
-        let actionOk = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-        alert.addAction(actionOk)
-        self.present(alert, animated: true, completion: nil)
+        self.showAlert(forViewController: self, withTitleOfAlert: "Notification", andMessage: "Registration was failed", withTitleOfAction: "OK", handlerOfAction: nil)
     }
 }

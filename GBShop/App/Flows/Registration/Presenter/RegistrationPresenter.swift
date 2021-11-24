@@ -10,10 +10,11 @@ import UIKit
 
 protocol RegistrationViewOutput: class {
     func viewDidRegistration(dataUser: DataUser)
-    func openAuth() 
+    func openAuth()
+    func openTabBar()
 }
 
-class RegistrationPresenter {
+class RegistrationPresenter: CheckingDataUser {
     // MARK: Properties
     weak var viewInput: (RegistrationViewInput & UIViewController)?
     
@@ -35,7 +36,7 @@ class RegistrationPresenter {
               let gender = dataUser.gender,
               let creditCard = dataUser.creditCard,
               let bio = dataUser.bio
-              else {
+        else {
             return
         }
         userDataRequestFactory.registration(idUser: dataUser.idUser,
@@ -50,7 +51,7 @@ class RegistrationPresenter {
                 debugPrint(registration)
                 DispatchQueue.main.async {
                     self.viewInput?.showSuccessRegistration()
-                } 
+                }
             case .failure(let error):
                 debugPrint(error.localizedDescription)
                 self.viewInput?.showFailedRegistration()
@@ -63,74 +64,34 @@ class RegistrationPresenter {
         self.viewInput?.navigationController?.popViewController(animated: true)
     }
     
-    // MARK: Private functions
-    private func checkDataUser (dataUser: DataUser) throws -> Bool {
-        guard let countUsername = dataUser.username?.count,
-              countUsername > 0 else {
-            throw InsertingDataUserError.invalidUsername
-        }
-        guard let countPassword = dataUser.password?.count,
-              countPassword > 0 else {
-            throw InsertingDataUserError.invalidPassword
-        }
-        guard let isEmail = dataUser.email?.isValidEmail,
-              isEmail == true else {
-            throw InsertingDataUserError.invalidEmail
-        }
-        guard let countCreditCard = dataUser.creditCard?.count,
-              countCreditCard > 0 else {
-            throw InsertingDataUserError.invalidCreditCard
-        }
-        guard let countBio = dataUser.bio?.count,
-              countBio > 0 else {
-            throw InsertingDataUserError.invalidBio
-        }
-        return true
+    private func goToTabBar () {
+        let shopTabBarViewController = ShopTabBarModuleBuilder.build(requestFactory: requestFactory)
+        shopTabBarViewController.modalPresentationStyle = .fullScreen
+        self.viewInput?.dismiss(animated: true, completion: nil)
+        self.viewInput?.present(shopTabBarViewController, animated: true, completion: nil)
     }
 }
 
 extension RegistrationPresenter: RegistrationViewOutput {
     func viewDidRegistration(dataUser: DataUser) {
-        do {
+        guard let controller = viewInput as? (ShowAlert & UIViewController) else {
+            return
+        }
+        self.catchErrorInsertingDataUser(forViewController: controller) {
             guard (try self.checkDataUser(dataUser: dataUser)) == true else {
                 return
             }
             self.requestRegistration(dataUser: dataUser)
-        } catch InsertingDataUserError.invalidUsername {
-            viewInput?.showInsertingDataUserError(error: InsertingDataUserError.invalidUsername, withMessage: InsertingDataUserError.invalidUsername.rawValue)
-        }
-        catch InsertingDataUserError.invalidPassword {
-            viewInput?.showInsertingDataUserError(error: InsertingDataUserError.invalidPassword, withMessage: InsertingDataUserError.invalidPassword.rawValue)
-        }
-        catch InsertingDataUserError.invalidEmail {
-            viewInput?.showInsertingDataUserError(error: InsertingDataUserError.invalidEmail, withMessage: InsertingDataUserError.invalidEmail.rawValue)
-        }
-        catch InsertingDataUserError.invalidCreditCard {
-            viewInput?.showInsertingDataUserError(error: InsertingDataUserError.invalidCreditCard, withMessage: InsertingDataUserError.invalidCreditCard.rawValue)
-        }
-        catch InsertingDataUserError.invalidBio {
-            viewInput?.showInsertingDataUserError(error: InsertingDataUserError.invalidBio, withMessage: InsertingDataUserError.invalidBio.rawValue)
-        }
-        catch {
-            viewInput?.showInsertingDataUserError(error: Error.self as! Error, withMessage: "Неизвестная ошибка")
         }
     }
     
     func openAuth() {
         self.backToAuth()
     }
-}
-
-extension String {
-    var isValidEmail: Bool {
-        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
-        let emailTest = NSPredicate(format: "SELF MATCHES %@", emailRegEx)
-        return emailTest.evaluate(with: self)
+    
+    func openTabBar() {
+        self.goToTabBar()
     }
 }
 
-extension UITextField {
-    var isEmail: Bool? {
-        return self.text?.isValidEmail
-    }
-}
+

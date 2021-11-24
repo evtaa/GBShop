@@ -8,28 +8,19 @@
 import UIKit
 
 protocol BasketViewInput: class {
-    
     var contentsResults: [Content] { get set }
-    
     var basketView: BasketView {get}
-    
-    func showError(error: Error)
-    
-    func throbber(show: Bool)
-    
+    func throbberStart()
+    func throbberStop()
     func showNoProducts()
-    
     func showPaymentFailed()
-    
     func showPaymentPassed()
-    
     func hideResultsView()
 }
 
-final class BasketViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+final class BasketViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, ShowAlert {
     
     //MARK: Private properties
-    
     private let presenter: BasketViewOutput
     
     internal var basketView: BasketView {
@@ -47,7 +38,6 @@ final class BasketViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     //MARK: Init
-    
     init(presenter: BasketViewOutput) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
@@ -58,7 +48,6 @@ final class BasketViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     //MARK: LifeCycle
-    
     override func loadView() {
         super.loadView()
         self.view = BasketView()
@@ -75,11 +64,10 @@ final class BasketViewController: UIViewController, UITableViewDelegate, UITable
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        throbber(show: false)
+        throbberStop()
     }
     
-    //MARK: Private
-    
+    //MARK: ConfigureUI
     private func configure () {
         self.configureTableView()
         self.configureNavigationBar()
@@ -93,18 +81,16 @@ final class BasketViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     private func configureNavigationBar () {
-        self.navigationController?.navigationBar.prefersLargeTitles = true
         self.title = "Basket"
         let barButtonItem = UIBarButtonItem(title: "Pay", style: .plain, target: self, action: #selector(payBasket))
         self.navigationItem.setRightBarButton(barButtonItem, animated: true)
     }
     
     private func configureRefreshControl () {
-        self.basketView.newRefreshControl.addTarget(self, action: #selector(refreshContentsBasket), for: .valueChanged)
+        self.basketView.refreshControl.addTarget(self, action: #selector(refreshContentsBasket), for: .valueChanged)
     }
     
     //MARK: - Actions
-    
     @objc func payBasket () {
         self.presenter.viewDidPayBasket(idUser: 123)
     }
@@ -114,7 +100,6 @@ final class BasketViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     //MARK: TableViewDataSource
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.contentsResults.count
     }
@@ -127,45 +112,63 @@ final class BasketViewController: UIViewController, UITableViewDelegate, UITable
         let content = self.contentsResults [indexPath.row]
         let contentModel = ContentCellModelFactory.cellModel(from: content)
         cell.configure(with: contentModel)
+        cell.tapRemovingProduct = { [weak self] content in
+            let set = CharacterSet(charactersIn: " ")
+            let optionalIdProduct = content.idProduct.components(separatedBy: set).compactMap({Int($0)}).last
+            guard let idProduct = optionalIdProduct,
+                  let self = self
+            else {
+                return
+            }
+            self.presenter.viewDidDeleteFromBasket(idProduct: idProduct)
+        }
         return cell
+    }
+    
+    //MARK: TableViewDelegate
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
 
 extension BasketViewController: BasketViewInput {
-
-    func showError(error: Error) {
-        let alert = UIAlertController(title: "Error", message: "\(error.localizedDescription)", preferredStyle: .alert)
-        let actionOk = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-        alert.addAction(actionOk)
-        self.present(alert, animated: true, completion: nil)
+    
+    
+    func throbberStart() {
+        DispatchQueue.main.async {
+            self.basketView.indicator.startAnimating()
+        }
     }
     
-    func throbber(show: Bool) {
-        UIApplication.shared.isNetworkActivityIndicatorVisible = show
+    func throbberStop() {
+        DispatchQueue.main.async {
+            self.basketView.indicator.stopAnimating()
+            //self.basketView.indicator.removeFromSuperview()
+        }
     }
     
     func showNoProducts() {
-        self.basketView.ResultLabel.text = "No products"
-        self.basketView.ResultView.isHidden = false
+        self.basketView.resultLabel.text = "No products"
+        self.basketView.resultView.isHidden = false
         self.contentsResults = []
         self.basketView.tableView.reloadData()
     }
     
     func showPaymentFailed() {
-        self.basketView.ResultLabel.text = "Payment failed"
-        self.basketView.ResultView.isHidden = false
+        self.basketView.resultLabel.text = "Payment failed"
+        self.basketView.resultView.isHidden = false
         //self.contentsResults = []
         self.basketView.tableView.reloadData()
     }
     
     func showPaymentPassed() {
-        self.basketView.ResultLabel.text = "Payment passed"
-        self.basketView.ResultView.isHidden = false
+        self.basketView.resultLabel.text = "Payment passed"
+        self.basketView.resultView.isHidden = false
         self.contentsResults = []
         self.basketView.tableView.reloadData()
     }
     
     func hideResultsView() {
-        self.basketView.ResultView.isHidden = true
+        self.basketView.resultView.isHidden = true
     }
 }

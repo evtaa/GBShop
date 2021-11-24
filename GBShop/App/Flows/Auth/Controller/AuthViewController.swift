@@ -11,24 +11,20 @@ protocol AuthViewInput: class {
     func showNotificationData(message: String)
     func hideNotificationData ()
     func showLogout ()
-    func showInsertingDataUserError (error: Error,withMessage message: String)
+    //func showError (withMessage message: String)
 }
 
-class AuthViewController: UIViewController {
-
+class AuthViewController: UIViewController, ShowAlert {
     // MARK: Properties
-    
     private var presenter: AuthViewOutput
     
     // MARK: Private properties
-    
     internal var authView: AuthView {
 
             return self.view as! AuthView
     }
     
     //MARK: Init
-    
     init(presenter: AuthViewOutput) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
@@ -39,7 +35,6 @@ class AuthViewController: UIViewController {
     }
 
     //MARK: LifeCycle
-    
     override func loadView() {
         super.loadView()
         self.view = AuthView ()
@@ -50,17 +45,13 @@ class AuthViewController: UIViewController {
         self.configure()
     }
     
-    //MARK: Private
-    
+    //MARK: Configure
     private func configure () {
         self.configureNavigationBar()
         self.configureActions()
     }
     
-    private func configureNavigationBar () {
-        self.navigationController?.navigationBar.backgroundColor = .black
-        self.navigationController?.navigationBar.tintColor = .white
-        self.navigationController?.navigationBar.barTintColor = .black
+    func configureNavigationBar () {
         let barButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector (checkLogout))
         self.navigationItem.setRightBarButton(barButtonItem, animated: true)
     }
@@ -70,6 +61,12 @@ class AuthViewController: UIViewController {
         self.authView.createAccountButton.addTarget(self, action: #selector(openRegistration), for: .touchUpInside)
     }
     
+    // MARK: Private functions
+    private func showInfoData(message: String) {
+        self.authView.infoDataLabel.text = message
+        self.authView.infoDataLabel.isHidden = false
+    }
+    // MARK: Actions
     @objc func checkLogin () {
         self.presenter.viewDidLogin(userName: self.authView.usernameTextField.text,
                                     password: self.authView.passwordTextField.text)
@@ -82,27 +79,19 @@ class AuthViewController: UIViewController {
     @objc func openRegistration () {
         self.presenter.viewDidRegistration()
     }
+    
 }
 
 extension AuthViewController: AuthViewInput {
     func showNotificationData(message: String) {
-        self.authView.noCorrectDataLabel.text = message
-        self.authView.noCorrectDataLabel.isHidden = false
+        self.showInfoData(message: message)
     }
     
     func hideNotificationData() {
-        self.authView.noCorrectDataLabel.isHidden = true
+        self.authView.infoDataLabel.isHidden = true
     }
     
     func showLogout() {
-        self.authView.noCorrectDataLabel.text = "You are logged out"
-        self.authView.noCorrectDataLabel.isHidden = false
-    }
-    
-    func showInsertingDataUserError (error: Error,withMessage message: String) {
-        let alert = UIAlertController(title: "Error", message: "\(message) ", preferredStyle: .alert)
-        let actionOk = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-        alert.addAction(actionOk)
-        self.present(alert, animated: true, completion: nil)
+        self.showInfoData(message: "You are logged out")
     }
 }

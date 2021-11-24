@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 class PersonalDataBuilder {
     static func build (requestFactory: RequestFactory) -> PersonalDataViewController {

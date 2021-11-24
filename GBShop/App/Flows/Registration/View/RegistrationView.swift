@@ -11,18 +11,18 @@ class RegistrationView: UIView {
     
     //MARK: Subviews
     let scrollView = UIScrollView()
-    var usernameLabel = UILabel()
-    var usernameTextField = UITextField()
-    var passwordLabel = UILabel()
-    var passwordTextField = UITextField()
-    var emailLabel = UILabel()
-    var emailTextField = UITextField()
-    var genderLabel = UILabel()
-    var genderSegmentControl = UISegmentedControl(items: ["Male", "Female"])
-    var creditCardLabel = UILabel()
-    var creditCardTextField = UITextField()
-    var bioLabel = UILabel()
-    var bioTextField = UITextField()
+    var usernameLabel = LabelDarkStyle()
+    var usernameTextField = TextFieldDarkStyle()
+    var passwordLabel = LabelDarkStyle()
+    var passwordTextField = TextFieldDarkStyle()
+    var emailLabel = LabelDarkStyle()
+    var emailTextField = TextFieldDarkStyle()
+    var genderLabel = LabelDarkStyle()
+    var genderSegmentControl = SegmentedControlDarkStyle(items: ["Male", "Female"])
+    var creditCardLabel = LabelDarkStyle()
+    var creditCardTextField = TextFieldDarkStyle()
+    var bioLabel = LabelDarkStyle()
+    var bioTextField = TextFieldDarkStyle()
     
     // MARK: Init
     override init(frame: CGRect) {
@@ -61,68 +61,65 @@ class RegistrationView: UIView {
     }
     
     private func  configureUsernameLabel () {
-        self.configureForLabelOfAccountProperties(for: &self.usernameLabel, withTitle: "Username:")
+        usernameLabel.translatesAutoresizingMaskIntoConstraints = false
+        usernameLabel.text = "Username:"
+        self.scrollView.addSubview(usernameLabel)
     }
     private func configurePasswordLabel () {
-        self.configureForLabelOfAccountProperties(for: &self.passwordLabel, withTitle: "Password:")
+        passwordLabel.translatesAutoresizingMaskIntoConstraints = false
+        passwordLabel.text = "Password:"
+        self.scrollView.addSubview(passwordLabel)
     }
     private func configureEmailLabel () {
-        self.configureForLabelOfAccountProperties(for: &self.emailLabel, withTitle: "Email:")
+        emailLabel.translatesAutoresizingMaskIntoConstraints = false
+        emailLabel.text = "Email:"
+        self.scrollView.addSubview(emailLabel)
     }
     private func configureGenderLabel () {
-        self.configureForLabelOfAccountProperties(for: &self.genderLabel, withTitle: "Gender:")
+        genderLabel.translatesAutoresizingMaskIntoConstraints = false
+        genderLabel.text = "Gender:"
+        self.scrollView.addSubview(genderLabel)
     }
     private func configureCreditCardLabel () {
-        self.configureForLabelOfAccountProperties(for: &self.creditCardLabel, withTitle: "Number of credit card:")
+        creditCardLabel.translatesAutoresizingMaskIntoConstraints = false
+        creditCardLabel.text = "Number of credit card:"
+        self.scrollView.addSubview(creditCardLabel)
     }
     private func configureBioLabel () {
-        self.configureForLabelOfAccountProperties(for: &self.bioLabel, withTitle: "Bio:")
+        bioLabel.translatesAutoresizingMaskIntoConstraints = false
+        bioLabel.text = "Bio:"
+        self.scrollView.addSubview(bioLabel)
     }
     
     private func configureUsernameTextField () {
-        self.configureForTextFieldOfAccountProperties(for: &self.usernameTextField, withTextPlaceholder: "username")
+        usernameTextField.translatesAutoresizingMaskIntoConstraints = false
+        usernameTextField.placeholder = "username"
+        self.scrollView.addSubview(usernameTextField)
     }
     private func configurePasswordTextField () {
-        self.configureForTextFieldOfAccountProperties(for: &self.passwordTextField, withTextPlaceholder: "password")
+        passwordTextField.translatesAutoresizingMaskIntoConstraints = false
+        passwordTextField.placeholder = "password"
+        self.scrollView.addSubview(passwordTextField)
     }
     private func configureEmailTextField () {
-        self.configureForTextFieldOfAccountProperties(for: &self.emailTextField, withTextPlaceholder: "email")
+        emailTextField.translatesAutoresizingMaskIntoConstraints = false
+        emailTextField.placeholder = "email"
+        self.scrollView.addSubview(emailTextField)
     }
     private func configureGenderSegmentControl () {
         self.genderSegmentControl.translatesAutoresizingMaskIntoConstraints = false
-        self.genderSegmentControl.setTitle("Male", forSegmentAt: 0)
-        self.genderSegmentControl.setTitle("Female", forSegmentAt: 1)
-        self.genderSegmentControl.selectedSegmentIndex = 0
-        self.genderSegmentControl.layer.cornerRadius = 5.0
-        self.genderSegmentControl.backgroundColor = .gray
-        self.genderSegmentControl.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14.0)], for: .normal)
         self.scrollView.addSubview(genderSegmentControl)
     }
     private func configureCreditCardTextField () {
-        self.configureForTextFieldOfAccountProperties(for: &self.creditCardTextField, withTextPlaceholder: "number of credit card")
+        creditCardTextField.translatesAutoresizingMaskIntoConstraints = false
+        creditCardTextField.placeholder = "number of credit card"
+        self.scrollView.addSubview(creditCardTextField)
     }
     private func configureBioTextField () {
-        self.configureForTextFieldOfAccountProperties(for: &self.bioTextField, withTextPlaceholder: "bio")
-    }
-    
-    private func configureForLabelOfAccountProperties (for label: inout UILabel, withTitle title: String) {
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.backgroundColor = .black
-        label.textColor = .white
-        label.textAlignment = .left
-        label.font = UIFont.systemFont(ofSize: 16.0)
-        label.text = title
-        self.scrollView.addSubview(label)
-    }
-    
-    private func configureForTextFieldOfAccountProperties (for textField: inout UITextField, withTextPlaceholder placeholder: String) {
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.backgroundColor = .black
-        textField.textColor = .white
-        textField.textAlignment = .left
-        textField.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray])
-        textField.font = UIFont.systemFont(ofSize: 18.0)
-        self.scrollView.addSubview(textField)
+        bioTextField.translatesAutoresizingMaskIntoConstraints = false
+        bioTextField.placeholder = "bio"
+        self.bioTextField.spellCheckingType = .yes
+        self.scrollView.addSubview(bioTextField)
     }
     
     private func setupConstraints () {
@@ -143,6 +140,14 @@ class RegistrationView: UIView {
             self.scrollView.frameLayoutGuide.bottomAnchor.constraint(equalTo: self.bottomAnchor),
             self.scrollView.contentLayoutGuide.widthAnchor.constraint(equalTo: self.scrollView.frameLayoutGuide.widthAnchor),
             self.scrollView.contentLayoutGuide.bottomAnchor.constraint(equalTo: self.scrollView.frameLayoutGuide.bottomAnchor),
+            
+            self.scrollView.frameLayoutGuide.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            self.scrollView.frameLayoutGuide.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            self.scrollView.frameLayoutGuide.topAnchor.constraint(equalTo: self.topAnchor),
+            self.scrollView.frameLayoutGuide.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            self.scrollView.contentLayoutGuide.topAnchor.constraint(equalTo: self.scrollView.frameLayoutGuide.topAnchor),
+            self.scrollView.contentLayoutGuide.widthAnchor.constraint(equalTo: self.scrollView.frameLayoutGuide.widthAnchor),
+            self.scrollView.contentLayoutGuide.bottomAnchor.constraint(equalTo: self.scrollView.frameLayoutGuide.bottomAnchor, constant: 0),
                 
             self.usernameLabel.topAnchor.constraint(equalTo: scrollArea.topAnchor, constant: 30.0),
             self.usernameLabel.leadingAnchor.constraint(equalTo: scrollArea.leadingAnchor, constant: leadingIndentUIOfAccountProperties),
@@ -150,64 +155,64 @@ class RegistrationView: UIView {
             self.usernameLabel.heightAnchor.constraint(equalToConstant: heightUIOfAccountProperties),
             
             self.usernameTextField.topAnchor.constraint(equalTo: usernameLabel.bottomAnchor, constant: topIndentBetweenUI),
-            self.usernameTextField.leadingAnchor.constraint(equalTo: scrollArea.leadingAnchor, constant: leadingIndentUIOfAccountProperties),
-            self.usernameTextField.trailingAnchor.constraint(equalTo: scrollArea.trailingAnchor, constant: trailingIndentUIOfAccountProperties),
-            self.usernameTextField.heightAnchor.constraint(equalToConstant: heightUIOfAccountProperties),
+            self.usernameTextField.leadingAnchor.constraint(equalTo: usernameLabel.leadingAnchor),
+            self.usernameTextField.trailingAnchor.constraint(equalTo: usernameLabel.trailingAnchor),
+            self.usernameTextField.heightAnchor.constraint(equalTo: usernameLabel.heightAnchor, multiplier: 1),
             
             
             self.passwordLabel.topAnchor.constraint(equalTo: usernameTextField.bottomAnchor, constant: topIndentBetweenUIOfAccountProperties),
-            self.passwordLabel.leadingAnchor.constraint(equalTo: scrollArea.leadingAnchor, constant: leadingIndentUIOfAccountProperties),
-            self.passwordLabel.trailingAnchor.constraint(equalTo: scrollArea.trailingAnchor, constant: trailingIndentUIOfAccountProperties),
-            self.passwordLabel.heightAnchor.constraint(equalToConstant: heightUIOfAccountProperties),
+            self.passwordLabel.leadingAnchor.constraint(equalTo: usernameLabel.leadingAnchor),
+            self.passwordLabel.trailingAnchor.constraint(equalTo: usernameLabel.trailingAnchor),
+            self.passwordLabel.heightAnchor.constraint(equalTo: usernameLabel.heightAnchor, multiplier: 1),
             
             self.passwordTextField.topAnchor.constraint(equalTo: passwordLabel.bottomAnchor, constant: topIndentBetweenUI),
-            self.passwordTextField.leadingAnchor.constraint(equalTo: scrollArea.leadingAnchor, constant: leadingIndentUIOfAccountProperties),
-            self.passwordTextField.trailingAnchor.constraint(equalTo: scrollArea.trailingAnchor, constant: trailingIndentUIOfAccountProperties),
-            self.passwordTextField.heightAnchor.constraint(equalToConstant: heightUIOfAccountProperties),
+            self.passwordTextField.leadingAnchor.constraint(equalTo: usernameLabel.leadingAnchor),
+            self.passwordTextField.trailingAnchor.constraint(equalTo: usernameLabel.trailingAnchor),
+            self.passwordTextField.heightAnchor.constraint(equalTo: usernameLabel.heightAnchor, multiplier: 1),
             
             
             self.emailLabel.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: topIndentBetweenUIOfAccountProperties),
-            self.emailLabel.leadingAnchor.constraint(equalTo: scrollArea.leadingAnchor, constant: leadingIndentUIOfAccountProperties),
-            self.emailLabel.trailingAnchor.constraint(equalTo: scrollArea.trailingAnchor, constant: trailingIndentUIOfAccountProperties),
-            self.emailLabel.heightAnchor.constraint(equalToConstant: heightUIOfAccountProperties),
+            self.emailLabel.leadingAnchor.constraint(equalTo: usernameLabel.leadingAnchor),
+            self.emailLabel.trailingAnchor.constraint(equalTo: usernameLabel.trailingAnchor),
+            self.emailLabel.heightAnchor.constraint(equalTo: usernameLabel.heightAnchor, multiplier: 1),
             
             self.emailTextField.topAnchor.constraint(equalTo: emailLabel.bottomAnchor, constant: topIndentBetweenUI),
-            self.emailTextField.leadingAnchor.constraint(equalTo: scrollArea.leadingAnchor, constant: leadingIndentUIOfAccountProperties),
-            self.emailTextField.trailingAnchor.constraint(equalTo: scrollArea.trailingAnchor, constant: trailingIndentUIOfAccountProperties),
-            self.emailTextField.heightAnchor.constraint(equalToConstant: heightUIOfAccountProperties),
+            self.emailTextField.leadingAnchor.constraint(equalTo: usernameLabel.leadingAnchor),
+            self.emailTextField.trailingAnchor.constraint(equalTo: usernameLabel.trailingAnchor),
+            self.emailTextField.heightAnchor.constraint(equalTo: usernameLabel.heightAnchor, multiplier: 1),
             
             
             self.genderLabel.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: topIndentBetweenUIOfAccountProperties),
-            self.genderLabel.leadingAnchor.constraint(equalTo: scrollArea.leadingAnchor, constant: leadingIndentUIOfAccountProperties),
-            self.genderLabel.trailingAnchor.constraint(equalTo: scrollArea.trailingAnchor, constant: trailingIndentUIOfAccountProperties),
-            self.genderLabel.heightAnchor.constraint(equalToConstant: heightUIOfAccountProperties),
+            self.genderLabel.leadingAnchor.constraint(equalTo: usernameLabel.leadingAnchor),
+            self.genderLabel.trailingAnchor.constraint(equalTo: usernameLabel.trailingAnchor),
+            self.genderLabel.heightAnchor.constraint(equalTo: usernameLabel.heightAnchor, multiplier: 1),
             
             self.genderSegmentControl.topAnchor.constraint(equalTo: genderLabel.bottomAnchor, constant: topIndentBetweenUI),
-            self.genderSegmentControl.leadingAnchor.constraint(equalTo: scrollArea.leadingAnchor, constant: leadingIndentUIOfAccountProperties),
-            self.genderSegmentControl.widthAnchor.constraint(equalToConstant: 130.0),
-            self.genderSegmentControl.heightAnchor.constraint(equalToConstant: heightUIOfAccountProperties),
+            self.genderSegmentControl.leadingAnchor.constraint(equalTo: usernameLabel.leadingAnchor),
+            self.genderSegmentControl.widthAnchor.constraint(equalToConstant: 160),
+            self.genderSegmentControl.heightAnchor.constraint(equalTo: usernameLabel.heightAnchor, multiplier: 1),
             
             
             self.creditCardLabel.topAnchor.constraint(equalTo: genderSegmentControl.bottomAnchor, constant: topIndentBetweenUIOfAccountProperties),
-            self.creditCardLabel.leadingAnchor.constraint(equalTo: scrollArea.leadingAnchor, constant: leadingIndentUIOfAccountProperties),
-            self.creditCardLabel.trailingAnchor.constraint(equalTo: scrollArea.trailingAnchor, constant: trailingIndentUIOfAccountProperties),
-            self.creditCardLabel.heightAnchor.constraint(equalToConstant: heightUIOfAccountProperties),
+            self.creditCardLabel.leadingAnchor.constraint(equalTo: usernameLabel.leadingAnchor),
+            self.creditCardLabel.trailingAnchor.constraint(equalTo: usernameLabel.trailingAnchor),
+            self.creditCardLabel.heightAnchor.constraint(equalTo: usernameLabel.heightAnchor, multiplier: 1),
             
             self.creditCardTextField.topAnchor.constraint(equalTo: creditCardLabel.bottomAnchor, constant: topIndentBetweenUI),
-            self.creditCardTextField.leadingAnchor.constraint(equalTo: scrollArea.leadingAnchor, constant: leadingIndentUIOfAccountProperties),
-            self.creditCardTextField.trailingAnchor.constraint(equalTo: scrollArea.trailingAnchor, constant: trailingIndentUIOfAccountProperties),
-            self.creditCardTextField.heightAnchor.constraint(equalToConstant: heightUIOfAccountProperties),
+            self.creditCardTextField.leadingAnchor.constraint(equalTo: usernameLabel.leadingAnchor),
+            self.creditCardTextField.trailingAnchor.constraint(equalTo: usernameLabel.trailingAnchor),
+            self.creditCardTextField.heightAnchor.constraint(equalTo: usernameLabel.heightAnchor, multiplier: 1),
             
             
             self.bioLabel.topAnchor.constraint(equalTo: creditCardTextField.bottomAnchor, constant: topIndentBetweenUIOfAccountProperties),
-            self.bioLabel.leadingAnchor.constraint(equalTo: scrollArea.leadingAnchor, constant: leadingIndentUIOfAccountProperties),
-            self.bioLabel.trailingAnchor.constraint(equalTo: scrollArea.trailingAnchor, constant: trailingIndentUIOfAccountProperties),
-            self.bioLabel.heightAnchor.constraint(equalToConstant: heightUIOfAccountProperties),
+            self.bioLabel.leadingAnchor.constraint(equalTo: usernameLabel.leadingAnchor),
+            self.bioLabel.trailingAnchor.constraint(equalTo: usernameLabel.trailingAnchor),
+            self.bioLabel.heightAnchor.constraint(equalTo: usernameLabel.heightAnchor, multiplier: 1),
             
             self.bioTextField.topAnchor.constraint(equalTo: bioLabel.bottomAnchor, constant: topIndentBetweenUI),
-            self.bioTextField.leadingAnchor.constraint(equalTo: scrollArea.leadingAnchor, constant: leadingIndentUIOfAccountProperties),
-            self.bioTextField.trailingAnchor.constraint(equalTo: scrollArea.trailingAnchor, constant: trailingIndentUIOfAccountProperties),
-            self.bioTextField.heightAnchor.constraint(equalToConstant: heightUIOfAccountProperties)
+            self.bioTextField.leadingAnchor.constraint(equalTo: usernameLabel.leadingAnchor),
+            self.bioTextField.trailingAnchor.constraint(equalTo: usernameLabel.trailingAnchor),
+            self.bioTextField.heightAnchor.constraint(equalTo: usernameLabel.heightAnchor, multiplier: 1),
         ])
     }
 }
