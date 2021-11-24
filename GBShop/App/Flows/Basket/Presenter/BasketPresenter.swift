@@ -10,31 +10,29 @@ import Foundation
 import UIKit
 
 protocol BasketViewOutput: class {
-    
     func viewDidBasket(idUser: Int)
-    
-    func viewDidPayBasket(idUser: Int) 
-    
+    func viewDidPayBasket(idUser: Int)
+    func viewDidDeleteFromBasket (idProduct: Int) 
 }
 
 
-final class BasketPresenter {
+final class BasketPresenter: CheckingDataUser, TrackableMixIn {
     //MARK: Properties
-    weak var viewInput: BasketViewInput?
-    
+    weak var viewInput: (BasketViewInput & UIViewController & ShowAlert)?
+
     //MARK: Properties private
-    private let basketData: BasketDataRequestFactory
-    
+    private var requestFactories: RequestFactories
+       
     //MARK: Init
-    init(basketDataRequestFactory: BasketDataRequestFactory) {
-        self.basketData = basketDataRequestFactory
+    init(requestFactories: RequestFactories) {
+        self.requestFactories = requestFactories
     }
     
     //MARK: Requests
     private func requestContentsFromBasket(idUser: Int) {
-        basketData.getBasket(idUser: idUser) { [weak self] (response) in
+        requestFactories.basketRequestFactory.getBasket(idUser: idUser) { [weak self] (response) in
             guard let self = self else { return }
-            self.viewInput?.throbber(show: false)
+                self.viewInput?.throbberStop()
             switch response.result {
             case .success(let getBasket):
                 debugPrint (getBasket)
@@ -45,26 +43,30 @@ final class BasketPresenter {
                     }
                     self.viewInput?.hideResultsView()
                     self.viewInput?.contentsResults = getBasket.contents
-                    self.viewInput?.basketView.newRefreshControl.endRefreshing()
+                    self.viewInput?.basketView.refreshControl.endRefreshing()
                 }
             case .failure(let error):
+                guard let viewInput = self.viewInput  else {
+                    return
+                }
                 debugPrint (error.localizedDescription)
                 DispatchQueue.main.async {
-                    self.viewInput?.showError(error: error)
+                    self.showError(forViewController: viewInput, withMessage: "Network error \(error.localizedDescription)")
                 }
             }
         }
     }
     
     private func requestPayBasket(idUser: Int) {
-        basketData.payBasket(idUser: idUser) { [weak self] (response) in
+        requestFactories.basketRequestFactory.payBasket(idUser: idUser) { [weak self] (response) in
             guard let self = self else { return }
-            self.viewInput?.throbber(show: false)
+            self.viewInput?.throbberStop()
             switch response.result {
             case .success(let payBasket):
                 debugPrint (payBasket)
                 DispatchQueue.main.async {
                     guard payBasket.result == 1 else {
+                        self.track(.purchase(idUser: idUser))
                         self.viewInput?.showPaymentFailed()
                         return
                     }
@@ -72,9 +74,37 @@ final class BasketPresenter {
                     self.viewInput?.contentsResults = []
                 }
             case .failure(let error):
+                guard let viewInput = self.viewInput  else {
+                    return
+                }
                 debugPrint (error.localizedDescription)
                 DispatchQueue.main.async {
-                    self.viewInput?.showError(error: error)
+                    self.showError(forViewController: viewInput, withMessage: "Network error \(error.localizedDescription)")
+                }
+            }
+        }
+    }
+    private func requestDeleteFromBasket(idProduct: Int) {
+        requestFactories.basketRequestFactory.deleteFromBasket(idProduct: idProduct) { [weak self] (response) in
+            guard let self = self else { return }
+            self.viewInput?.throbberStop()
+            switch response.result {
+            case .success(let deleteFromBasket):
+                debugPrint (deleteFromBasket)
+                DispatchQueue.main.async {
+                    guard deleteFromBasket.result == 1 else {
+                        return
+                    }
+                    self.track(.removeFromCart(idProduct: idProduct))
+                    self.requestContentsFromBasket(idUser: 123)
+                }
+            case .failure(let error):
+                guard let viewInput = self.viewInput  else {
+                    return
+                }
+                debugPrint (error.localizedDescription)
+                DispatchQueue.main.async {
+                    self.showError(forViewController: viewInput, withMessage: "Network error \(error.localizedDescription)")
                 }
             }
         }
@@ -84,11 +114,15 @@ final class BasketPresenter {
 // MARK: - SearchViewOutput
 extension BasketPresenter: BasketViewOutput {
     func viewDidBasket(idUser: Int) {
-        self.viewInput?.throbber(show: true)
+        self.viewInput?.throbberStart()
         self.requestContentsFromBasket(idUser: 123)
     }
     func viewDidPayBasket(idUser: Int) {
-        self.viewInput?.throbber(show: true)
+        self.viewInput?.throbberStart()
         self.requestPayBasket(idUser: 123)
+    }
+    func viewDidDeleteFromBasket (idProduct: Int) {
+        self.viewInput?.throbberStart()
+        self.requestDeleteFromBasket(idProduct: idProduct)
     }
 }

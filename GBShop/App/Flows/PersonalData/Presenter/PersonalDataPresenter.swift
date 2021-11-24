@@ -10,21 +10,19 @@ import UIKit
 
 protocol PersonalDataViewOutput: class {
     func viewDidChangePersonalData(dataUser: DataUser)
-    func openAuth()
+    func logout(idUser: Int)
 }
 
-class PersonalDataPresenter {
+class PersonalDataPresenter: CheckingDataUser, TrackableMixIn {
     // MARK: Properties
     weak var viewInput: (PersonalDataViewInput & UIViewController)?
     
     // MARK: Private properties
-    private var requestFactory: RequestFactory
-    private var userDataRequestFactory: UserDataRequestFactory
+    private var requestFactories: RequestFactories
     
     // MARK: Init
-    init(requestFactory: RequestFactory) {
-        self.requestFactory = requestFactory
-        self.userDataRequestFactory = requestFactory.makeUserDataRequestFactory()
+    init(requestFactories: RequestFactories) {
+        self.requestFactories = requestFactories
     }
     
     // MARK: Request
@@ -38,7 +36,7 @@ class PersonalDataPresenter {
               else {
             return
         }
-        userDataRequestFactory.changeUserData(idUser: dataUser.idUser,
+        requestFactories.userRequestFactory.changeUserData(idUser: dataUser.idUser,
                                             username: username,
                                             password: password,
                                             email: email,
@@ -58,66 +56,56 @@ class PersonalDataPresenter {
         }
     }
     
-    // MARK: Navigation
-    private func backToAuth () {
-        self.viewInput?.navigationController?.popViewController(animated: true)
+    private func requestLogout(idUser: Int) {
+        requestFactories.authRequestFactory.logout(idUser: idUser) { [weak self] (response) in
+            guard let self = self else { return }
+            switch response.result {
+            case .success(let logout):
+                debugPrint (logout)
+                DispatchQueue.main.async {
+                    if (logout.result == 1) {
+                        self.track(.logout(method: AnalyticsEvent.logoutParams.methodDefault))
+                        self.backToAuth()
+                    }
+                }
+            case .failure(let error):
+                debugPrint (error.localizedDescription)
+            }
+        }
     }
     
-    // MARK: Private functions
-    private func checkDataUser (dataUser: DataUser) throws -> Bool {
-        guard let countUsername = dataUser.username?.count,
-              countUsername > 0 else {
-            throw InsertingDataUserError.invalidUsername
+    // MARK: Navigation
+    private func backToAuth () {
+        guard let separatorFactoryAbstract = viewInput?.separatorFactoryAbstract else {
+            return
         }
-        guard let countPassword = dataUser.password?.count,
-              countPassword > 0 else {
-            throw InsertingDataUserError.invalidPassword
-        }
-        guard let isEmail = dataUser.email?.isValidEmail,
-              isEmail == true else {
-            throw InsertingDataUserError.invalidEmail
-        }
-        guard let countCreditCard = dataUser.creditCard?.count,
-              countCreditCard > 0 else {
-            throw InsertingDataUserError.invalidCreditCard
-        }
-        guard let countBio = dataUser.bio?.count,
-              countBio > 0 else {
-            throw InsertingDataUserError.invalidBio
-        }
-        return true
+        let authViewController = AuthModuleBuilder.build(requestFactories: requestFactories,
+                                                         separatorFactoryAbstract: separatorFactoryAbstract)
+        authViewController.showLogout()
+        let navigationAuthViewController = NavigationControllerDarkStyle(rootViewController: authViewController)
+        //navigationAuthViewController.modalPresentationStyle = .fullScreen
+        let keyWindow = UIApplication.shared.windows.filter {$0.isKeyWindow == true}.last
+        keyWindow?.rootViewController = navigationAuthViewController
+       // self.viewInput?.tabBarController?.present(navigationAuthViewController, animated: true, completion: nil)
     }
 }
 
 extension PersonalDataPresenter: PersonalDataViewOutput {
     func viewDidChangePersonalData(dataUser: DataUser) {
-        do {
+        guard let controller = viewInput as? (ShowAlert & UIViewController) else {
+            return
+        }
+        
+        self.catchErrorInsertingDataUser(forViewController: controller) {
             guard (try self.checkDataUser(dataUser: dataUser)) == true else {
                 return
             }
             self.requestChangePersonalData(dataUser: dataUser)
-        } catch InsertingDataUserError.invalidUsername {
-            viewInput?.showInsertingDataUserError(error: InsertingDataUserError.invalidUsername, withMessage: InsertingDataUserError.invalidUsername.rawValue)
-        }
-        catch InsertingDataUserError.invalidPassword {
-            viewInput?.showInsertingDataUserError(error: InsertingDataUserError.invalidPassword, withMessage: InsertingDataUserError.invalidPassword.rawValue)
-        }
-        catch InsertingDataUserError.invalidEmail {
-            viewInput?.showInsertingDataUserError(error: InsertingDataUserError.invalidEmail, withMessage: InsertingDataUserError.invalidEmail.rawValue)
-        }
-        catch InsertingDataUserError.invalidCreditCard {
-            viewInput?.showInsertingDataUserError(error: InsertingDataUserError.invalidCreditCard, withMessage: InsertingDataUserError.invalidCreditCard.rawValue)
-        }
-        catch InsertingDataUserError.invalidBio {
-            viewInput?.showInsertingDataUserError(error: InsertingDataUserError.invalidBio, withMessage: InsertingDataUserError.invalidBio.rawValue)
-        }
-        catch {
-            viewInput?.showInsertingDataUserError(error: Error.self as! Error, withMessage: "Неизвестная ошибка")
         }
     }
     
-    func openAuth() {
-        self.backToAuth()
+    func logout(idUser: Int) {
+        self.requestLogout(idUser: idUser)
     }
 }
 

@@ -8,16 +8,18 @@
 import UIKit
 
 protocol PersonalDataViewInput: class {
-    func showInsertingDataUserError (error: Error, withMessage message: String)
     func showSuccessChangingDataUser ()
     func showFailedChangingDataUser ()
+    var separatorFactoryAbstract: SeparatorFactoryAbstract {get set}
 }
 
-class PersonalDataViewController: UIViewController {
+class PersonalDataViewController: UIViewController, ShowAlert {
     // MARK: Properties
+    var separatorFactoryAbstract: SeparatorFactoryAbstract
+    
     var gender: String {
         get {
-            switch self.personalDataView.genderSegmentControl.selectedSegmentIndex {
+            switch self.personalDataView.dataUserView.genderSegmentControl.selectedSegmentIndex {
             case 0:
                 return "Male"
             case 1:
@@ -35,7 +37,8 @@ class PersonalDataViewController: UIViewController {
     private let presenter: PersonalDataViewOutput
     
     // MARK: Init
-    init(presenter: PersonalDataPresenter) {
+    init(presenter: PersonalDataPresenter, separatorFactoryAbstract: SeparatorFactoryAbstract) {
+        self.separatorFactoryAbstract = separatorFactoryAbstract
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
         
@@ -47,22 +50,27 @@ class PersonalDataViewController: UIViewController {
     // MARK: Life cycle
     override func loadView() {
         super.loadView()
-        self.view = PersonalDataView()
+        self.view = PersonalDataView(separatorFactoryAbstract: separatorFactoryAbstract)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.configure()
+        self.configureUI()
     }
     
     // MARK: Configure
-    private func configure() {
+    private func configureUI() {
+        self.configureLogoutButton()
         self.configureNavigationBar()
+        
+    }
+    
+    private func configureLogoutButton() {
+        self.personalDataView.logoutButton.addTarget(self, action: #selector(logoutTouchUpInsideButton), for: .touchUpInside)
     }
     
     private func configureNavigationBar() {
-        self.title = "Personal data"
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
+        self.title = "Profile"
         let barButtonItem = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(changePersonalData))
         self.navigationItem.setRightBarButton(barButtonItem, animated: true)
     }
@@ -70,36 +78,26 @@ class PersonalDataViewController: UIViewController {
     //MARK: Actions
     @objc private func changePersonalData () {
         let dataUser = DataUser(idUser: 123,
-                                username: self.personalDataView.usernameTextField.text,
-                                password: self.personalDataView.passwordTextField.text,
-                                email: self.personalDataView.emailTextField.text,
+                                username: self.personalDataView.dataUserView.usernameTextField.text,
+                                password: self.personalDataView.dataUserView.passwordTextField.text,
+                                email: self.personalDataView.dataUserView.emailTextField.text,
                                 gender: gender,
-                                creditCard: self.personalDataView.creditCardTextField.text,
-                                bio: self.personalDataView.bioTextField.text)
+                                creditCard: self.personalDataView.dataUserView.creditCardTextField.text,
+                                bio: self.personalDataView.dataUserView.bioTextField.text)
         self.presenter.viewDidChangePersonalData(dataUser: dataUser)
+    }
+    
+    @objc private func logoutTouchUpInsideButton () {
+        self.presenter.logout(idUser: 123)
     }
 }
 
 extension PersonalDataViewController: PersonalDataViewInput {
-    
-    func showInsertingDataUserError (error: Error,withMessage message: String) {
-        let alert = UIAlertController(title: "Error", message: "\(message) ", preferredStyle: .alert)
-        let actionOk = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-        alert.addAction(actionOk)
-        self.present(alert, animated: true, completion: nil)
-    }
-    
     func  showSuccessChangingDataUser () {
-        let alert = UIAlertController(title: "Notification", message: "Personal data were changed successful", preferredStyle: .alert)
-        let actionOk = UIAlertAction(title: "OK", style: .cancel,handler: nil)
-        alert.addAction(actionOk)
-        self.present(alert, animated: true, completion: nil)
+        self.showAlert(forViewController: self, withTitleOfAlert: "Notification", andMessage: "Personal data were changed successful", withTitleOfAction: "OK", handlerOfAction: nil)
     }
     
     func  showFailedChangingDataUser () {
-        let alert = UIAlertController(title: "Notification", message: "Personal data were changed failed", preferredStyle: .alert)
-        let actionOk = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-        alert.addAction(actionOk)
-        self.present(alert, animated: true, completion: nil)
+        self.showAlert(forViewController: self, withTitleOfAlert: "Notification", andMessage: "Personal data were changed failed", withTitleOfAction: "OK", handlerOfAction: nil)
     }
 }

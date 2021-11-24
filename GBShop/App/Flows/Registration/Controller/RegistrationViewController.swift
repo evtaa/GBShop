@@ -7,35 +7,19 @@
 
 import UIKit
 
-enum InsertingDataUserError: String, Error {
-    case invalidUsername = "You entered invalid username"
-    case invalidPassword = "You entered invalid password"
-    case invalidEmail = "You entered invalid email"
-    case invalidCreditCard = "You entered invalid number of credit card"
-    case invalidBio = "You entered invalid bio"
-}
-
-struct DataUser {
-    let idUser: Int
-    let username: String?
-    let password: String?
-    let email: String?
-    let gender: String?
-    let creditCard: String?
-    let bio: String?
-}
-
 protocol RegistrationViewInput: class {
-    func showInsertingDataUserError (error: Error,withMessage message: String)
     func showSuccessRegistration ()
     func showFailedRegistration ()
+    var separatorFactoryAbstract: SeparatorFactoryAbstract {get set}
 }
 
-class RegistrationViewController: UIViewController {
+class RegistrationViewController: UIViewController, ShowAlert {
     // MARK: Properties
+    var separatorFactoryAbstract: SeparatorFactoryAbstract
+    
     var gender: String {
         get {
-            switch self.registrationView.genderSegmentControl.selectedSegmentIndex {
+            switch self.registrationView.dataUserView.genderSegmentControl.selectedSegmentIndex {
             case 0:
                 return "Male"
             case 1:
@@ -53,10 +37,10 @@ class RegistrationViewController: UIViewController {
     private let presenter: RegistrationViewOutput
     
     // MARK: Init
-    init(presenter: RegistrationPresenter) {
+    init(presenter: RegistrationPresenter, separatorFactoryAbstract: SeparatorFactoryAbstract) {
         self.presenter = presenter
+        self.separatorFactoryAbstract = separatorFactoryAbstract
         super.init(nibName: nil, bundle: nil)
-        
     }
     
     required init?(coder: NSCoder) {
@@ -66,7 +50,7 @@ class RegistrationViewController: UIViewController {
     // MARK: Life cycle
     override func loadView() {
         super.loadView()
-        self.view = RegistrationView()
+        self.view = RegistrationView(separatorFactoryAbstract: separatorFactoryAbstract)
     }
     
     override func viewDidLoad() {
@@ -77,51 +61,36 @@ class RegistrationViewController: UIViewController {
     // MARK: Configure
     private func configure() {
         self.configureNavigationBar()
-        
     }
     
     private func configureNavigationBar() {
         self.title = "Registration"
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
-        let barButtonItem = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(registration))
+        let barButtonItem = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(doneButtonTouchUpInside))
         self.navigationItem.setRightBarButton(barButtonItem, animated: true)
     }
     
     //MARK: Actions
-    @objc private func registration () {
+    @objc private func doneButtonTouchUpInside () {
         let dataUser = DataUser(idUser: 123,
-                                username: self.registrationView.usernameTextField.text,
-                                password: self.registrationView.passwordTextField.text,
-                                email: self.registrationView.emailTextField.text,
+                                username: self.registrationView.dataUserView.usernameTextField.text,
+                                password: self.registrationView.dataUserView.passwordTextField.text,
+                                email: self.registrationView.dataUserView.emailTextField.text,
                                 gender: gender,
-                                creditCard: self.registrationView.creditCardTextField.text,
-                                bio: self.registrationView.bioTextField.text)
+                                creditCard: self.registrationView.dataUserView.creditCardTextField.text,
+                                bio: self.registrationView.dataUserView.bioTextField.text)
         self.presenter.viewDidRegistration(dataUser: dataUser)
     }
 }
 
 extension RegistrationViewController: RegistrationViewInput {
     
-    func showInsertingDataUserError (error: Error,withMessage message: String) {
-        let alert = UIAlertController(title: "Error", message: "\(message) ", preferredStyle: .alert)
-        let actionOk = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-        alert.addAction(actionOk)
-        self.present(alert, animated: true, completion: nil)
-    }
-    
     func  showSuccessRegistration () {
-        let alert = UIAlertController(title: "Notification", message: "Registration was success", preferredStyle: .alert)
-        let actionOk = UIAlertAction(title: "OK", style: .cancel) { _ in 
-            self.presenter.openAuth()
+        self.showAlert(forViewController: self, withTitleOfAlert: "Notification", andMessage: "Registration was success", withTitleOfAction: "OK") { _ in
+            self.presenter.openTabBar()
         }
-        alert.addAction(actionOk)
-        self.present(alert, animated: true, completion: nil)
     }
     
     func  showFailedRegistration () {
-        let alert = UIAlertController(title: "Notification", message: "Registration was failed", preferredStyle: .alert)
-        let actionOk = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-        alert.addAction(actionOk)
-        self.present(alert, animated: true, completion: nil)
+        self.showAlert(forViewController: self, withTitleOfAlert: "Notification", andMessage: "Registration was failed", withTitleOfAction: "OK", handlerOfAction: nil)
     }
 }
