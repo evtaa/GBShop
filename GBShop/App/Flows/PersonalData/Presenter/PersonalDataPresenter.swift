@@ -10,21 +10,24 @@ import UIKit
 
 protocol PersonalDataViewOutput: class {
     func viewDidChangePersonalData(dataUser: DataUser)
-    func openAuth()
+    func logout(idUser: Int)
 }
 
-class PersonalDataPresenter {
+class PersonalDataPresenter: CatchError {
     // MARK: Properties
     weak var viewInput: (PersonalDataViewInput & UIViewController)?
     
     // MARK: Private properties
     private var requestFactory: RequestFactory
     private var userDataRequestFactory: UserDataRequestFactory
+    private var authRequestFactory: AuthRequestFactory
     
     // MARK: Init
     init(requestFactory: RequestFactory) {
         self.requestFactory = requestFactory
         self.userDataRequestFactory = requestFactory.makeUserDataRequestFactory()
+        self.authRequestFactory = requestFactory.makeAuthRequestFactory()
+        
     }
     
     // MARK: Request
@@ -58,9 +61,34 @@ class PersonalDataPresenter {
         }
     }
     
+    private func requestLogout(idUser: Int) {
+        authRequestFactory.logout(idUser: idUser) { [weak self] (response) in
+            guard let self = self else { return }
+            switch response.result {
+            case .success(let logout):
+                debugPrint (logout)
+                DispatchQueue.main.async {
+                    if (logout.result == 1) {
+                        self.backToAuth()
+                    }
+                }
+            case .failure(let error):
+                debugPrint (error.localizedDescription)
+            }
+        }
+    }
+    
     // MARK: Navigation
     private func backToAuth () {
-        self.viewInput?.navigationController?.popViewController(animated: true)
+        let authViewController = AuthModuleBuilder.build(requestFactory: self.requestFactory)
+        authViewController.showLogout()
+        let navigationAuthViewController = UINavigationController(rootViewController: authViewController)
+        //navigationAuthViewController.modalPresentationStyle = .fullScreen
+        authViewController.configureNavigationBar()
+        let keyWindow = UIApplication.shared.windows.filter {$0.isKeyWindow == true}.last
+        keyWindow?.rootViewController = navigationAuthViewController
+       // self.viewInput?.tabBarController?.present(navigationAuthViewController, animated: true, completion: nil)
+    
     }
     
     // MARK: Private functions
@@ -91,33 +119,20 @@ class PersonalDataPresenter {
 
 extension PersonalDataPresenter: PersonalDataViewOutput {
     func viewDidChangePersonalData(dataUser: DataUser) {
-        do {
+        guard let controller = viewInput as? (ShowAlert & UIViewController) else {
+            return
+        }
+        
+        self.catchErrorInsertingDataUser(forViewController: controller) {
             guard (try self.checkDataUser(dataUser: dataUser)) == true else {
                 return
             }
             self.requestChangePersonalData(dataUser: dataUser)
-        } catch InsertingDataUserError.invalidUsername {
-            viewInput?.showInsertingDataUserError(error: InsertingDataUserError.invalidUsername, withMessage: InsertingDataUserError.invalidUsername.rawValue)
-        }
-        catch InsertingDataUserError.invalidPassword {
-            viewInput?.showInsertingDataUserError(error: InsertingDataUserError.invalidPassword, withMessage: InsertingDataUserError.invalidPassword.rawValue)
-        }
-        catch InsertingDataUserError.invalidEmail {
-            viewInput?.showInsertingDataUserError(error: InsertingDataUserError.invalidEmail, withMessage: InsertingDataUserError.invalidEmail.rawValue)
-        }
-        catch InsertingDataUserError.invalidCreditCard {
-            viewInput?.showInsertingDataUserError(error: InsertingDataUserError.invalidCreditCard, withMessage: InsertingDataUserError.invalidCreditCard.rawValue)
-        }
-        catch InsertingDataUserError.invalidBio {
-            viewInput?.showInsertingDataUserError(error: InsertingDataUserError.invalidBio, withMessage: InsertingDataUserError.invalidBio.rawValue)
-        }
-        catch {
-            viewInput?.showInsertingDataUserError(error: Error.self as! Error, withMessage: "Неизвестная ошибка")
         }
     }
     
-    func openAuth() {
-        self.backToAuth()
+    func logout(idUser: Int) {
+        self.requestLogout(idUser: idUser)
     }
 }
 

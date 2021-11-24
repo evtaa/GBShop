@@ -26,12 +26,11 @@ struct DataUser {
 }
 
 protocol RegistrationViewInput: class {
-    func showInsertingDataUserError (error: Error,withMessage message: String)
     func showSuccessRegistration ()
     func showFailedRegistration ()
 }
 
-class RegistrationViewController: UIViewController {
+class RegistrationViewController: UIViewController, ShowAlert {
     // MARK: Properties
     var gender: String {
         get {
@@ -77,7 +76,6 @@ class RegistrationViewController: UIViewController {
     // MARK: Configure
     private func configure() {
         self.configureNavigationBar()
-        
     }
     
     private func configureNavigationBar() {
@@ -102,26 +100,13 @@ class RegistrationViewController: UIViewController {
 
 extension RegistrationViewController: RegistrationViewInput {
     
-    func showInsertingDataUserError (error: Error,withMessage message: String) {
-        let alert = UIAlertController(title: "Error", message: "\(message) ", preferredStyle: .alert)
-        let actionOk = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-        alert.addAction(actionOk)
-        self.present(alert, animated: true, completion: nil)
-    }
-    
     func  showSuccessRegistration () {
-        let alert = UIAlertController(title: "Notification", message: "Registration was success", preferredStyle: .alert)
-        let actionOk = UIAlertAction(title: "OK", style: .cancel) { _ in 
-            self.presenter.openAuth()
+        self.showAlert(forViewController: self, withTitleOfAlert: "Notification", andMessage: "Registration was success", withTitleOfAction: "OK") { _ in
+            self.presenter.openTabBar()
         }
-        alert.addAction(actionOk)
-        self.present(alert, animated: true, completion: nil)
     }
     
     func  showFailedRegistration () {
-        let alert = UIAlertController(title: "Notification", message: "Registration was failed", preferredStyle: .alert)
-        let actionOk = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-        alert.addAction(actionOk)
-        self.present(alert, animated: true, completion: nil)
+        self.showAlert(forViewController: self, withTitleOfAlert: "Notification", andMessage: "Registration was failed", withTitleOfAction: "OK", handlerOfAction: nil)
     }
 }
