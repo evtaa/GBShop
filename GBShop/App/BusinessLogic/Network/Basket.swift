@@ -12,13 +12,14 @@ class Basket: AbstractRequestFactory {
     let errorParser: AbstractErrorParser
     let sessionManager: Session
     let queue: DispatchQueue
-    //let baseUrl = URL(string: "http://127.0.0.1:8080/")!
-    let baseUrl = URL(string: "https://mighty-harbor-34171.herokuapp.com/")!
+    let baseUrl: URL
     
     init(
+        baseUrl: URL,
         errorParser: AbstractErrorParser,
         sessionManager: Session,
         queue: DispatchQueue = DispatchQueue.global(qos: .utility)) {
+        self.baseUrl = baseUrl
         self.errorParser = errorParser
         self.sessionManager = sessionManager
         self.queue = queue

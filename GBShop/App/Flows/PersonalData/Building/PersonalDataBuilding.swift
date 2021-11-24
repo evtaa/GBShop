@@ -6,11 +6,13 @@
 //
 
 import Foundation
+import UIKit
 
 class PersonalDataBuilder {
-    static func build (requestFactory: RequestFactory) -> PersonalDataViewController {
-            let presenter = PersonalDataPresenter(requestFactory: requestFactory)
-            let viewController = PersonalDataViewController(presenter: presenter)
+    static func build (requestFactories: RequestFactories,
+                       separatorFactoryAbstract: SeparatorFactoryAbstract) -> PersonalDataViewController {
+        let presenter = PersonalDataPresenter(requestFactories: requestFactories)
+        let viewController = PersonalDataViewController(presenter: presenter, separatorFactoryAbstract: separatorFactoryAbstract)
             presenter.viewInput = viewController
             return viewController
     }

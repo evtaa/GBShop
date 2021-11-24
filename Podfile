@@ -18,4 +18,11 @@ target 'GBShop' do
 
 pod 'Alamofire'
 
+pod 'Firebase/Crashlytics'
+
+# Recommended: Add the Firebase pod for Google Analytics
+pod 'Firebase/Analytics'
+
+#pod  'SnapKit' ,  '~> 5.0.0'
+
 end

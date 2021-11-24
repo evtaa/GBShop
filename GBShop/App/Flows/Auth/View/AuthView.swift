@@ -10,16 +10,14 @@ import UIKit
 class AuthView: UIView {
 
     //MARK: - Subviews
-    let noCorrectDataLabel = UILabel()
-    let usernameTextField = UITextField()
-    let passwordTextField = UITextField()
-    let loginButton = UIButton()
-    let createAccountButton = UIButton()
-    
-    
+    let infoDataLabel = LabelDarkStyle()
+    let usernameTextField = TextFieldDarkStyle()
+    let passwordTextField = TextFieldDarkStyle()
+    let loginButton = ButtonDarkStyle()
+    let createAccountButton = ButtonDarkStyle()
+    let scrollView = ScrollViewDarkStyle ()
     
     //MARK: - Init
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.configureUI()
@@ -30,104 +28,103 @@ class AuthView: UIView {
     }
     
     //MARK: - ConfigureUI
-    
     private func configureUI () {
         self.backgroundColor = .black
-        self.configureNoCorrectDataLabel()
+        self.accessibilityIdentifier = "authView"
+        self.configureScrollView ()
+        self.configureInfoDataLabel()
         self.configureUsernameTextField()
         self.configurePasswordTextField()
         self.configureLoginButton()
-//        self.configureLogoutButton()
         self.configureCreateAccountButton()
         self.setupConstraints()
     }
     
-    private func configureNoCorrectDataLabel () {
-        self.noCorrectDataLabel.translatesAutoresizingMaskIntoConstraints = false
-        self.noCorrectDataLabel.isHidden = true
-        self.noCorrectDataLabel.numberOfLines = 2
-        self.noCorrectDataLabel.textColor = .white
-        self.noCorrectDataLabel.backgroundColor = .black
-        self.noCorrectDataLabel.textAlignment = .left
-        self.noCorrectDataLabel.font = UIFont.boldSystemFont(ofSize: 14.0)
-        self.addSubview(self.noCorrectDataLabel)
+    private func configureScrollView () {
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(scrollView)
+    }
+    
+    private func configureInfoDataLabel () {
+        self.infoDataLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.infoDataLabel.accessibilityIdentifier = "resultData"
+        self.infoDataLabel.isHidden = true
+        self.infoDataLabel.numberOfLines = 2
+        self.infoDataLabel.font = UIFont.boldSystemFont(ofSize: 14.0)
+        self.scrollView.addSubview(self.infoDataLabel)
     }
     
     private func configureUsernameTextField () {
         self.usernameTextField.translatesAutoresizingMaskIntoConstraints = false
-        self.usernameTextField.textColor = .white
-        self.usernameTextField.backgroundColor = .black
-        self.usernameTextField.textAlignment = .left
-        self.usernameTextField.attributedPlaceholder = NSAttributedString(string: "username", attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray])
-        self.usernameTextField.font = UIFont.systemFont(ofSize: 18.0)
-        self.addSubview(self.usernameTextField)
+        self.usernameTextField.accessibilityIdentifier = "username"
+        self.usernameTextField.placeholder = "username"
+        self.scrollView.addSubview(self.usernameTextField)
     }
     
     private func configurePasswordTextField () {
         self.passwordTextField.translatesAutoresizingMaskIntoConstraints = false
-        self.passwordTextField.textColor = .white
-        self.passwordTextField.backgroundColor = .black
-        self.passwordTextField.textAlignment = .left
-        self.passwordTextField.attributedPlaceholder = NSAttributedString(string: "password", attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray])
-        self.passwordTextField.font = UIFont.systemFont(ofSize: 18.0)
-        self.addSubview(self.passwordTextField)
+        self.passwordTextField.accessibilityIdentifier = "password"
+        self.passwordTextField.placeholder = "password"
+        self.passwordTextField.isSecureTextEntry = true
+        self.scrollView.addSubview(self.passwordTextField)
     }
     
     private func configureLoginButton () {
         self.loginButton.translatesAutoresizingMaskIntoConstraints = false
+        self.loginButton.accessibilityIdentifier = "login"
         self.loginButton.setTitle("Login", for: .normal)
-        self.loginButton.setTitleColor(.white, for: .normal)
-        self.loginButton.setTitleShadowColor(.gray, for: .normal)
-        self.loginButton.titleLabel?.textAlignment = .center
-        self.loginButton.titleLabel?.font = UIFont.systemFont(ofSize: 18)
-        self.loginButton.backgroundColor = .black
-        self.addSubview(self.loginButton)
+        self.scrollView.addSubview(self.loginButton)
     }
     
     private func configureCreateAccountButton () {
         self.createAccountButton.translatesAutoresizingMaskIntoConstraints = false
-        self.createAccountButton.setTitle("Create new account", for: .normal)
-        self.createAccountButton.setTitleColor(.white, for: .normal)
-        self.createAccountButton.setTitleShadowColor(.gray, for: .normal)
-        self.createAccountButton.titleLabel?.textAlignment = .center
-        self.createAccountButton.titleLabel?.font = UIFont.systemFont(ofSize: 18)
-        self.createAccountButton.backgroundColor = .black
-        self.addSubview(self.createAccountButton)
+        self.createAccountButton.accessibilityIdentifier = "createAccountButton"
+        self.createAccountButton.setTitle("Create a new account", for: .normal)
+        self.scrollView.addSubview(self.createAccountButton)
     }
     
     private func setupConstraints () {
-        let safeArea = self.safeAreaLayoutGuide
+        let scrollArea = self.scrollView.contentLayoutGuide
+        //let safeArea = self.safeAreaLayoutGuide
         let widthButton = CGFloat(80.0)
-        let widthCreateAccountButton = CGFloat(165)
+        let widthCreateAccountButton = CGFloat(175)
         let widthLabel = CGFloat(180)
         let widthTextField = CGFloat(160)
         
         NSLayoutConstraint.activate([
             
-            self.noCorrectDataLabel.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: 60.0),
-            self.noCorrectDataLabel.widthAnchor.constraint(equalToConstant: widthLabel),
-            self.noCorrectDataLabel.heightAnchor.constraint(equalToConstant: 60),
-            self.noCorrectDataLabel.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: UIScreen.main.bounds.width/2 - widthLabel/2),
+            self.scrollView.frameLayoutGuide.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            self.scrollView.frameLayoutGuide.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            self.scrollView.frameLayoutGuide.topAnchor.constraint(equalTo: self.topAnchor),
+            self.scrollView.frameLayoutGuide.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            self.scrollView.contentLayoutGuide.topAnchor.constraint(equalTo: self.scrollView.frameLayoutGuide.topAnchor),
+            self.scrollView.contentLayoutGuide.widthAnchor.constraint(equalTo: self.scrollView.frameLayoutGuide.widthAnchor),
+            self.scrollView.contentLayoutGuide.bottomAnchor.constraint(equalTo: self.scrollView.frameLayoutGuide.bottomAnchor),
             
-            self.usernameTextField.topAnchor.constraint(equalTo: self.noCorrectDataLabel.bottomAnchor, constant: 10.0),
+            self.infoDataLabel.topAnchor.constraint(equalTo: scrollArea.topAnchor, constant: CGFloat(0.3) * CGFloat(UIScreen.main.bounds.height/2) ),
+            self.infoDataLabel.widthAnchor.constraint(equalToConstant: widthLabel),
+            self.infoDataLabel.heightAnchor.constraint(equalToConstant: 60),
+            self.infoDataLabel.leadingAnchor.constraint(equalTo: scrollArea.leadingAnchor, constant: UIScreen.main.bounds.width/2 - widthLabel/2),
+            
+            self.usernameTextField.topAnchor.constraint(equalTo: self.infoDataLabel.bottomAnchor, constant: 10.0),
             self.usernameTextField.widthAnchor.constraint(equalToConstant: widthTextField),
             self.usernameTextField.heightAnchor.constraint(equalToConstant: 20),
-            self.usernameTextField.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: UIScreen.main.bounds.width/2 - widthTextField/2),
+            self.usernameTextField.leadingAnchor.constraint(equalTo: scrollArea.leadingAnchor, constant: UIScreen.main.bounds.width/2 - widthTextField/2),
             
             self.passwordTextField.topAnchor.constraint(equalTo: self.usernameTextField.bottomAnchor, constant: 10.0),
             self.passwordTextField.widthAnchor.constraint(equalToConstant: widthTextField),
             self.passwordTextField.heightAnchor.constraint(equalToConstant: 20),
-            self.passwordTextField.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: UIScreen.main.bounds.width/2 - widthTextField/2),
+            self.passwordTextField.leadingAnchor.constraint(equalTo: scrollArea.leadingAnchor, constant: UIScreen.main.bounds.width/2 - widthTextField/2),
             
             self.loginButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 30.0),
             self.loginButton.widthAnchor.constraint(equalToConstant: widthButton),
             self.loginButton.heightAnchor.constraint(equalToConstant: 20.0),
-            self.loginButton.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: UIScreen.main.bounds.width/2 - widthButton/2),
+            self.loginButton.leadingAnchor.constraint(equalTo: scrollArea.leadingAnchor, constant: UIScreen.main.bounds.width/2 - widthButton/2),
             
             self.createAccountButton.widthAnchor.constraint(equalToConstant: widthCreateAccountButton),
             self.createAccountButton.heightAnchor.constraint(equalToConstant: 20.0),
-            self.createAccountButton.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: UIScreen.main.bounds.width/2 - widthCreateAccountButton/2),
-            self.createAccountButton.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: -40),
+            self.createAccountButton.leadingAnchor.constraint(equalTo: scrollArea.leadingAnchor, constant: UIScreen.main.bounds.width/2 - widthCreateAccountButton/2),
+            self.createAccountButton.bottomAnchor.constraint(equalTo: scrollArea.bottomAnchor, constant: -UIScreen.main.bounds.height/5),
         ])
     }
 

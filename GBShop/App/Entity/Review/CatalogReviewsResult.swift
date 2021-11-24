@@ -11,7 +11,7 @@ struct CatalogReviewsResult: Codable {
     let countReviews: Int
     let pageNumber: Int
     let errorMessage: String?
-    let reviews: [Review]
+    let reviews: [ReviewOfProduct]
     
     enum CodingKeys: String, CodingKey {
         case countReviews = "count_reviews"
@@ -19,14 +19,13 @@ struct CatalogReviewsResult: Codable {
         case errorMessage = "error_message"
         case reviews
     }
-    
-    struct Review: Codable {
-        let idUser: Int
-        let textReview: String
-        
-        enum CodingKeys: String, CodingKey {
-            case idUser = "id_user"
-            case textReview = "text_review"
-        }
-    }
+//    struct Review: Codable {
+//        let idUser: Int
+//        let textReview: String
+//
+//        enum CodingKeys: String, CodingKey {
+//            case idUser = "id_user"
+//            case textReview = "text_review"
+//        }
+//    }
 }

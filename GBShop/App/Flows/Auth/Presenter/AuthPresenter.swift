@@ -9,63 +9,60 @@ import Foundation
 import UIKit
 
 protocol AuthViewOutput: class {
-    
     func viewDidLogin(userName: String?, password: String?)
     func viewDidLogout(idUser: Int)
-    func viewDidRegistration() 
-    
+    func viewDidRegistration()
 }
 
-final class AuthPresenter {
+final class AuthPresenter: CheckingDataUser, TrackableMixIn {
     
     // MARK: Properties
     weak var viewInput: (UIViewController & AuthViewInput)?
     
     // MARK: Private properties
-    private var requestFactory: RequestFactory
-    private var authRequestFactory: AuthRequestFactory
+    private var requestFactories: RequestFactories
     
     // MARK: Init
-    
-    internal init(requestFactory: RequestFactory) {
-        self.requestFactory = requestFactory
-        self.authRequestFactory = requestFactory.makeAuthRequestFactory()
+    internal init(requestFactories: RequestFactories) {
+        self.requestFactories = requestFactories
     }
     
     // MARK: Request
-    
     private func requestLogin (userName: String?, password: String?) {
         guard let userName = userName,
               let password = password else {
             return
         }
-        authRequestFactory.login(userName: userName, password: password) { [weak self] response in
+        requestFactories.authRequestFactory.login(userName: userName, password: password) { [weak self] response in
             guard let self = self else { return }
             switch response.result {
             case .success(let login):
                 debugPrint(login)
                 DispatchQueue.main.async {
                     if (login.result == 1) {
+                        self.track(.login(method: AnalyticsEvent.loginParams.methodDefault, success: true))
                         self.viewInput?.hideNotificationData()
-                        self.openPersonalData()
+                        self.openTabBar()
                     } else {
                         self.viewInput?.showNotificationData(message: "The request was failed")
                     }
                 }
             case .failure(let error):
+                self.track(.login(method: AnalyticsEvent.loginParams.methodDefault, success: false))
                 debugPrint(error.localizedDescription)
             }
         }
     }
     
     private func requestLogout(idUser: Int) {
-        authRequestFactory.logout(idUser: idUser) { [weak self] (response) in
+        requestFactories.authRequestFactory.logout(idUser: idUser) { [weak self] (response) in
             guard let self = self else { return }
             switch response.result {
             case .success(let logout):
                 debugPrint (logout)
                 DispatchQueue.main.async {
                     if (logout.result == 1) {
+                        self.track(.logout(method: AnalyticsEvent.logoutParams.methodDefault))
                         self.viewInput?.showLogout()
                     }
                 }
@@ -77,17 +74,27 @@ final class AuthPresenter {
     
     // MARK: Navigations
     private func openRegistration () {
-        let registrationViewController = RegistrationBuilder.build(requestFactory: requestFactory)
+        guard let separatorFactoryAbstract = viewInput?.separatorFactoryAbstract else {
+            return
+        }
+        let registrationViewController = RegistrationBuilder.build(requestFactories: requestFactories, separatorFactoryAbstract: separatorFactoryAbstract)
         self.viewInput?.navigationController?.pushViewController(registrationViewController, animated: true)
     }
     
-    private func openPersonalData () {
-        let personalDataViewController = PersonalDataBuilder.build(requestFactory: requestFactory)
-        self.viewInput?.navigationController?.pushViewController(personalDataViewController, animated: true)
+    private func openTabBar () {
+        guard let separatorFactoryAbstract = viewInput?.separatorFactoryAbstract else {
+            return
+        }
+        let shopTabBarViewController = ShopTabBarModuleBuilder.build(requestFactories: requestFactories,
+                                                                     separatorFactoryAbstract: separatorFactoryAbstract)
+        //shopTabBarViewController.modalPresentationStyle = .fullScreen
+        let keyWindow = UIApplication.shared.windows.filter {$0.isKeyWindow == true}.last
+        keyWindow?.rootViewController = shopTabBarViewController
+        //self.viewInput?.navigationController?.present(shopTabBarViewController, animated: true, completion: nil)
     }
     
     // MARK: Private functions
-    private func checkUserPass (username: String?, password: String?) throws -> Bool {
+    private func checkUsernameAndPassword (username: String?, password: String?) throws -> Bool {
         guard let countUsername = username?.count,
               countUsername > 0 else {
             throw InsertingDataUserError.invalidUsername
@@ -98,23 +105,32 @@ final class AuthPresenter {
         }
         return true
     }
+    
+    private func catchErrorInsertingUsernamePassword ( doSomething: () throws -> Void) {
+        guard let viewInput = viewInput as? (UIViewController & ShowAlert & AuthViewInput) else {
+            return
+        }
+        do {
+           try doSomething()
+        } catch InsertingDataUserError.invalidUsername {
+            viewInput.showNotificationData(message: InsertingDataUserError.invalidUsername.rawValue)
+        }
+        catch InsertingDataUserError.invalidPassword {
+            viewInput.showNotificationData(message: InsertingDataUserError.invalidPassword.rawValue)
+        }
+        catch {
+            self.showError(forViewController: viewInput, withMessage: "A unacceptable error. You should contact to administrator")
+        }
+    }
 }
 
 extension AuthPresenter: AuthViewOutput {
     func viewDidLogin(userName: String?, password: String?) {
-        do {
-            guard (try self.checkUserPass(username: userName, password: password)) == true else {
+        self.catchErrorInsertingUsernamePassword {
+            guard (try self.checkUsernameAndPassword(username: userName, password: password)) == true else {
                 return
             }
             self.requestLogin(userName: userName, password: password)
-        } catch InsertingDataUserError.invalidUsername {
-            viewInput?.showNotificationData(message: "You entered a invalid username")
-        }
-        catch InsertingDataUserError.invalidPassword {
-            viewInput?.showNotificationData(message: "You entered a invalid password")
-        }
-        catch {
-            viewInput?.showInsertingDataUserError(error: Error.self as! Error, withMessage: "Неизвестная ошибка")
         }
     }
     
